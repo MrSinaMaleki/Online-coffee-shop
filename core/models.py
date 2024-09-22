@@ -1,3 +1,15 @@
 from django.db import models
 
-# Create your models here.
+
+class ActiveLogicalBase(models.Model):
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        abstract = True
+
+
+class DeleteLogicalBase(models.Model):
+    is_delete = models.BooleanField(default=True)
+
+    class Meta:
+        abstract = True
