@@ -3,6 +3,7 @@ from .models import Product, Category, ProductImage
 
 
 class CategorySerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Category
         fields = ['title', 'parent']
