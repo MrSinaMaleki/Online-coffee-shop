@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from rest_framework import status, generics
+from .models import ActiveLogicalBase
+from .serializers import ActiveSerializer
 
-# Create your views here.
+
+class ActiveDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ActiveLogicalBase.objects.all()
+    serializer_class = ActiveSerializer
