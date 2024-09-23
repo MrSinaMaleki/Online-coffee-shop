@@ -6,6 +6,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
         fields = ['user', 'products']
+        extra_kwargs = {'user': {'read_only': True}}
 
     def create(self, validated_data):
         print(self.context['request'].user)

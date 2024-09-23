@@ -3,7 +3,6 @@ from .models import Product, Category, ProductImage
 
 
 class CategorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
         fields = ['title', 'parent']
@@ -22,9 +21,8 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = (
-            'id',
-            'title', 'price', 'quantity', 'is_available', 'serial_number', 'description', 'is_coffee_shop', 'timeline',
-            'category', 'images')
+            'id', 'title', 'price', 'quantity', 'is_available', 'serial_number', 'description', 'is_coffee_shop',
+            'timeline', 'category', 'images')
 
     def get_images(self, obj):
         images = obj.images.filter(is_cover=True)
