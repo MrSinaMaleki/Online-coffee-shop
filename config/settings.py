@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     "favorite.apps.FavoriteConfig",
     "product.apps.ProductConfig",
     "comment.apps.CommentConfig",
-    "order.apps.OrderConfig"
+    "order.apps.OrderConfig",
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
