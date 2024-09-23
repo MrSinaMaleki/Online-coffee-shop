@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "product.apps.ProductConfig",
     "comment.apps.CommentConfig",
     "order.apps.OrderConfig",
-    'rest_framework',
+    
 ]
 
 MIDDLEWARE = [

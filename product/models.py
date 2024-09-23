@@ -84,7 +84,6 @@ class Product(DeleteLogicalBase):
 
 class ProductImage(DeleteLogicalBase):
     product = models.ForeignKey(Product, related_query_name='images', related_name='images', on_delete=models.CASCADE)
-    # related_query_name, related_name ?
     image = models.ImageField(upload_to='product_images/', validators=[validate_image_size])
     alt = models.TextField(blank=True, null=True)
     is_cover = models.BooleanField(default=False)
