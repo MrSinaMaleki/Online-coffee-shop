@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .signup-container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+<div class="signup-container">
+    <form id="signup-form">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="password2" placeholder="Confirm Password" required>
+        <button type="submit">Sign Up</button>
+    </form>
+    <div id="response-message"></div>
+</div>
+<script>
+    const formEl = document.querySelector("#signup-form");
+    console.log(formEl)
+    
+    formEl.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const data = new FormData(e.target)
+        console.log(data)
+
+
+        fetch('signup_api/', {
+            method: 'POST',
+            body: data,
+        })
+            .then(response => response.json())
+            .then(temp => {
+                console.log("hahahah")
+                const messageElement = document.getElementById('response-message');
+                if (temp.ok) {
+                    messageElement.textContent = 'Sign up successful!';
+                    messageElement.style.color = 'green';
+                } else {
+                    messageElement.textContent = 'Error: ' + temp.detail;
+                    messageElement.style.color = 'red';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
+</script>
+</body>
+</html>
