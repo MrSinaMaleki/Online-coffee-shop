@@ -33,3 +33,15 @@ class LoginSerializer(serializers.Serializer):
         if not data.get('username') or not data.get('password'):
             raise serializers.ValidationError("Username and password are required.")
         return data
+
+class ForgetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+class ResetPasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(required=True, write_only=True)
+    confirm_password = serializers.CharField(required=True, write_only=True)
+
+    def validate(self, data):
+        if data['password'] != data['confirm_password']:
+            raise serializers.ValidationError("Passwords must match.")
+        return data
