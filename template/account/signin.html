@@ -3,61 +3,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-
-    <style>
-
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-
-        .signup-container {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        input {
-            margin-bottom: 10px;
-            padding: 10px;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<div class="signup-container">
-    <form id="signup-form">
+<div class="signup-container flex justify-center items-center min-h-screen bg-gray-100">
+    <form id="signup-form" class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
         {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="password" name="password2" placeholder="Confirm Password" required>
-        <button type="submit">Sign Up</button>
+        
+        <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Sign Up</h2>
+        
+        <div class="mb-4">
+            <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
+            <input type="text" name="username" placeholder="Username" id="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+            <input type="email" name="email" placeholder="Email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
+            <input type="password" name="password" placeholder="Password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="password2" class="block text-gray-700 font-semibold mb-2">Confirm Password</label>
+            <input type="password" name="password2" placeholder="Confirm Password" id="password2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">
+            Sign Up
+        </button>
     </form>
-    <div id="response-message"></div>
+    <div id="response-message" class="mt-4 text-center text-sm text-red-600"></div>
 </div>
+
 <script>
     const formEl = document.querySelector("#signup-form");
     console.log(formEl)
