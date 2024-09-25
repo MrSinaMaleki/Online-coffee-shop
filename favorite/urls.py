@@ -1,7 +1,10 @@
 from django.urls import path
-from .views import FavoriteCreateAPIView
+from rest_framework.routers import DefaultRouter
+
+from .views import FavoriteCreateAPIView,FavoriteDeleteAPIView
 
 urlpatterns = [
-    path('api/f', FavoriteCreateAPIView.as_view(), name='favorite'),
+    path('api/favorite/create', FavoriteCreateAPIView.as_view(), name='favoriteCreate'),
+    path('api/favorite/delete', FavoriteDeleteAPIView.as_view(), name='favoriteDelete'),
 
 ]

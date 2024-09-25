@@ -127,7 +127,7 @@ class ProductImage(DeleteLogicalBase):
 
 class Ingredients(DeleteLogicalBase):
     title = models.CharField(max_length=100)
-    products = models.ManyToManyField(Product)
+    products = models.ManyToManyField(Product,related_query_name='ingredients', related_name='ingredients', blank=True)
 
     def __str__(self):
         return self.title
