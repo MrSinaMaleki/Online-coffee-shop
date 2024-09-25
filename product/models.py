@@ -1,5 +1,12 @@
 from django.db import models
 from core.models import DeleteLogicalBase
+from django.core.exceptions import ValidationError
+
+
+def validate_image_size(image):
+    max_size_mb = 2
+    if image.size > max_size_mb * 1024 * 1024:
+        raise ValidationError(f"Image file size must be less than {max_size_mb} MB")
 
 
 class AvailableManager(models.Manager):
@@ -23,6 +30,7 @@ class Category(models.Model):
         'Category',
         on_delete=models.SET_NULL,
         related_name='subcategories',
+        related_query_name='subcategories',
         blank=True,
         null=True
     )
@@ -34,6 +42,49 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+    @staticmethod
+    def calculate_max_depth(root_category):
+
+        """
+        Recursively calculates the maximum depth of the category tree starting from a given root category.
+        """
+
+        if not root_category.subcategories.exists():
+            return 0
+        else:
+            return 1 + max(Category.calculate_max_depth(sub) for sub in root_category.subcategories.all())
+
+    def get_descendants(self, include_self=False, levels=None):
+
+        """
+        Fetch all descendants of the current category using dynamically determined levels of prefetching.
+        If 'levels' is not provided, calculate it based on the maximum depth of the category tree.
+        """
+
+        if levels is None:
+            levels = Category.calculate_max_depth(self)
+
+        result = [self] if include_self else []
+        queryset = Category.objects.all()
+
+        for _ in range(levels):
+            queryset = queryset.prefetch_related('subcategories')
+
+        categories = queryset.filter(id=self.id)
+
+        # noinspection PyShadowingNames
+        def collect_categories(category, current_level):
+
+            if current_level > 0:
+                for subcategory in category.subcategories.all():
+                    result.append(subcategory)
+                    collect_categories(subcategory, current_level - 1)
+
+        for category in categories:
+            collect_categories(category, levels)
+
+        return result
 
 
 class Product(DeleteLogicalBase):
@@ -50,9 +101,20 @@ class Product(DeleteLogicalBase):
                                 null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    objects = models.Manager()
+
     available = AvailableManager()
     coffeeshop = CoffeeManager()
+
+    def clean(self):
+        if self.is_coffee_shop and self.timeline:
+            raise ValidationError("A product cannot belong to the coffee shop and have a timeline.")
+
+        if not self.is_coffee_shop and not self.timeline:
+            raise ValidationError("If the product does not belong to the coffee shop, a timeline must be provided.")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -66,12 +128,21 @@ class Product(DeleteLogicalBase):
 
 class ProductImage(DeleteLogicalBase):
     product = models.ForeignKey(Product, related_query_name='images', related_name='images', on_delete=models.CASCADE)
-    # related_query_name, related_name ?
-    image = models.ImageField(upload_to='product_images/')
+    image = models.ImageField(upload_to='product_images/', validators=[validate_image_size])
     alt = models.TextField(blank=True, null=True)
     is_cover = models.BooleanField(default=False)
-    objects = models.Manager()
+
     covered = CoverPhotoManager()
+
+    def clean(self):
+        if self.is_cover:
+            cover_images = ProductImage.objects.filter(product=self.product, is_cover=True).exclude(id=self.id)
+            if cover_images.exists():
+                raise ValidationError('Each product can only have one cover image.')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.product.title} - {self.alt}"
@@ -84,7 +155,7 @@ class ProductImage(DeleteLogicalBase):
 
 class Ingredients(DeleteLogicalBase):
     title = models.CharField(max_length=100)
-    products = models.ManyToManyField(Product)
+    products = models.ManyToManyField(Product,related_query_name='ingredients', related_name='ingredients', blank=True)
 
     def __str__(self):
         return self.title

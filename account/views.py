@@ -95,3 +95,4 @@ class ResetPasswordAPIView(APIView):
 class TempForm(CreateAPIView):
     serializer_class = CustomUserSerializer
     queryset = Human.objects.all()
+
