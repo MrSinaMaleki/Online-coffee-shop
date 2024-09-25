@@ -30,6 +30,7 @@ class Category(models.Model):
         'Category',
         on_delete=models.SET_NULL,
         related_name='subcategories',
+        related_query_name='subcategories',
         blank=True,
         null=True
     )
@@ -57,7 +58,7 @@ class Product(DeleteLogicalBase):
                                 null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    objects = models.Manager()
+
     available = AvailableManager()
     coffeeshop = CoffeeManager()
 
@@ -87,7 +88,7 @@ class ProductImage(DeleteLogicalBase):
     image = models.ImageField(upload_to='product_images/', validators=[validate_image_size])
     alt = models.TextField(blank=True, null=True)
     is_cover = models.BooleanField(default=False)
-    objects = models.Manager()
+
     covered = CoverPhotoManager()
 
     def clean(self):

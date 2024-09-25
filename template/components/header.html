@@ -1,5 +1,3 @@
-menu :
-
 <ul>
     {% for item in menu %}
         <li>
@@ -7,7 +5,14 @@ menu :
             {% if item.subcategories %}
                 <ul>
                     {% for sub in item.subcategories %}
-                        <li><a href="{{ sub.link }}">{{ sub.title }}</a></li>
+                        <li>
+                            <a href="{{ sub.link }}">{{ sub.title }}</a>
+                            {% if sub.subcategories %}
+                                <ul>
+                                    {% include 'components/subcategories.html' with subcategories=sub.subcategories %}
+                                </ul>
+                            {% endif %}
+                        </li>
                     {% endfor %}
                 </ul>
             {% endif %}
