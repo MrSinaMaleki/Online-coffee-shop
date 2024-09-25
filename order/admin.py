@@ -12,6 +12,7 @@ class OrderAdmin(admin.ModelAdmin):
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('id', 'product', 'quantity', 'order', 'order_item_price')
     search_fields = ('product',)
+    search_help_text = 'please enter product!'
 
 
 admin.site.register(Order, OrderAdmin)
