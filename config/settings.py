@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     "favorite.apps.FavoriteConfig",
     "product.apps.ProductConfig",
     "comment.apps.CommentConfig",
-    "order.apps.OrderConfig"
+    "order.apps.OrderConfig",
+    
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/"template"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.templates.menu_context_processor'
             ],
         },
     },

@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Product, Category, ProductImage, Ingredients, CoffeeManager, AvailableManager, CoverPhotoManager, DeleteLogicalBase
 
 

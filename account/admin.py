@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Human
 
 
+
 class HumanAdmin(admin.ModelAdmin):
     list_display = ('username', 'phone', 'gender', 'age', 'profile_image')
     list_filter = ('phone', 'age')
@@ -10,3 +11,4 @@ class HumanAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Human, HumanAdmin)
+
