@@ -1,11 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Base HTML!!!</title>
+    <title>{% block title %}online shop{% endblock %}</title>
+    {% include "layout/head.html" %}
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
+    {% include "components/header.html" %}
 
+
+
+    <main class="max-w-[1920px] mt-16 py-5 mx-auto min-h-[80vh]">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'components/footer.html' %}
+
+    {% block extra_body %}{% endblock %}
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -24,3 +35,4 @@
 
 </script>
 </html>
+

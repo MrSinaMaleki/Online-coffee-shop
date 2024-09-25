@@ -14,6 +14,7 @@ class Human(User, DeleteLogicalBase):
     age = models.PositiveIntegerField(null=True, blank=True)
     profile_image = models.ImageField(upload_to='profile_image', null=True, blank=True)
 
+    activated = ActiveManager()
 
     def __str__(self):
         return f'{self.username}'

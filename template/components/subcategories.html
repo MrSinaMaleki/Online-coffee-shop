@@ -1,0 +1,10 @@
+{% for sub in subcategories %}
+    <li>
+        <a href="{{ sub.link }}">{{ sub.title }}</a>
+        {% if sub.subcategories %}
+            <ul>
+                {% include 'components/subcategories.html' with subcategories=sub.subcategories %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}

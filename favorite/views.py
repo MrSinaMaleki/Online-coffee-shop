@@ -19,3 +19,14 @@ class FavoriteDeleteAPIView(CreateAPIView):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteRemoveSerializer
     permission_classes = [IsAuthenticated]
+
+# from rest_framework import status, generics
+# from .models import Favorite
+# from .serializers import FavoriteSerializer
+
+
+# class FavoriteDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Favorite.objects.all()
+#     serializer_class = FavoriteSerializer
+
+
