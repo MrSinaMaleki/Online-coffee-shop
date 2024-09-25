@@ -14,7 +14,8 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ('product', 'image', 'alt', 'is_cover', 'covered')
+
+    list_display = ('product', 'image', 'alt', 'is_cover')
     search_fields = ('product',)
 
 class IngredientsAdmin(admin.ModelAdmin):
