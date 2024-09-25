@@ -14,11 +14,11 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ('product', 'image', 'alt', 'is_over', 'objects', 'covered')
+    list_display = ('product', 'image', 'alt', 'is_cover', 'covered')
     search_fields = ('product',)
 
 class IngredientsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'product')
+    list_display = ('title',)
     search_fields = ('title',)
 
 admin.site.register(Product, ProductAdmin)
