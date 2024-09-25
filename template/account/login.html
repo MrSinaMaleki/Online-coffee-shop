@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <div class="min-h-screen flex justify-center items-center">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
+
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label for="username" class="block text-gray-700 font-medium mb-2">Username</label>
+          <input type="text" id="username" name="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your username" required>
+        </div>
+
+        <div>
+          <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+          <input type="password" id="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your password" required>
+        </div>
+
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">
+          Login
+        </button>
+      </form>
+
+      <div id="response-message" class="text-center text-red-600 mt-4"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+        
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const response = await fetch('/account/login_api/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password,
+          }),
+        });
+
+        const data = await response.json();
+          
+        if (response.ok) {
+          localStorage.setItem('authToken', data.token);
+
+
+          document.getElementById('response-message').innerText = "Login successful!";
+          document.getElementById('response-message').classList.add('text-green-600');
+
+
+          setTimeout(() => {
+            window.location.href = "/account";  
+          }, 100);
+
+        } else {
+
+          document.getElementById('response-message').innerText = data.Message || 'Login failed. Check your credentials.';
+        }
+      } catch (error) {
+        document.getElementById('response-message').innerText = 'An error occurred. Please try again later.';
+      }
+    });
+  </script>
+
+</body>
+</html>
+
