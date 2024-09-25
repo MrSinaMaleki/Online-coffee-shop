@@ -18,4 +18,21 @@
 
     {% block extra_body %}{% endblock %}
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('api/book', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+        }).then(async data => {
+                const products = await data.json()
+            console.log(products)
+            }
+        )
+    })
+
+</script>
 </html>
+

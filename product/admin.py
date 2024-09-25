@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from .models import Product, Category, ProductImage,Ingredients
 from .models import Product, Category, ProductImage, Ingredients, CoffeeManager, AvailableManager, CoverPhotoManager, DeleteLogicalBase
 
 
@@ -25,3 +25,4 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(ProductImage, ProductImageAdmin)
 admin.site.register(Ingredients, IngredientsAdmin)
+
