@@ -11,7 +11,8 @@ def get_subcategories(category, request):
         for sub in category.subcategories.all():
             subcategories.append({
                 'title': sub.title,
-                'link': link_creator(request, f"/shop/products/category/{sub.id}")
+                'link': link_creator(request, f"/shop/products/category/{sub.id}"),
+                'subcategories': get_subcategories(sub, request)
             })
     return subcategories
 
@@ -19,7 +20,7 @@ def get_subcategories(category, request):
 def menu_context_processor(request):
     my_list = [
         dict(title="Home", link=link_creator(request, "/shop/products/")),
-        dict(title="About Us", link=link_creator(request, "/shop/about/")),
+        # dict(title="About Us", link=link_creator(request, "/shop/about/")),
         dict(title="All Foods", link=link_creator(request, "/shop/products/"))
     ]
 
@@ -32,10 +33,10 @@ def menu_context_processor(request):
             'link': link_creator(request, f"/shop/products/category/{cat.id}"),
             'subcategories': subcategories
         })
-
     return {
         'menu': my_list
     }
+
 
 # change paths!!!!!!!!!!!!!!!
 
