@@ -1,8 +1,8 @@
-from rest_framework import status, generics
-from .models import Order
-from .serializers import OrderSerializer
+# from rest_framework import status, generics
+# from .models import Order
+# from .serializers import OrderSerializer
 
 
-class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+# class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
