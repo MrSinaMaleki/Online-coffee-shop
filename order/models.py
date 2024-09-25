@@ -20,7 +20,7 @@ class Order(DeleteLogicalBase):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_paid = models.BooleanField(default=False)
-    objects = models.Manager()
+
     completed = CompletedManager()
     paid = PaidManager()
 

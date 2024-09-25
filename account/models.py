@@ -13,7 +13,7 @@ class Human(User, DeleteLogicalBase):
     gender = models.CharField(max_length=6, choices=(('male', 'Male'), ('female', 'Female')), null=True, blank=True)
     age = models.PositiveIntegerField(null=True, blank=True)
     profile_image = models.ImageField(upload_to='profile_image', null=True, blank=True)
-    objects = models.Manager()
+
     activated = ActiveManager()
 
     def __str__(self):
