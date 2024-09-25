@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     "product.apps.ProductConfig",
     "comment.apps.CommentConfig",
     "order.apps.OrderConfig",
-    
+
+    "rest_framework"
+
 ]
 
 MIDDLEWARE = [
@@ -61,7 +63,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/"template"],
+        'DIRS': [BASE_DIR/'template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,7 +125,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'storage/static/'
+STATIC_ROOT_custom = BASE_DIR / 'storage/static'
+if DEBUG:
+    STATICFILES_DIRS = [STATIC_ROOT_custom]
+else:
+    STATIC_ROOT = STATIC_ROOT_custom
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -1,9 +1,23 @@
-# from rest_framework.generics import ListAPIView
-# from product.models import Product
+from pprint import pprint
+
+from django.shortcuts import render
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework import status, generics
+from product.models import Product
+from product.serializers import ProductSerializer, ProductDetailSerializer
 # from django.db.models import Q
-# from .serializers import ProductSerializer
-#
-#
+
+
+class ProductListAPIView(ListAPIView):
+    queryset = Product.available.all()
+    serializer_class = ProductSerializer
+
+
+class ProductDetailAPIView(RetrieveAPIView):
+    queryset = Product.available.all()
+    serializer_class = ProductDetailSerializer
+
+
 # # todo
 # class ProductListView(ListAPIView):
 #     serializer_class = ProductSerializer
@@ -18,3 +32,4 @@
 #         return Product.available.filter(
 #             Q(is_coffee_shop=True) | Q(timeline__isnull=False)
 #         )
+
