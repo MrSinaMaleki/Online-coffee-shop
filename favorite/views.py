@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import status, generics
+from .models import Favorite
+from .serializers import FavoriteSerializer
 
-# Create your views here.
+
+class FavoriteDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+

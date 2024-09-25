@@ -1,9 +1,15 @@
-# from rest_framework.generics import ListAPIView
-# from product.models import Product
+from rest_framework import status, generics
+from .models import Product
+from .serializers import ProductSerializer
 # from django.db.models import Q
-# from .serializers import ProductSerializer
-#
-#
+
+
+class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+
+
 # # todo
 # class ProductListView(ListAPIView):
 #     serializer_class = ProductSerializer
@@ -18,3 +24,4 @@
 #         return Product.available.filter(
 #             Q(is_coffee_shop=True) | Q(timeline__isnull=False)
 #         )
+
