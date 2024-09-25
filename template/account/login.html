@@ -35,13 +35,11 @@
   <script>
     document.getElementById('login-form').addEventListener('submit', async function(event) {
       event.preventDefault();
-
-
+        
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
       try {
-
         const response = await fetch('/account/login_api/', {
           method: 'POST',
           headers: {
@@ -56,9 +54,19 @@
         const data = await response.json();
           
         if (response.ok) {
-          document.getElementById('response-message').innerText = "Login successful.";
+          localStorage.setItem('authToken', data.token);
+
+
+          document.getElementById('response-message').innerText = "Login successful!";
           document.getElementById('response-message').classList.add('text-green-600');
+
+
+          setTimeout(() => {
+            window.location.href = "/account";  
+          }, 100);
+
         } else {
+
           document.getElementById('response-message').innerText = data.Message || 'Login failed. Check your credentials.';
         }
       } catch (error) {
@@ -69,3 +77,4 @@
 
 </body>
 </html>
+

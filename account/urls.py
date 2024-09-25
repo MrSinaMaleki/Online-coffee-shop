@@ -6,6 +6,8 @@ from .views import SignUpAPIView, TempForm, LoginAPIView
 
 urlpatterns = [
     # path('', include("django.contrib.auth.urls"), name='auth'),
+
+    path('', TemplateView.as_view(template_name="temp.html"), name='home'),
     path("signup/signup_api/", SignUpAPIView.as_view(), name="signup_api"),
     path("login_api/", LoginAPIView.as_view(), name="login_api"),
 
