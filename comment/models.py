@@ -1,6 +1,7 @@
 from django.db import models
 from account.models import DeleteLogicalBase, Human
 from product.models import Product
+from django.core.exceptions import ValidationError
 
 
 class AcceptedManager(models.Manager):
@@ -17,11 +18,22 @@ class Comments(DeleteLogicalBase):
     reply_comments = models.ForeignKey('Comments', on_delete=models.CASCADE, null=True,
                                        related_name='child', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    objects = models.Manager()
+
     accepted = AcceptedManager()
+
+    def clean(self):
+        if not (0 <= self.score <= 5):
+            raise ValidationError('Score must be between 0 and 5')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        if not self.text:
+            self.is_accepted = True
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{str(self.id)} -> {self.score} -> {self.user.username}'
 
     class Meta:
         ordering = ['-created_at']
+        verbose_name_plural = 'Comments'

@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     "product.apps.ProductConfig",
     "comment.apps.CommentConfig",
     "order.apps.OrderConfig",
+
     "rest_framework"
+
 ]
 
 MIDDLEWARE = [
@@ -69,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.templates.menu_context_processor'
             ],
         },
     },

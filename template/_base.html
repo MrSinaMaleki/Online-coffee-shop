@@ -2,21 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}base{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
-    <script src="https://cdn.tailwindcss.com"></script>
-    {% block extra_head %}{% endblock %}
+    <title>Base HTML!!!</title>
 </head>
 <body>
-<div class="mini-h-[3vh]"></div>
-<min class="">
-    {% block content %}{% endblock %}
 
-</min>
-<footer>
-
-</footer>
-{% block extra_script %}{% endblock %}
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('api/book', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+        }).then(async data => {
+                const products = await data.json()
+            console.log(products)
+            }
+        )
+    })
 
+</script>
 </html>

@@ -13,10 +13,7 @@ class ProductListAPIView(ListAPIView):
     queryset = Product.available.all()
     serializer_class = ProductSerializer
 
-def index(request,pk):
-    return render(request,"detailProduct.html",{"pk":pk})
+
 class ProductDetailAPIView(RetrieveAPIView):
     queryset = Product.available.all()
     serializer_class = ProductDetailSerializer
-    tamplate = "detailProduct.html"
-

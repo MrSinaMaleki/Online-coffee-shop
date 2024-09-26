@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Header  Component!</title>
-</head>
-<body>
-
-</body>
-</html>
+<ul>
+    {% for item in menu %}
+        <li>
+            <a href="{{ item.link }}">{{ item.title }}</a>
+            {% if item.subcategories %}
+                <ul>
+                    {% for sub in item.subcategories %}
+                        <li>
+                            <a href="{{ sub.link }}">{{ sub.title }}</a>
+                            {% if sub.subcategories %}
+                                <ul>
+                                    {% include 'components/subcategories.html' with subcategories=sub.subcategories %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
