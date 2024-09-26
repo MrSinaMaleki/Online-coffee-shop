@@ -1,0 +1,57 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}
+    All Products - Online Shop
+{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/all_products.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row product-container" id="products-list">
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_body %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch('/product/api/list/product', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+        }).then(response => response.json()).then(products => {
+            const productList = document.getElementById('products-list');
+            products.forEach(product => {
+                const productCard = `
+
+                    <div class="product-card">
+                        <div class="like-btn ${product.is_liked ? 'liked' : ''}" onclick="toggleLike(${product.id}, this)">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <img src="${product.images[0].image}" alt="${product.images[0].alt}">
+                        <a href='http://localhost:8001/product/${product.id}'>
+                        <div class="product-title">${product.title}</div>
+                        <div class="product-price">$${product.price}</div>
+                        <a href="#" class="btn btn-primary" onclick="addToCart(${product.id})">Add to Cart</a>
+                    </div>
+                  </a>
+                `;
+                productList.innerHTML += productCard;
+            });
+        });
+    });
+
+    function toggleLike(productId, element) {
+        const isLiked = element.classList.toggle('liked');
+        console.log(`Product ${productId} is liked: ${isLiked}`);
+    }
+
+    function addToCart(productId) {
+        console.log(`Product ${productId} added to cart`);
+    }
+</script>
+{% endblock %}
