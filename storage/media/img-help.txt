@@ -1,1 +1,0 @@
-The server Images should be uploaded in this folder

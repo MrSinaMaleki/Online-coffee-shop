@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <title>{% block title %}online shop{% endblock %}</title>
+
     {% include "layout/head.html" %}
     {% block extra_head %}{% endblock %}
 </head>
@@ -16,23 +17,7 @@
 
     {% include 'components/footer.html' %}
 
-    {% block extra_body %}{% endblock %}
+
 </body>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        fetch('api/book', {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-        }).then(async data => {
-                const products = await data.json()
-            console.log(products)
-            }
-        )
-    })
-
-</script>
+     {% block extra_body %}{% endblock %}
 </html>
-
