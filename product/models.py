@@ -43,48 +43,48 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
-    @staticmethod
-    def calculate_max_depth(root_category):
-
-        """
-        Recursively calculates the maximum depth of the category tree starting from a given root category.
-        """
-
-        if not root_category.subcategories.exists():
-            return 0
-        else:
-            return 1 + max(Category.calculate_max_depth(sub) for sub in root_category.subcategories.all())
-
-    def get_descendants(self, include_self=False, levels=None):
-
-        """
-        Fetch all descendants of the current category using dynamically determined levels of prefetching.
-        If 'levels' is not provided, calculate it based on the maximum depth of the category tree.
-        """
-
-        if levels is None:
-            levels = Category.calculate_max_depth(self)
-
-        result = [self] if include_self else []
-        queryset = Category.objects.all()
-
-        for _ in range(levels):
-            queryset = queryset.prefetch_related('subcategories')
-
-        categories = queryset.filter(id=self.id)
-
-        # noinspection PyShadowingNames
-        def collect_categories(category, current_level):
-
-            if current_level > 0:
-                for subcategory in category.subcategories.all():
-                    result.append(subcategory)
-                    collect_categories(subcategory, current_level - 1)
-
-        for category in categories:
-            collect_categories(category, levels)
-
-        return result
+    # @staticmethod
+    # def calculate_max_depth(root_category):
+    #
+    #     """
+    #     Recursively calculates the maximum depth of the category tree starting from a given root category.
+    #     """
+    #
+    #     if not root_category.subcategories.exists():
+    #         return 0
+    #     else:
+    #         return 1 + max(Category.calculate_max_depth(sub) for sub in root_category.subcategories.all())
+    #
+    # def get_descendants(self, include_self=False, levels=None):
+    #
+    #     """
+    #     Fetch all descendants of the current category using dynamically determined levels of prefetching.
+    #     If 'levels' is not provided, calculate it based on the maximum depth of the category tree.
+    #     """
+    #
+    #     if levels is None:
+    #         levels = Category.calculate_max_depth(self)
+    #
+    #     result = [self] if include_self else []
+    #     queryset = Category.objects.all()
+    #
+    #     for _ in range(levels):
+    #         queryset = queryset.prefetch_related('subcategories')
+    #
+    #     categories = queryset.filter(id=self.id)
+    #
+    #     # noinspection PyShadowingNames
+    #     def collect_categories(category, current_level):
+    #
+    #         if current_level > 0:
+    #             for subcategory in category.subcategories.all():
+    #                 result.append(subcategory)
+    #                 collect_categories(subcategory, current_level - 1)
+    #
+    #     for category in categories:
+    #         collect_categories(category, levels)
+    #
+    #     return result
 
 
 class Product(DeleteLogicalBase):
@@ -101,7 +101,7 @@ class Product(DeleteLogicalBase):
                                 null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    objects = models.Manager()
     available = AvailableManager()
     coffeeshop = CoffeeManager()
 
@@ -131,7 +131,7 @@ class ProductImage(DeleteLogicalBase):
     image = models.ImageField(upload_to='product_images/', validators=[validate_image_size])
     alt = models.TextField(blank=True, null=True)
     is_cover = models.BooleanField(default=False)
-
+    objects = models.Manager()
     covered = CoverPhotoManager()
 
     def clean(self):

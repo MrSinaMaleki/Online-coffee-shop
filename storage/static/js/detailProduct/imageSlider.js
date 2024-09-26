@@ -1,7 +1,6 @@
 function slideImagess() {
             const imgs = document.querySelectorAll('.img-select a');
             const imgBtns = [...imgs];
-            console.log(imgBtns)
             let imgId = 1;
 
             imgBtns.forEach((imgItem) => {

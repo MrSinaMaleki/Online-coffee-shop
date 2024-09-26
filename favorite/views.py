@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from favorite.models import Favorite
 from rest_framework.generics import CreateAPIView, DestroyAPIView
 from django.contrib.auth.decorators import login_required
-from favorite.serializers import FavoriteAddSerializer,FavoriteRemoveSerializer
+from favorite.serializers import FavoriteAddSerializer
 from product.models import Product
 
 
@@ -14,8 +14,3 @@ class FavoriteCreateAPIView(CreateAPIView):
     serializer_class = FavoriteAddSerializer
     permission_classes = [IsAuthenticated]
 
-
-class FavoriteDeleteAPIView(CreateAPIView):
-    queryset = Favorite.objects.all()
-    serializer_class = FavoriteRemoveSerializer
-    permission_classes = [IsAuthenticated]

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
         category.innerHTML = productes.category.title
         product_title.innerHTML = productes.title
         for (i in productes.ingredients) {
-            console.log(productes.ingredients[i])
+
             let el = `
                     <li>${productes.ingredients[i].title}</li>`
             ingredients_title.innerHTML += el

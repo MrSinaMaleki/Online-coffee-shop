@@ -6,8 +6,10 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from product.models import Product
 from product.serializers import ProductSerializer, ProductDetailSerializer
 
-def index(request,pk):
-    return render(request ,'detailProduct.html',{'pk':pk})
+
+def index(request, pk):
+    return render(request, 'product/detailProduct.html', {'pk': pk})
+
 
 # Create your views here.
 

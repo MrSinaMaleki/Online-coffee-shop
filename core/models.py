@@ -9,7 +9,7 @@ class ActiveLogicalBase(models.Model):
 
 
 class DeleteLogicalBase(models.Model):
-    is_delete = models.BooleanField(default=True)
+    is_delete = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
