@@ -12,10 +12,9 @@ from product.models import Product
 class FavoriteCreateAPIView(CreateAPIView):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteAddSerializer
-    permission_classes = [IsAuthenticated]
+
 
 
 class FavoriteDeleteAPIView(CreateAPIView):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteRemoveSerializer
-    permission_classes = [IsAuthenticated]

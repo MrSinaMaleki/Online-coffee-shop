@@ -9,7 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 class FavoriteAddSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
-        fields = ['user', 'products']
+        fields = [ 'products']
 
     def create(self, validated_data):
         if self.context['request'].user.is_authenticated:
@@ -20,12 +20,12 @@ class FavoriteAddSerializer(serializers.ModelSerializer):
     def validate(self, data):
              products = Favorite.objects.filter(user=self.context['request'].user.id).values_list('products', flat=True)
              if data['products'].id in products:
-                 raise validators.ValidationError('This product is already favorited')
+                 raise validators.ValidationError('This product is already favorited',code=402)
              return data
 class FavoriteRemoveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
-        fields = ['user', 'products']
+        fields = ['products']
 
     def create(self, validated_data):
         try:
