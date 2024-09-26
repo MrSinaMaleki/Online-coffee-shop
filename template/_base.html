@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <title>{% block title %}online shop{% endblock %}</title>
+
     {% include "layout/head.html" %}
     {% block extra_head %}{% endblock %}
 </head>
@@ -16,6 +17,7 @@
 
     {% include 'components/footer.html' %}
 
-    {% block extra_body %}{% endblock %}
+
 </body>
+     {% block extra_body %}{% endblock %}
 </html>

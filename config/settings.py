@@ -43,7 +43,11 @@ INSTALLED_APPS = [
     "product.apps.ProductConfig",
     "comment.apps.CommentConfig",
     "order.apps.OrderConfig",
-    
+
+
+    'rest_framework',
+    'rest_framework.authtoken',
+
 ]
 
 MIDDLEWARE = [
@@ -61,7 +65,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR/"template"],
+        'DIRS': [BASE_DIR/'template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,9 +127,27 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'storage/static/'
+STATIC_ROOT_custom = BASE_DIR / 'storage/static'
+if DEBUG:
+    STATICFILES_DIRS = [STATIC_ROOT_custom]
+else:
+    STATIC_ROOT = STATIC_ROOT_custom
+MEDIA_URL = 'storage/media/'
+MEDIA_ROOT = BASE_DIR / 'storage/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'onlinecoffeeshopnoreply@gmail.com'
+EMAIL_HOST_PASSWORD = 'scryerxqgoascecx'

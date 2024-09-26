@@ -1,0 +1,152 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block extra_head %}
+	    <link href="{% static "css/detaileProduct.css" %}" rel="stylesheet" >
+{% endblock %}
+{% block content %}
+    <div class="max-w-[80vw] max-h-[1vh] m-auto">
+        <div class="card-compact">
+            <div class="card">
+                <!-- card left -->
+                <div class="product-images">
+                    <div class="img-display">
+                        <div class="img-showcase" id="image_parent">
+
+                        </div>
+                    </div>
+                    <div class="img-select" id="image_items">
+
+                    </div>
+                </div>
+                <!-- card right -->
+                <div class="product-content">
+                    {#                    1#}
+                    <h2 class="product-title" id="product_title">nike shoes</h2>
+                    {#                    2#}
+                    <a href="#" class="product-link " id="category">visit nike store</a>
+                    <div class="product-rating">
+                        <i class="fas fa-star">score</i>
+                        {#                        3#}
+                        <i class="fas fa-star" id="score">4.7(21)</i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span class="fas fa-star"></span>
+                    </div>
+
+                    <div class="product-price">
+                        <p class="last-price">Old Price: <span>$257.00</span></p>
+                        {#                        4#}
+                        <p class="new-price">Price: <span id="price_product">249.00 (5%)</span>$ </p>
+                    </div>
+
+                    <div class="product-detail">
+                        <h1>ingredients</h1>
+                        {#                        5#}
+                        <p id="description_short"></p>
+                        {#                        6#}
+                        <ul id="ingredients_title" class="grid grid-cols-2">
+
+                        </ul>
+                    </div>
+
+                    <div class="purchase-info flex">
+                        <form action="">
+                            <input type="number" min="0" value="1">
+                            <button type="button" class="btn">
+                                Add to Cart <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </form>
+                        <form action="" id="form_favorite" class="purchase-info">
+                            {% csrf_token %}
+                            <input type="text" name="products" value="{{ pk }}" class="!hidden">
+                            <button type="submit" class="btn">favorite</button>
+                        </form>
+
+                    </div>
+
+                    <div class="social-links">
+                        <p>score: </p>
+                        <a href="#">
+                            <i class="fab fa-facebook-f">1</i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-twitter">2</i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-instagram">3</i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-whatsapp">4</i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-pinterest">5</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input class="!hidden" value="{% if request.user.is_authenticated %}1{% else %}0{% endif %}" id="hamid22">
+{% endblock %}
+
+{% block extra_body %}
+    <script src="{% static "js/detailProduct/product.js" %}"></script>
+    <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
+    <script>
+        const pkId = {{ pk }}
+
+
+        const formFavorite = document.querySelector("#form_favorite");
+        const userAuthInput = document.querySelector("#hamid22");
+
+        const showAlert = (message) => {
+            alert(message);
+        }
+
+        const handleSuccess = (data) => {
+            console.log('', data);
+            // اینجا می‌توانید هر عملی که برای موفقیت نیاز دارید انجام دهید
+        }
+
+        const handleError = (error) => {
+            console.error(error);
+            showAlert('You have already added this product to your favorites');
+        }
+
+        formFavorite.addEventListener("submit", (ev) => {
+            ev.preventDefault();
+
+            const userAuthentication = parseInt(userAuthInput.value);
+
+            if (userAuthentication === 1) {
+
+
+                let data = new FormData(ev.target);
+
+                fetch(`http://localhost:8001/favorite/api/favorite/create`, {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('error');
+                        }
+                        return response.json();
+                    })
+                    .then(handleSuccess)
+                    .catch(handleError);
+            } else {
+                showAlert('شما مجاز به انجام این عملیات نیستید!');
+            }
+        });
+
+    </script>
+
+
+{% endblock %}

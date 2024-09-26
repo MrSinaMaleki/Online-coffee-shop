@@ -1,3 +1,16 @@
-from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
-# Create your views here.
+from favorite.models import Favorite
+from rest_framework.generics import CreateAPIView, DestroyAPIView
+from django.contrib.auth.decorators import login_required
+from favorite.serializers import FavoriteAddSerializer
+from product.models import Product
+
+
+class FavoriteCreateAPIView(CreateAPIView):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteAddSerializer
+    permission_classes = [IsAuthenticated]
+

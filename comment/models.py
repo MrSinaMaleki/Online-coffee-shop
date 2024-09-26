@@ -18,7 +18,7 @@ class Comments(DeleteLogicalBase):
     reply_comments = models.ForeignKey('Comments', on_delete=models.CASCADE, null=True,
                                        related_name='child', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    objects = models.Manager()
     accepted = AcceptedManager()
 
     def clean(self):
