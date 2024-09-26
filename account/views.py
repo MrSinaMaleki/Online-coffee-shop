@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,login, logout
 from .models import Human
 from .serializers import CustomUserSerializer, LoginSerializer, ForgetPasswordSerializer, ResetPasswordSerializer
 
@@ -40,6 +40,7 @@ class LoginAPIView(APIView):
             user = authenticate(username=username, password=password)
             if user is not None:
                 token, created = Token.objects.get_or_create(user=user)
+                login(request, user)
                 return Response({"token": token.key, "Success": "Login Successfully"})
 
             return Response({'Message': 'Invalid Username and Password'}, status=401)
@@ -83,7 +84,7 @@ class ResetPasswordAPIView(APIView):
             if not default_token_generator.check_token(user, token):
                 return Response({"Message": "Invalid Token"}, status=status.HTTP_400_BAD_REQUEST)
 
-            user.set_password(serializer.validated_data['new_password'])
+            user.set_password(serializer.validated_data['password'])
             user.save()
 
             return Response({"detail":"Password has been successfully reset."}, status=status.HTTP_200_OK)

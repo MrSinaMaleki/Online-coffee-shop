@@ -54,6 +54,7 @@
         const data = await response.json();
           
         if (response.ok) {
+          // Setting localStorage variable for the browser
           localStorage.setItem('authToken', data.token);
 
 
