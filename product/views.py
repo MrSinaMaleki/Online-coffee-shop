@@ -21,3 +21,18 @@ class ProductListAPIView(ListAPIView):
 class ProductDetailAPIView(RetrieveAPIView):
     queryset = Product.available.all()
     serializer_class = ProductDetailSerializer
+
+# # todo
+# class ProductListView(ListAPIView):
+#     serializer_class = ProductSerializer
+#
+#     def get_queryset(self):
+#         time = self.request.query_params.get('time', None)
+#         if time:
+#             return Product.available.filter(
+#                 Q(is_coffee_shop=True) | Q(timeline=time)
+#             )
+#
+#         return Product.available.filter(
+#             Q(is_coffee_shop=True) | Q(timeline__isnull=False)
+#         )
