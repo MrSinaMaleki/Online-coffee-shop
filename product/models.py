@@ -43,6 +43,7 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+
     # @staticmethod
     # def calculate_max_depth(root_category):
     #
@@ -85,6 +86,7 @@ class Category(models.Model):
     #         collect_categories(category, levels)
     #
     #     return result
+
 
 
 class Product(DeleteLogicalBase):
