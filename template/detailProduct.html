@@ -1,7 +1,7 @@
 {% extends '_base.html' %}
 {% load static %}
 
-{% block title %}detail product{% endblock %}
+
 {% block extra_head %}
     <link rel="stylesheet" href="{% static "css/detaileProduct.css" %}">
 {% endblock %}
@@ -92,8 +92,9 @@
     <input class="!hidden" value="{% if request.user.is_authenticated %}1{% else %}0{% endif %}" id="hamid22">
 {% endblock %}
 
-{% block extra_script %}
-
+{% block extra_body %}
+    <script src="{% static "js/detailProduct/product.js" %}"></script>
+    <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
     <script>
         const pkId = {{ pk }}
 
@@ -125,7 +126,7 @@
 
                 let data = new FormData(ev.target);
 
-                fetch(`http://localhost:8000/favorite/api/favorite/create`, {
+                fetch(`http://localhost:8001/favorite/api/favorite/create`, {
                     method: 'POST',
                     body: data,
                     headers: {
@@ -147,8 +148,6 @@
         });
 
     </script>
-    <script src="{% static "js/detailProduct/product.js" %}"></script>
-    <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
-    <script src="{% static 'js/sussssss.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 {% endblock %}

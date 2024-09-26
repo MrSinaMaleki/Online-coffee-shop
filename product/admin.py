@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import Product, Category, ProductImage,Ingredients
-from .models import Product, Category, ProductImage, Ingredients, CoffeeManager, AvailableManager, CoverPhotoManager, DeleteLogicalBase
+from .models import Product, Category, ProductImage, Ingredients
+from .models import Product, Category, ProductImage, Ingredients, CoffeeManager, AvailableManager, CoverPhotoManager, \
+    DeleteLogicalBase
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -9,20 +10,23 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('title', 'price')
     readonly_fields = ('is_available',)
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title', 'parent')
     search_fields = ('title',)
 
+
 class ProductImageAdmin(admin.ModelAdmin):
-    list_display = ('product', 'image', 'alt', 'is_over', 'objects', 'covered')
+    list_display = ('product', 'image', 'alt', 'is_cover')
     search_fields = ('product',)
 
+
 class IngredientsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'product')
+    list_display = ('title',)
     search_fields = ('title',)
+
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(ProductImage, ProductImageAdmin)
 admin.site.register(Ingredients, IngredientsAdmin)
-
