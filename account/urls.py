@@ -2,8 +2,7 @@ from tkinter.font import names
 
 from django.urls import path,include
 from django.views.generic.base import TemplateView
-from .views import SignUpAPIView, TempForm, LoginAPIView, ForgetPasswordAPIView, ResetPasswordAPIView
-
+from .views import SignUpAPIView, TempForm, LoginAPIView, ForgetPasswordAPIView, ResetPasswordAPIView, ProfileAPIView
 urlpatterns = [
     # path('', include("django.contrib.auth.urls"), name='auth'),
 
@@ -25,6 +24,7 @@ urlpatterns = [
     path("login/", TemplateView.as_view(template_name="account/login.html"), name="login"),
 
 
+    path("api/profile",ProfileAPIView.as_view(), name="profile" ),
 
 
 ]
