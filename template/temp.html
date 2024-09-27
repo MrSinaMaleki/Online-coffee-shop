@@ -8,8 +8,10 @@
 
 {% if request.user.is_authenticated %}
 <h1>Loged in!!!</h1>
-
+<a href="{% url 'logout' %}" methods="POST"> LogOut</a>
 {% endif %}
+
+
 
 <h1>What ?</h1>
 </body>
