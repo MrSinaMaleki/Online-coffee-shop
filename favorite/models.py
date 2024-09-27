@@ -5,7 +5,8 @@ from product.models import Product
 
 class Favorite(models.Model):
     user = models.ForeignKey(Human, on_delete=models.CASCADE, related_name='favorites')
-    products = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products')
+    products = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='products',
+                                 related_query_name='products')
 
     def __str__(self):
         return f"{self.user} -> {self.products}"
