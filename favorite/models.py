@@ -4,6 +4,7 @@ from product.models import Product
 
 
 class Favorite(models.Model):
+
     user = models.ForeignKey(Human, on_delete=models.CASCADE, related_query_name="favorites", related_name='favorites')
     products = models.ForeignKey(Product, on_delete=models.CASCADE, related_query_name="products",
                                  related_name='products')

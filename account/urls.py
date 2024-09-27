@@ -1,4 +1,4 @@
-from tkinter.font import names
+
 
 from django.contrib.auth.views import LogoutView
 from django.urls import path,include
