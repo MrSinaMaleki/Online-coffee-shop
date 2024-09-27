@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const category = document.querySelector("#category")
     const product_title = document.querySelector("#product_title")
 
-
+    
     fetch(`api/detail/product/${pkId}`, {
         method: 'GET',
         headers: {
@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
         },
     }).then(async (response) => {
         const productes = await response.json()
+
         console.log(productes)
         imagePreview.innerHTML = ""
         imageSliders.innerHTML = ""
@@ -25,6 +26,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
         price_product.innerHTML = productes.price
         category.innerHTML = productes.category.title
         product_title.innerHTML = productes.title
+
+        console.log(productes.favorite.value())
+        if (productes.favorite===true){
+            console.log('liked')
+            liked_id.classList.toggle('liked')
+        }
         for (i in productes.ingredients) {
 
             let el = `

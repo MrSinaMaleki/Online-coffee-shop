@@ -26,11 +26,12 @@
         }).then(response => response.json()).then(products => {
             const productList = document.getElementById('products-list');
             products.forEach(product => {
+                console.log(product.favorite)
                 const productCard = `
 
                     <div class="card bg-base-100 w-96 shadow-xl m-2">
                         <div class="card-body">
-                            <div class="like-btn ${product.is_liked ? 'liked' : ''}" onclick="toggleLike(${product.id}, this)">
+                            <div class="like-btn ${product.favorite ? 'liked' : ''}" onclick="toggleLike(${product.id}, this)">
                                 <i class="fas fa-heart"></i>
                             </div>
                             <img src="${product.images[0].image}" alt="${product.images[0].alt}">
@@ -49,6 +50,17 @@
 
     function toggleLike(productId, element) {
         const isLiked = element.classList.toggle('liked');
+        let data=new FormData()
+        data.append('products',productId)
+        console.log(data)
+        fetch(`http://localhost:8001/favorite/api/favorite/create`,{
+            method:'POST',
+            body:data,
+            headers:{
+                 'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': '{{ csrf_token }}'
+        }
+        })
         console.log(`Product ${productId} is liked: ${isLiked}`);
     }
 
