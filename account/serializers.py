@@ -1,6 +1,10 @@
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
+
+from favorite.models import Favorite
 from .models import Human
 from django.contrib.auth.models import User
+from favorite.serializers import FavoriteAddSerializer
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -45,3 +49,14 @@ class ResetPasswordSerializer(serializers.Serializer):
         if data['password'] != data['confirm_password']:
             raise serializers.ValidationError("Passwords must match.")
         return data
+
+# class FavoriteSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Favorite
+#         fields = ['products']
+
+class ProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Human
+        fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'gender', 'age', 'profile_image', 'favorites']
