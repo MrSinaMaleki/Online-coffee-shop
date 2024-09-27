@@ -1,8 +1,11 @@
 from tkinter.font import names
 
+from django.contrib.auth.views import LogoutView
 from django.urls import path,include
 from django.views.generic.base import TemplateView
-from .views import SignUpAPIView, TempForm, LoginAPIView, ForgetPasswordAPIView, ResetPasswordAPIView, ProfileAPIView
+from .views import SignUpAPIView, LoginAPIView, ForgetPasswordAPIView, ResetPasswordAPIView, ProfileAPIView, logout_view
+from django.contrib.auth.views import LogoutView
+
 urlpatterns = [
     # path('', include("django.contrib.auth.urls"), name='auth'),
 
@@ -10,6 +13,7 @@ urlpatterns = [
     path("signup/signup_api/", SignUpAPIView.as_view(), name="signup_api"),
     path("login_api/", LoginAPIView.as_view(), name="login_api"),
 
+    path("logout/", logout_view, name="logout"),
 
     path('api/forgot_password/', ForgetPasswordAPIView.as_view(), name='forgot_password'),
     path("forgot_password/", TemplateView.as_view(template_name="account/forgotpassword.html"),

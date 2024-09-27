@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="signup-container flex justify-center items-center min-h-screen bg-gray-100">
@@ -36,7 +37,7 @@
             Sign Up
         </button>
     </form>
-    <div id="response-message" class="mt-4 text-center text-sm text-red-600"></div>
+    <div id="response-message" class="mt-4 text-center text-sm text-red-600 hidden"></div>
 </div>
 
 <script>
@@ -56,18 +57,34 @@
         })
             .then(response => response.json())
             .then(temp => {
-                console.log("hahahah")
                 const messageElement = document.getElementById('response-message');
                 if (temp.ok) {
                     messageElement.textContent = 'Sign up successful!';
                     messageElement.style.color = 'green';
                 } else {
-                    messageElement.textContent = 'Error: ' + temp.detail;
+                    messageElement.textContent = 'Error:';
                     messageElement.style.color = 'red';
                 }
+                Swal.fire({
+                    title: 'Successful!',
+                    text: 'User has been created Successfuly',
+                    icon: 'Successful',
+                    confirmButtonText: 'Cool',
+                    willClose: () => {
+                        window.location.replace("{% url 'login' %}")
+                    }
+                })
+
             })
             .catch(error => {
                 console.error('Error:', error);
+                Swal.fire({
+                    title: 'Failed! ',
+                    text: error,
+                    icon: 'Failed',
+                    confirmButtonText: 'Ok',
+                })
+
             });
     });
 

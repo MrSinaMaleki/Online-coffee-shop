@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-gray-100">
 
@@ -26,6 +27,8 @@
         <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">
           Login
         </button>
+          
+          <a class="w-full text-amber-600 text-center font-semibold " href="{% url 'forgot_password_view' %}">Forgot My password</a>
       </form>
 
       <div id="response-message" class="text-center text-red-600 mt-4"></div>
@@ -33,9 +36,17 @@
   </div>
 
   <script>
+      const loggedIn = `{{ request.user.is_authenticated }}`
+      console.log(loggedIn)
+      window.addEventListener('DOMContentLoaded',function () {
+            if (loggedIn === "True") {
+                window.location.replace("/")
+            }
+      });
+
     document.getElementById('login-form').addEventListener('submit', async function(event) {
       event.preventDefault();
-        
+
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
@@ -52,22 +63,39 @@
         });
 
         const data = await response.json();
-          
+
         if (response.ok) {
           // Setting localStorage variable for the browser
-          localStorage.setItem('authToken', data.token);
+          {#localStorage.setItem('authToken', data.token);#}
 
 
           document.getElementById('response-message').innerText = "Login successful!";
           document.getElementById('response-message').classList.add('text-green-600');
 
+          Swal.fire({
+                    title: 'Successful!',
+                    text: 'You have logged in Successfully',
+                    icon: 'success',
+                    confirmButtonText: 'Cool ;)',
+                    willClose: () => {
+                        {#// Where is the home page template ?#}
+                        window.location.replace("/")
+                    }
+            })
 
-          setTimeout(() => {
-            window.location.href = "/account";  
-          }, 100);
+
 
         } else {
-
+                      Swal.fire({
+                    title: 'Failed',
+                    text: 'oops',
+                    icon: 'error',
+                    confirmButtonText: 'Ok',
+                    willClose: () => {
+                        // Where is the home page template ?
+                        {#// window.location.replace("{% url 'home' %}")#}
+                    }
+            })
           document.getElementById('response-message').innerText = data.Message || 'Login failed. Check your credentials.';
         }
       } catch (error) {

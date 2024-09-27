@@ -13,6 +13,7 @@ from config import settings
 from django.contrib.auth.models import User
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
+from django.shortcuts import redirect
 
 from django.contrib.auth import authenticate,login, logout
 from .models import Human
@@ -47,6 +48,9 @@ class LoginAPIView(APIView):
 
             return Response({'Message': 'Invalid Username and Password'}, status=401)
 
+def logout_view(request):
+    logout(request)
+    return redirect("/")
 
 class ForgetPasswordAPIView(APIView):
     def post(self, request, *args, **kwargs):
