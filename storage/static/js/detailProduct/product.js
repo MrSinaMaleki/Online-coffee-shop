@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function (event) {
-    event.preventDefault()
+
     const imagePreview = document.querySelector('#image_parent')
     const imageSliders = document.querySelector("#image_items")
     const ingredients_title = document.querySelector("#ingredients_title")
@@ -26,11 +26,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
         price_product.innerHTML = productes.price
         category.innerHTML = productes.category.title
         product_title.innerHTML = productes.title
+        if (productes.favorite){
 
-        console.log(productes.favorite.value())
-        if (productes.favorite===true){
-            console.log('liked')
-            liked_id.classList.toggle('liked')
+           liked_id.classList.toggle('liked')
         }
         for (i in productes.ingredients) {
 
@@ -56,8 +54,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
         }
 
 
-    }).catch((error) => {
-        console.log(error)
     }).finally(() => {
         slideImagess()
     })
