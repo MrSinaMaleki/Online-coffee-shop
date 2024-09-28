@@ -1,0 +1,72 @@
+.hero-section {
+    background-image: url('https://www.adivedanatural.com/cdn/shop/articles/smeeling-coffee-beans_900x_5148e663-e441-4642-af81-ade43296e6b5_900x.jpg?v=1615107959'); /* Use actual image path */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-section h1 {
+    font-size: 4rem;
+    font-weight: bold;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.hero-buttons .btn {
+    margin: 0 10px;
+}
+
+.hero-buttons .btn-outline-light {
+    color: white;
+    border-color: white;
+}
+
+.navbar-dark .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.navbar-nav .nav-link {
+    font-size: 1rem;
+    text-transform: uppercase;
+    padding: 10px 15px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ff4a4a;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer {
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+}
+
+footer a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+footer a:hover {
+    color: #ff4a4a;
+}

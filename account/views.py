@@ -3,7 +3,7 @@ from multiprocessing.managers import Token
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.tokens import default_token_generator
 
@@ -13,10 +13,13 @@ from config import settings
 from django.contrib.auth.models import User
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
+from django.shortcuts import redirect
 
 from django.contrib.auth import authenticate,login, logout
 from .models import Human
-from .serializers import CustomUserSerializer, LoginSerializer, ForgetPasswordSerializer, ResetPasswordSerializer
+from .serializers import CustomUserSerializer, LoginSerializer, ForgetPasswordSerializer, ResetPasswordSerializer, \
+    ProfileSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class SignUpAPIView(APIView):
@@ -45,6 +48,9 @@ class LoginAPIView(APIView):
 
             return Response({'Message': 'Invalid Username and Password'}, status=401)
 
+def logout_view(request):
+    logout(request)
+    return redirect("/")
 
 class ForgetPasswordAPIView(APIView):
     def post(self, request, *args, **kwargs):
@@ -89,6 +95,16 @@ class ResetPasswordAPIView(APIView):
 
             return Response({"detail":"Password has been successfully reset."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProfileAPIView(RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ProfileSerializer
+    template_name = 'account/profile.html'
+
+    def get_object(self):
+        return self.request.user
+
 
 
 
