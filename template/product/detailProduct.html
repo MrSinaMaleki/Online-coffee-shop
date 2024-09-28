@@ -88,7 +88,7 @@
             </div>
         </div>
     </div>
-    <input class="!hidden" value="{% if request.user.is_authenticated %}1{% else %}0{% endif %}" id="hamid22">
+
 {% endblock %}
 
 {% block extra_body %}
@@ -111,6 +111,7 @@
             console.log(userAuthentication)
 
             if (userAuthInput === "True") {
+                alert("jamd")
                 const isLiked = element.classList.toggle('liked')
                 fetch(`http://localhost:8001/favorite/api/favorite/create`, {
                     method: 'POST',
@@ -123,7 +124,7 @@
                 })
 
             } else {
-                showAlert('شما باید وارد حساب کار بری خود شوید');
+                showAlert('pleas login your account');
             }
 
         }
