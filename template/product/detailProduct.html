@@ -59,7 +59,7 @@
                                 Add to Cart <i class="fas fa-shopping-cart"></i>
                             </button>
                         </form>
-                        <div id="liked_id" class="like-btn  "
+                        <div id="liked_id" class="like-btn "
                              onclick="toggleLike({{ pk }}, this)">
                             <i class="fas fa-heart"></i>
                         </div>
@@ -95,10 +95,9 @@
 
     <script>
         const pkId = {{ pk }}
-        const userAuthInput = document.querySelector("#hamid22").value;
-        let liked_id = document.querySelector("#liked_id");
-        let p_favorite=false
-        console.log(p_favorite)
+        const userAuthInput = '{{ request.user.is_authenticated }}'
+        let liked_id = document.querySelector("#liked_id")
+
         const showAlert = (message) => {
             alert(message);
         }
@@ -111,7 +110,7 @@
             const userAuthentication = parseInt(userAuthInput)
             console.log(userAuthentication)
 
-            if (userAuthentication === 1) {
+            if (userAuthInput === "True") {
                 const isLiked = element.classList.toggle('liked')
                 fetch(`http://localhost:8001/favorite/api/favorite/create`, {
                     method: 'POST',
