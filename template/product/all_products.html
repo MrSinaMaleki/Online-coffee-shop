@@ -26,11 +26,12 @@
         }).then(response => response.json()).then(products => {
             const productList = document.getElementById('products-list');
             products.forEach(product => {
-                console.log(product.favorite)
+
+                console.log(product.images)
                 const productCard = `
 
                     <div class="card bg-base-100 w-96 shadow-xl m-2">
-                        <div class="card-body full-rounded rounded-full">
+                        <div class="card-body">
                             <div class="like-btn ${product.favorite ? 'liked' : ''}" onclick="toggleLike(${product.id}, this)">
                                 <i class="fas fa-heart"></i>
                             </div>
