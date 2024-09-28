@@ -116,7 +116,7 @@ class Product(LogicalMixin):
     class Meta:
         ordering = ['-created_at', 'price']
         indexes = [
-            models.Index(fields=['is_available'])
+            models.Index(fields=['is_active'])
         ]
 
 

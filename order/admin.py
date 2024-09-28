@@ -10,7 +10,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'quantity', 'order', 'order_item_price')
+    list_display = ('id', 'product', 'quantity', 'order', 'price_at_order')
     search_fields = ('product',)
     search_help_text = 'please enter product!'
 

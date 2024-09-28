@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 from core.models import LogicalMixin
 from core.managers import ActiveNotDeletedBaseManager
 
@@ -11,7 +11,7 @@ def validate_image_size(image):
         raise ValidationError(f"Image file size must be less than {max_size_mb} MB")
 
 
-class Human(AbstractUser, LogicalMixin):
+class Human(User, LogicalMixin):
     phone = models.CharField(unique=True, max_length=11, null=True, blank=True)
     gender = models.CharField(max_length=6, choices=(('male', 'Male'), ('female', 'Female')), null=True, blank=True)
     age = models.PositiveIntegerField(null=True, blank=True)
