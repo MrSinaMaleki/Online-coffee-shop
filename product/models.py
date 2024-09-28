@@ -1,6 +1,7 @@
 from django.db import models
-from core.models import DeleteLogicalBase
+from core.models import LogicalMixin
 from django.core.exceptions import ValidationError
+from core.managers import ActiveNotDeletedBaseManager
 
 
 def validate_image_size(image):
@@ -9,22 +10,17 @@ def validate_image_size(image):
         raise ValidationError(f"Image file size must be less than {max_size_mb} MB")
 
 
-class AvailableManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(is_available=True)
-
-
-class CoffeeManager(models.Manager):
-    def get_queryset(self):
+class ProductManager(ActiveNotDeletedBaseManager):
+    def coffeeshop(self):
         return super().get_queryset().filter(is_coffee_shop=True)
 
 
-class CoverPhotoManager(models.Manager):
-    def get_queryset(self):
+class ProductPhotoManager(ActiveNotDeletedBaseManager):
+    def covered(self):
         return super().get_queryset().filter(is_cover=True)
 
 
-class Category(models.Model):
+class Category(LogicalMixin):
     title = models.CharField(max_length=255, unique=True)
     parent = models.ForeignKey(
         'Category',
@@ -35,6 +31,8 @@ class Category(models.Model):
         null=True
     )
 
+    objects = ActiveNotDeletedBaseManager()
+
     class Meta:
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
@@ -42,7 +40,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
-
 
     # @staticmethod
     # def calculate_max_depth(root_category):
@@ -88,12 +85,10 @@ class Category(models.Model):
     #     return result
 
 
-
-class Product(DeleteLogicalBase):
+class Product(LogicalMixin):
     title = models.CharField(max_length=100)
     price = models.PositiveIntegerField(default=0)
     quantity = models.PositiveIntegerField(default=0)
-    is_available = models.BooleanField(default=True)
     serial_number = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='products', null=True)
@@ -101,11 +96,8 @@ class Product(DeleteLogicalBase):
     timeline = models.CharField(max_length=9,
                                 choices=(('breakfast', 'Breakfast'), ('lunch', 'Lunch'), ('dinner', 'Dinner')),
                                 null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    objects = models.Manager()
-    available = AvailableManager()
-    coffeeshop = CoffeeManager()
+
+    objects = ProductManager()
 
     def clean(self):
         if self.is_coffee_shop and self.timeline:
@@ -128,13 +120,13 @@ class Product(DeleteLogicalBase):
         ]
 
 
-class ProductImage(DeleteLogicalBase):
+class ProductImage(LogicalMixin):
     product = models.ForeignKey(Product, related_query_name='images', related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='product_images/', validators=[validate_image_size])
     alt = models.TextField(blank=True, null=True)
     is_cover = models.BooleanField(default=False)
-    objects = models.Manager()
-    covered = CoverPhotoManager()
+
+    objects = ProductPhotoManager()
 
     def clean(self):
         if self.is_cover:
@@ -155,9 +147,11 @@ class ProductImage(DeleteLogicalBase):
         ]
 
 
-class Ingredients(DeleteLogicalBase):
+class Ingredients(LogicalMixin):
     title = models.CharField(max_length=100)
-    products = models.ManyToManyField(Product,related_query_name='ingredients', related_name='ingredients', blank=True)
+    products = models.ManyToManyField(Product, related_query_name='ingredients', related_name='ingredients', blank=True)
+
+    objects = ActiveNotDeletedBaseManager()
 
     def __str__(self):
         return self.title
