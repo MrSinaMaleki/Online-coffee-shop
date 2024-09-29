@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block content %}
+<br>
+    <div class="w-10/12 mx-auto grid grid-cols-2  max-lg:grid-cols-1 gap-8 mt-10">
+        <div class="flex flex-col gap-8">
+            <h1 class="text-5xl text-black font-bold"> About Our Shop</h1>
+            <h2 class="text-3xl text-gray-600 ">Coffee distribution</h2>
+            <p class="text-xl text-gray-400 ">
+                has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editorhas a more-or-less normal distribution of letters, as oppos
+            </p>
+            <button class="inline-block border-2 border-red-500 text-red-500 p-3 h-1/2 w-3/12 mt-2 rounded-lg hover:bg-red-500 hover:border-black hover:text-black">Read More</button>
+        </div>
+        <div class="ml-5">
+            <img src="{% static 'images/coffeeb.jpg' %}" alt="" class="">
+        </div>
+    </div>
+{% endblock %}

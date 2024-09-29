@@ -21,6 +21,7 @@ from django.views.generic.base import TemplateView
 
 
 from config import settings
+from core.views import AboutUs
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +30,9 @@ urlpatterns = [
     path('favorite/', include('favorite.urls')),
     path('order/', include('order.urls')),
     path('product/', include('product.urls')),
-    path('', TemplateView.as_view(template_name='_base.html'))
+    path('', TemplateView.as_view(template_name='_base.html')),
+    path('about-us',AboutUs.as_view(),name="about_us"),
+
 ]
 if settings.DEBUG:
     urlpatterns += (static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) +
