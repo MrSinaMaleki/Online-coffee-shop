@@ -13,9 +13,8 @@
             console.log(userAuthentication)
 
             if (userAuthInput === "True") {
-                alert("jamd")
                 const isLiked = element.classList.toggle('liked')
-                fetch(`http://localhost:8001/favorite/api/favorite/create`, {
+                fetch(`http://${requestHost}/favorite/api/favorite/create`, {
                     method: 'POST',
                     body: data,
                     headers: {
