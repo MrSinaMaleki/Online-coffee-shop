@@ -1,6 +1,7 @@
 from django.db import models
-from core.models import DeleteLogicalBase
+from core.models import LogicalMixin
 from django.core.exceptions import ValidationError
+from core.managers import ActiveNotDeletedBaseManager
 
 
 def validate_image_size(image):
@@ -9,22 +10,17 @@ def validate_image_size(image):
         raise ValidationError(f"Image file size must be less than {max_size_mb} MB")
 
 
-class AvailableManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(is_available=True)
-
-
-class CoffeeManager(models.Manager):
-    def get_queryset(self):
+class ProductManager(ActiveNotDeletedBaseManager):
+    def coffeeshop(self):
         return super().get_queryset().filter(is_coffee_shop=True)
 
 
-class CoverPhotoManager(models.Manager):
-    def get_queryset(self):
+class ProductPhotoManager(ActiveNotDeletedBaseManager):
+    def covered(self):
         return super().get_queryset().filter(is_cover=True)
 
 
-class Category(models.Model):
+class Category(LogicalMixin):
     title = models.CharField(max_length=255, unique=True)
     parent = models.ForeignKey(
         'Category',
@@ -35,6 +31,8 @@ class Category(models.Model):
         null=True
     )
 
+    objects = ActiveNotDeletedBaseManager()
+
     class Meta:
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
@@ -43,69 +41,63 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+    @staticmethod
+    def calculate_max_depth(root_category):
 
-    # @staticmethod
-    # def calculate_max_depth(root_category):
-    #
-    #     """
-    #     Recursively calculates the maximum depth of the category tree starting from a given root category.
-    #     """
-    #
-    #     if not root_category.subcategories.exists():
-    #         return 0
-    #     else:
-    #         return 1 + max(Category.calculate_max_depth(sub) for sub in root_category.subcategories.all())
-    #
-    # def get_descendants(self, include_self=False, levels=None):
-    #
-    #     """
-    #     Fetch all descendants of the current category using dynamically determined levels of prefetching.
-    #     If 'levels' is not provided, calculate it based on the maximum depth of the category tree.
-    #     """
-    #
-    #     if levels is None:
-    #         levels = Category.calculate_max_depth(self)
-    #
-    #     result = [self] if include_self else []
-    #     queryset = Category.objects.all()
-    #
-    #     for _ in range(levels):
-    #         queryset = queryset.prefetch_related('subcategories')
-    #
-    #     categories = queryset.filter(id=self.id)
-    #
-    #     # noinspection PyShadowingNames
-    #     def collect_categories(category, current_level):
-    #
-    #         if current_level > 0:
-    #             for subcategory in category.subcategories.all():
-    #                 result.append(subcategory)
-    #                 collect_categories(subcategory, current_level - 1)
-    #
-    #     for category in categories:
-    #         collect_categories(category, levels)
-    #
-    #     return result
+        """
+        Recursively calculates the maximum depth of the category tree starting from a given root category.
+        """
 
+        if not root_category.subcategories.exists():
+            return 0
+        else:
+            return 1 + max(Category.calculate_max_depth(sub) for sub in root_category.subcategories.all())
+
+    def get_descendants(self, include_self=False, levels=None):
+
+        """
+        Fetch all descendants of the current category using dynamically determined levels of prefetching.
+        If 'levels' is not provided, calculate it based on the maximum depth of the category tree.
+        """
+
+        if levels is None:
+            levels = Category.calculate_max_depth(self)
+
+        result = [self] if include_self else []
+        queryset = Category.objects.all()
+
+        for _ in range(levels):
+            queryset = queryset.prefetch_related('subcategories')
+
+        categories = queryset.filter(id=self.id)
+
+        # noinspection PyShadowingNames
+        def collect_categories(category, current_level):
+
+            if current_level > 0:
+                for subcategory in category.subcategories.all():
+                    result.append(subcategory)
+                    collect_categories(subcategory, current_level - 1)
+
+        for category in categories:
+            collect_categories(category, levels)
+
+        return result
 
 
-class Product(DeleteLogicalBase):
+class Product(LogicalMixin):
     title = models.CharField(max_length=100)
     price = models.PositiveIntegerField(default=0)
     quantity = models.PositiveIntegerField(default=0)
-    is_available = models.BooleanField(default=True)
     serial_number = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=200)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='products', null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='category' ,related_query_name='categorys', null=True)
     is_coffee_shop = models.BooleanField()
     timeline = models.CharField(max_length=9,
                                 choices=(('breakfast', 'Breakfast'), ('lunch', 'Lunch'), ('dinner', 'Dinner')),
                                 null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    objects = models.Manager()
-    available = AvailableManager()
-    coffeeshop = CoffeeManager()
+
+    objects = ProductManager()
 
     def clean(self):
         if self.is_coffee_shop and self.timeline:
@@ -124,17 +116,17 @@ class Product(DeleteLogicalBase):
     class Meta:
         ordering = ['-created_at', 'price']
         indexes = [
-            models.Index(fields=['is_available'])
+            models.Index(fields=['is_active'])
         ]
 
 
-class ProductImage(DeleteLogicalBase):
+class ProductImage(LogicalMixin):
     product = models.ForeignKey(Product, related_query_name='images', related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='product_images/', validators=[validate_image_size])
     alt = models.TextField(blank=True, null=True)
     is_cover = models.BooleanField(default=False)
-    objects = models.Manager()
-    covered = CoverPhotoManager()
+
+    objects = ProductPhotoManager()
 
     def clean(self):
         if self.is_cover:
@@ -155,9 +147,11 @@ class ProductImage(DeleteLogicalBase):
         ]
 
 
-class Ingredients(DeleteLogicalBase):
+class Ingredients(LogicalMixin):
     title = models.CharField(max_length=100)
-    products = models.ManyToManyField(Product,related_query_name='ingredients', related_name='ingredients', blank=True)
+    products = models.ManyToManyField(Product, related_query_name='ingredients', related_name='ingredients', blank=True)
+
+    objects = ActiveNotDeletedBaseManager()
 
     def __str__(self):
         return self.title

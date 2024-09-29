@@ -88,7 +88,7 @@
             </div>
         </div>
     </div>
-    <input class="!hidden" value="{% if request.user.is_authenticated %}1{% else %}0{% endif %}" id="hamid22">
+
 {% endblock %}
 
 {% block extra_body %}
@@ -96,42 +96,10 @@
     <script>
         const pkId = {{ pk }}
         const userAuthInput = '{{ request.user.is_authenticated }}'
-        let liked_id = document.querySelector("#liked_id")
-
-        const showAlert = (message) => {
-            alert(message);
-        }
-
-        function toggleLike(productId, element) {
-
-            let data = new FormData()
-            data.append('products', productId)
-            console.log(data)
-            const userAuthentication = parseInt(userAuthInput)
-            console.log(userAuthentication)
-
-            if (userAuthInput === "True") {
-                const isLiked = element.classList.toggle('liked')
-                fetch(`http://localhost:8001/favorite/api/favorite/create`, {
-                    method: 'POST',
-                    body: data,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }
-
-                })
-
-            } else {
-                showAlert('شما باید وارد حساب کار بری خود شوید');
-            }
-
-        }
-
-
     </script>
     <script src="{% static "js/detailProduct/product.js" %}"></script>
     <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
+    <script src="{% static 'js/detailProduct/addFavorite.js' %}"></script>
 
 {% endblock %}
 

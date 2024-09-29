@@ -1,28 +1,29 @@
 from django.db import models
-from account.models import Human
-from core.models import DeleteLogicalBase
+from account.models import Human, LogicalMixin
 from product.models import Product
+from core.managers import ActiveNotDeletedBaseManager
 
 
-class CompletedManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(is_completed=True)
+class OrderManager(ActiveNotDeletedBaseManager):
+    def completed(self):
+        return self.get_queryset().filter(is_completed=True)
+
+    def not_completed(self):
+        return self.get_queryset().filter(is_completed=False)
+
+    def paid(self):
+        return self.get_queryset().filter(is_paid=True)
+
+    def not_paid(self):
+        return self.get_queryset().filter(is_paid=False)
 
 
-class PaidManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(is_paid=True)
-
-
-class Order(DeleteLogicalBase):
+class Order(LogicalMixin):
     user = models.ForeignKey(Human, on_delete=models.CASCADE, related_name='order')
     is_completed = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     is_paid = models.BooleanField(default=False)
 
-    completed = CompletedManager()
-    paid = PaidManager()
+    objects = OrderManager()
 
     def __str__(self):
         return str(self.id)
@@ -30,18 +31,28 @@ class Order(DeleteLogicalBase):
     class Meta:
         ordering = ['-created_at']
         indexes = [
-            models.Index(fields=['user'])
+            models.Index(fields=['user']),
+            models.Index(fields=['is_completed']),
+            models.Index(fields=['is_paid']),
         ]
 
 
-class OrderItem(models.Model):
+class OrderItem(LogicalMixin):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_item')
     quantity = models.PositiveIntegerField(default=1)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_item')
+    price_at_order = models.FloatField()
+
+    objects = ActiveNotDeletedBaseManager()
+
+    def save(self, *args, **kwargs):
+        if not self.price_at_order:
+            self.price_at_order = self.product.price
+        super().save(*args, **kwargs)
 
     @property
-    def order_item_price(self):
-        return self.quantity*self.product.price
+    def total_price(self):
+        return self.quantity * self.price_at_order
 
     def __str__(self):
         return str(self.id)
