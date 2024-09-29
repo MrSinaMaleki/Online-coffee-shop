@@ -5,9 +5,9 @@ from .models import Product, Category, ProductImage, Ingredients
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'price', 'quantity', 'serial_number', 'category', 'created_at', 'updated_at')
-    list_filter = ('is_available',)
+    list_filter = ('is_active',)
     search_fields = ('title', 'price')
-    readonly_fields = ('is_available',)
+    readonly_fields = ('is_active',)
 
 
 class CategoryAdmin(admin.ModelAdmin):

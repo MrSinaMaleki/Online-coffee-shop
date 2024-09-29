@@ -14,12 +14,12 @@ def index(request, pk):
 # Create your views here.
 
 class ProductListAPIView(ListAPIView):
-    queryset = Product.available.all()
+    queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
 
 class ProductDetailAPIView(RetrieveAPIView):
-    queryset = Product.available.all()
+    queryset = Product.objects.all()
     serializer_class = ProductDetailSerializer
 
 # # todo

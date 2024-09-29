@@ -16,5 +16,5 @@ class Favorite(LogicalMixin):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'product'], name='unique_favorite')
+            models.UniqueConstraint(fields=['user', 'products'], name='unique_favorite')
         ]
