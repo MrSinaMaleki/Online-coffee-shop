@@ -54,11 +54,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 imageSliders.innerHTML += imageSlider
                 imagePreview.innerHTML += imageEl
             }
-        } else {
+        } else if (productes.images.length === 1){
             const imageEl = `
                 <img src="${productes.images[0].image}"
                              alt="${productes.images[0]}">`
             imagePreview.innerHTML += imageEl
+        }else {
+            imagePreview.innerHTML += `<img src="https://www.k5learning.com/sites/all/files/can%27t.gif"
+                             alt="image">`
         }
 
     }).finally(() => {

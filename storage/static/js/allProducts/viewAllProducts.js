@@ -12,7 +12,17 @@
             }).then(response => response.json()).then(products => {
                 const productList = document.getElementById('products-list');
                 products.forEach(product => {
-
+                    let imageSrc=""
+                    let imageAlt=""
+                    console.log(product.images.length)
+                    if (product.images.length===0){
+                        imageSrc='https://www.k5learning.com/sites/all/files/can%27t.gif'
+                        imageAlt="image"
+                    }
+                    else {
+                        imageSrc=product.images[0].image
+                        imageSrc=product.images[0].alt
+                    }
                     console.log(product.images)
                     const productCard = `
 
@@ -21,7 +31,7 @@
                             <div class="like-btn ${product.favorite ? 'liked' : ''}" onclick="toggleLike(${product.id}, this)">
                                 <i class="fas fa-heart"></i>
                             </div>
-                            <img src="${product.images[0].image}" alt="${product.images[0].alt}">
+                            <img src="${imageSrc}" alt="${imageAlt}">  
                             <a href='http://${requestHost}/product/${product.id}'>
                             <div class="product-title">${product.title}</div>
                             <div class="product-price">$${product.price}</div>
