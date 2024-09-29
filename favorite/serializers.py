@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import serializers
 
 from account.models import Human
@@ -12,11 +13,15 @@ class FavoriteAddSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         if self.context['request'].user.is_authenticated:
-
             user = Human.objects.get(pk=self.context['request'].user.id)
-            if Favorite.objects.filter(products_id=validated_data['products'].id, user=user).exists():
-                Favorite.objects.filter(products_id=validated_data['products'].id, user=user).delete()
+            favorite = Favorite.objects.filter(products_id=validated_data['products'].id,user=user)
+            if favorite.exists():
+                for i in favorite:
+                     i.is_active=False
+                     i.is_delete=True
+                     i.save()
                 return validated_data
             else:
-                return Favorite.objects.create(user=user, products_id=validated_data['products'].id)
+                Favorite.objects.create(user=user, products_id=validated_data['products'].id)
+                return validated_data
         raise AuthenticationFailed('This user not authentication', code=400)
