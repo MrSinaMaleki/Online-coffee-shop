@@ -22,7 +22,7 @@
                                 <i class="fas fa-heart"></i>
                             </div>
                             <img src="${product.images[0].image}" alt="${product.images[0].alt}">
-                            <a href='http://localhost:8001/product/${product.id}'>
+                            <a href='http://${requestHost}/product/${product.id}'>
                             <div class="product-title">${product.title}</div>
                             <div class="product-price">$${product.price}</div>
                             <a href="#" class="btn btn-primary" onclick="addToCart(${product.id})">Add to Cart</a>
