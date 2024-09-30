@@ -21,7 +21,7 @@
                     }
                     else {
                         imageSrc=product.images[0].image
-                        imageSrc=product.images[0].alt
+                        imageAlt=product.images[0].alt
                     }
                     console.log(product.images)
                     const productCard = `
