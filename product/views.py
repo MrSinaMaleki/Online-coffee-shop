@@ -69,15 +69,27 @@ class ProductCoffeeShopListView(ListAPIView):
     serializer_class = ProductSerializer
 
 
-class ProductRestaurantListView(ListAPIView):
-    serializer_class = ProductSerializer
+class ProductCategoryListView(APIView):
+    def get(self, request, time=None):
+        if time is not None:
+            if Product.objects.filter(timeline=time).exists():
+                products = Product.objects.filter(timeline=time)
+                serializer = ProductSerializer(products, many=True)
+                serializer.context['request'] = request
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            products = Product.objects.all().order_by('category')
+            serializer = ProductSerializer(products, many=True)
+            serializer.context['request'] = request
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def get_queryset(self):
-        time = self.request.query_params.get('time', None)
-        print('time', time)
-        if time:
-            queryset = Product.objects.filter(timeline=time)
-            print('queryset', queryset)
-            return queryset
 
+class RestaurantView(TemplateView):
+    template_name = 'product/all_products_restaurant.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['time'] = self.kwargs['time']
+        return context
 

@@ -27,9 +27,9 @@ def menu_context_processor(request):
             title="Restaurant",
             link=link_creator(request, "#"),
             subcategories=[
-                dict(title="Breakfast", link=link_creator(request, "/product/restaurant/Breakfast")),
-                dict(title="Lunch", link=link_creator(request, "/product/restaurant?time=Lunch")),
-                dict(title="Dinner", link=link_creator(request, "/product/restaurant?time=Dinner"))
+                dict(title="Breakfast", link=link_creator(request, "/product/restaurant/breakfast")),
+                dict(title="Lunch", link=link_creator(request, "/product/restaurant/lunch")),
+                dict(title="Dinner", link=link_creator(request, "/product/restaurant/dinner"))
             ]
         )
     ]
