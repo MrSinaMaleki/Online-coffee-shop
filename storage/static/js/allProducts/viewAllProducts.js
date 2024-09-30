@@ -1,4 +1,4 @@
-       let userAuthInput = '{{ request.user.is_authenticated }}'
+// 'csrfmiddlewaretoken'
          const showAlert = (message) => {
             alert(message);
         }
@@ -46,7 +46,7 @@
         });
 
         function toggleLike(productId, element) {
-            if (userAuthInput === "True") {
+            if (userAuthInputList === "True") {
                 element.classList.toggle('liked')
                 let data = new FormData()
                 data.append('products', productId)

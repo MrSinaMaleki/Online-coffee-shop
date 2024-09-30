@@ -14,7 +14,7 @@ class Favorite(LogicalMixin):
     def __str__(self):
         return f"{self.user} -> {self.products}"
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['user', 'products'], name='unique_favorite')
-        ]
+    # class Meta:
+    #     constraints = [
+    #         models.UniqueConstraint(fields=['user', 'products'], name='unique_favorite')
+    #     ]
