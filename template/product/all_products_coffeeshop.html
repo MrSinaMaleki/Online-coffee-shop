@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}
+    Category Products - Online Shop
+{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/all_products.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row product-container" id="products-list">
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block extra_body %}
+    <script src="{% static 'js/allProducts/viewCoffeeShopProducts.js' %}"></script>
+{% endblock %}
