@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
                              alt="${productes.images[0]}">`
             imagePreview.innerHTML += imageEl
         }else {
-            imagePreview.innerHTML += `<img src="https://www.k5learning.com/sites/all/files/can%27t.gif"
+            imagePreview.innerHTML += `<img src="https://via.placeholder.com/300"
                              alt="image">`
         }
 
