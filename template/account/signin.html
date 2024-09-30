@@ -42,13 +42,11 @@
 
 <script>
     const formEl = document.querySelector("#signup-form");
-    console.log(formEl)
     
     formEl.addEventListener('submit', function (e) {
         e.preventDefault();
 
         const data = new FormData(e.target)
-        console.log(data)
 
 
         fetch('signup_api/', {
@@ -58,7 +56,7 @@
             .then(response => response.json())
             .then(temp => {
                 const messageElement = document.getElementById('response-message');
-                if (temp.ok) {
+                if (temp.stat === "User was created!") {
                     messageElement.textContent = 'Sign up successful!';
                     messageElement.style.color = 'green';
                                     Swal.fire({
