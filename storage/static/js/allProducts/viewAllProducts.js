@@ -1,4 +1,4 @@
-       let userAuthInput = '{{ request.user.is_authenticated }}'
+// 'csrfmiddlewaretoken'
          const showAlert = (message) => {
             alert(message);
         }
@@ -16,12 +16,12 @@
                     let imageAlt=""
                     console.log(product.images.length)
                     if (product.images.length===0){
-                        imageSrc='https://www.k5learning.com/sites/all/files/can%27t.gif'
+                        imageSrc='https://via.placeholder.com/300'
                         imageAlt="image"
                     }
                     else {
                         imageSrc=product.images[0].image
-                        imageSrc=product.images[0].alt
+                        imageAlt=product.images[0].alt
                     }
                     console.log(product.images)
                     const productCard = `
@@ -46,7 +46,7 @@
         });
 
         function toggleLike(productId, element) {
-            if (userAuthInput === "True") {
+            if (userAuthInputList === "True") {
                 element.classList.toggle('liked')
                 let data = new FormData()
                 data.append('products', productId)
