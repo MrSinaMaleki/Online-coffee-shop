@@ -1,95 +1,95 @@
-{#<ul>#}
-{#    {% for item in menu %}#}
-{#        <li>#}
-{#            <a href="{{ item.link }}">{{ item.title }}</a>#}
-{#            {% if item.subcategories %}#}
-{#                <ul>#}
-{#                    {% for sub in item.subcategories %}#}
-{#                        <li>#}
-{#                            <a href="{{ sub.link }}">{{ sub.title }}</a>#}
-{#                            {% if sub.subcategories %}#}
-{#                                <ul>#}
-{#                                    {% include 'components/subcategories.html' with subcategories=sub.subcategories %}#}
-{#                                </ul>#}
-{#                            {% endif %}#}
+<ul>
+    {% for item in menu %}
+        <li>
+            <a href="{{ item.link }}">{{ item.title }}</a>
+            {% if item.subcategories %}
+                <ul>
+                    {% for sub in item.subcategories %}
+                        <li>
+                            <a href="{{ sub.link }}">{{ sub.title }}</a>
+                            {% if sub.subcategories %}
+                                <ul>
+                                    {% include 'components/subcategories.html' with subcategories=sub.subcategories %}
+                                </ul>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
+
+{#    <header>#}
+{#        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">#}
+{#            <div class="container-fluid">#}
+{#                <a class="navbar-brand" href="#">COFFO</a>#}
+{#                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"#}
+{#                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
+{#                    <span class="navbar-toggler-icon"></span>#}
+{#                </button>#}
+{#                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">#}
+{#                    <ul class="navbar-nav">#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link active" href="#">Home</a>#}
 {#                        </li>#}
-{#                    {% endfor %}#}
-{#                </ul>#}
-{#            {% endif %}#}
-{#        </li>#}
-{#    {% endfor %}#}
-{#</ul>#}
-
-{% load static %}
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">COFFO</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'about_us' %}">About</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="{% url 'api_product-list' %}" id="productDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Products
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="productDropdown">
-                                <li>
-                                    <a class="dropdown-item" data-bs-toggle="collapse" href="#collapseCoffees"
-                                        role="button" aria-expanded="false" aria-controls="collapseCoffees">
-                                        Coffees
-                                    </a>
-                                    <div class="collapse" id="collapseCoffees">
-                                        <ul class="list-unstyled ms-3">
-                                            <li><a class="dropdown-item" href="#">Espresso</a></li>
-                                            <li><a class="dropdown-item" href="#">Latte</a></li>
-                                            <li><a class="dropdown-item" href="#">Cappuccino</a></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" data-bs-toggle="collapse" href="#collapseFoods"
-                                        role="button" aria-expanded="false" aria-controls="collapseFoods">
-                                        Foods
-                                    </a>
-                                    <div class="collapse" id="collapseFoods">
-                                        <ul class="list-unstyled ms-3">
-                                            <li><a class="dropdown-item" href="#">Sandwiches</a></li>
-                                            <li><a class="dropdown-item" href="#">Pastries</a></li>
-                                            <li><a class="dropdown-item" href="#">Salads</a></li>
-                                        </ul>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Shop</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Blog</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"><i class="bi bi-search"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="{% url 'about_us' %}">About</a>#}
+{#                        </li>#}
+{##}
+{#                        <li class="nav-item dropdown">#}
+{#                            <a class="nav-link dropdown-toggle" href="#" id="productDropdown" role="button"#}
+{#                                data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                                Products#}
+{#                            </a>#}
+{#                            <ul class="dropdown-menu" aria-labelledby="productDropdown">#}
+{#                                <li>#}
+{#                                    <a class="dropdown-item" data-bs-toggle="collapse" href="#collapseCoffees"#}
+{#                                        role="button" aria-expanded="false" aria-controls="collapseCoffees">#}
+{#                                        Coffees#}
+{#                                    </a>#}
+{#                                    <div class="collapse" id="collapseCoffees">#}
+{#                                        <ul class="list-unstyled ms-3">#}
+{#                                            <li><a class="dropdown-item" href="#">Espresso</a></li>#}
+{#                                            <li><a class="dropdown-item" href="#">Latte</a></li>#}
+{#                                            <li><a class="dropdown-item" href="#">Cappuccino</a></li>#}
+{#                                        </ul>#}
+{#                                    </div>#}
+{#                                </li>#}
+{#                                <li>#}
+{#                                    <a class="dropdown-item" data-bs-toggle="collapse" href="#collapseFoods"#}
+{#                                        role="button" aria-expanded="false" aria-controls="collapseFoods">#}
+{#                                        Foods#}
+{#                                    </a>#}
+{#                                    <div class="collapse" id="collapseFoods">#}
+{#                                        <ul class="list-unstyled ms-3">#}
+{#                                            <li><a class="dropdown-item" href="#">Sandwiches</a></li>#}
+{#                                            <li><a class="dropdown-item" href="#">Pastries</a></li>#}
+{#                                            <li><a class="dropdown-item" href="#">Salads</a></li>#}
+{#                                        </ul>#}
+{#                                    </div>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="#">Shop</a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="#">Blog</a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="#">Contact</a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="#">Login</a>#}
+{#                        </li>#}
+{#                        <li class="nav-item">#}
+{#                            <a class="nav-link" href="#"><i class="bi bi-search"></i></a>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </div>#}
+{#        </nav>#}
+{#    </header>#}
+{#    #}
