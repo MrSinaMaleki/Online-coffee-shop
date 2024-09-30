@@ -1,3 +1,4 @@
+
 from django.contrib.auth.base_user import BaseUserManager
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -40,13 +41,31 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-class Human(User, LogicalMixin):
+class Human(AbstractUser, LogicalMixin):
+    email = models.EmailField(unique=True)  # Add email field, set as unique
     phone = models.CharField(unique=True, max_length=11, null=True, blank=True)
     gender = models.CharField(max_length=6, choices=(('male', 'Male'), ('female', 'Female')), null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     profile_image = models.ImageField(upload_to='profile_image', null=True, blank=True,
                                       validators=[validate_image_size])
 
+    # Add related_name attributes to avoid conflicts with auth.User reverse accessors
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='human_set',  # Avoid conflict with 'auth.User.groups'
+        blank=True,
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+        verbose_name='groups'
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='human_set',  # Avoid conflict with 'auth.User.user_permissions'
+        blank=True,
+        help_text='Specific permissions for this user.',
+        verbose_name='user permissions'
+    )
+
+    # Using a custom manager
     objects = CustomUserManager()
 
     def __str__(self):
