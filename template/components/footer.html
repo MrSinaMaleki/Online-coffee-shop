@@ -1,30 +1,39 @@
+{% load static %}
 <footer class="bg-dark text-light text-center py-3 mt-auto z-0">
-            <div class="container">
+    <div class="container">
 
 
-                <div class="social-icons mb-3">
-                    <a href="#" class="text-white mx-2"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+        <div class="social-icons mb-3">
+            <a href="#" class="text-white mx-2"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+        </div>
+
+        <!-- Newsletter Subscription Form -->
+        <div class="newsletter-signup">
+            <h5>Subscribe to Our Newsletter</h5>
+            <p>Stay updated with our latest offers and news</p>
+            <br>
+            <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+            <form enctype="multipart/form-data" method="POST" action="" style="text-align: center;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Subscribe to our Newsletter</label>
+                    <input type="email" class="form-control w-1/3 mx-auto" id="userEmail" placeholder="Enter email" required>
+                    <small style="font-weight: 600;color: red;" class="error"></small>
+
                 </div>
-
-                <!-- Newsletter Subscription Form -->
-                <div class="newsletter-signup">
-                    <h5>Subscribe to Our Newsletter</h5>
-                    <p>Stay updated with our latest offers and news.</p>
-                    <form class="form-inline justify-content-center">
-                        <input class="form-control mb-2 mr-sm-2" type="email" placeholder="Enter your email"
-                            aria-label="Email">
-                        <button class="btn btn-primary mb-2" type="submit">Subscribe</button>
-                    </form>
-                </div>
-            </div>
-
-            <p>&copy; 2024 Coffo Coffee Shop | All rights reserved.</p>
-            <p>
-                <a href="#" class="text-light">Privacy Policy</a> |
-                <a href="#" class="text-light">Terms of Service</a> |
-                <a href="#" class="text-light">Contact Us</a>
-            </p>
-            </div>
-        </footer>
+                <input type="submit" value="Subscribe" id="submit" class="btn mt-3">
+            </form>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="{% static 'js/footer.js' %}"></script>
+    </div>
+    <br>
+    <p>&copy; 2024 Coffo Coffee Shop | All rights reserved.</p>
+    <p>
+        <a href="#" class="text-light">Privacy Policy</a> |
+        <a href="#" class="text-light">Terms of Service</a> |
+        <a href="#" class="text-light">Contact Us</a>
+    </p>
+</footer>

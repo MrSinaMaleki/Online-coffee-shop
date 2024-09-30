@@ -1,0 +1,15 @@
+label {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.btn {
+    padding: 7px 21px;
+    background-color: rgb(143, 1, 1);
+    color: white;
+    font-size: 18px;
+}
+
+body {
+    background-color: azure;
+}
