@@ -4,9 +4,12 @@
 {% block extra_head %}
     <link href="{% static "css/detaileProduct.css" %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/all_products.css' %}">
+
 {% endblock %}
 {% block content %}
+
     <div class="max-w-[80vw]  z-0 mx-auto my-6">
+
         <div class="card-compact">
             <div class="card">
                 <!-- card left -->
@@ -23,13 +26,16 @@
                 <!-- card right -->
                 <div class="product-content">
                     {#                    1#}
-                    <h2 class="product-title" id="product_title">nike shoes</h2>
+                    <h2 class="product-title" id="product_title"></h2>
                     {#                    2#}
-                    <a href="#" class="product-link " id="category">visit nike store</a>
+                    <div id="category">
+
+                    </div>
+
                     <div class="product-rating">
                         <i class="fas fa-star">score</i>
                         {#                        3#}
-                        <i class="fas " id="score">4.7(21)</i>
+                        <i class="fas " id="score"></i>
                         <i class="fas "></i>
                         <i class="fas "></i>
                         <i class="fas "></i>
@@ -37,9 +43,9 @@
                     </div>
 
                     <div class="product-price">
-                        <p class="last-price">Old Price: <span>$257.00</span></p>
+                        <p class="last-price">Old Price: <span></span></p>
                         {#                        4#}
-                        <p class="new-price">Price: <span id="price_product">249.00 (5%)</span>$ </p>
+                        <p class="new-price">Price: <span id="price_product"></span>$ </p>
                     </div>
 
                     <div class="product-detail">

@@ -9,7 +9,7 @@
             let data = new FormData(formData)
             if (userAuthInputDetail === "True") {
                 const isLiked = element.classList.toggle('liked')
-                fetch(`http://localhost:8001/favorite/api/favorite/create`, {
+                fetch(`https://via.placeholder.com/300`, {
                     method: 'POST',
                     body: data,
                 })
