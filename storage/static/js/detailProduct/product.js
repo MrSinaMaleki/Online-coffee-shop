@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const product_title = document.querySelector("#product_title")
 
 
-    fetch(`api/detail/product/${pkId}`, {
+    fetch(`api/list/coffeeshop`, {
         method: 'GET',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
