@@ -61,11 +61,7 @@
                 if (temp.ok) {
                     messageElement.textContent = 'Sign up successful!';
                     messageElement.style.color = 'green';
-                } else {
-                    messageElement.textContent = 'Error:';
-                    messageElement.style.color = 'red';
-                }
-                Swal.fire({
+                                    Swal.fire({
                     title: 'Successful!',
                     text: 'User has been created Successfuly',
                     icon: 'Successful',
@@ -73,15 +69,22 @@
                     willClose: () => {
                         window.location.replace("{% url 'login' %}")
                     }
-                })
+                    })
+                }else{
+                    throw temp
+
+                }
 
             })
             .catch(error => {
-                console.error('Error:', error);
+                let errors = ""
+                for (let key in error) {
+                    errors += error[key]
+                }
                 Swal.fire({
-                    title: 'Failed! ',
-                    text: error,
-                    icon: 'Failed',
+                    title: 'Failed!',
+                    text: errors,
+                    icon: 'warning',
                     confirmButtonText: 'Ok',
                 })
 
