@@ -60,9 +60,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 const imageEl = `
                 <img src="${productes.images[0].image}"
                              alt="${productes.images[0]}">`
-                imagePreview.innerHTML += imageEl
-            } else {
-                imagePreview.innerHTML += `<img src="https://www.k5learning.com/sites/all/files/can%27t.gif"
+
+            imagePreview.innerHTML += imageEl
+        }else {
+            imagePreview.innerHTML += `<img src="https://via.placeholder.com/300"
+         
                              alt="image">`
             }
             if (productes.category.length > 1) {
