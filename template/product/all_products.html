@@ -14,6 +14,10 @@
     </div>
 {% endblock %}
 
+
 {% block extra_body %}
+    <script>
+        let userAuthInputList = '{{ request.user.is_authenticated }}'
+    </script>
     <script src="{% static 'js/allProducts/viewAllProducts.js' %}"></script>
 {% endblock %}

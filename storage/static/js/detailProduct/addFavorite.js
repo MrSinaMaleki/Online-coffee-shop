@@ -4,24 +4,14 @@
             alert(message);
         }
 
-        function toggleLike(productId, element) {
-
-            let data = new FormData()
-            data.append('products', productId)
-            console.log(data)
-            const userAuthentication = parseInt(userAuthInput)
-            console.log(userAuthentication)
-
-            if (userAuthInput === "True") {
+        function toggleLike(element) {
+            const formData=document.querySelector('#liked_id')
+            let data = new FormData(formData)
+            if (userAuthInputDetail === "True") {
                 const isLiked = element.classList.toggle('liked')
-                fetch(`http://${requestHost}/favorite/api/favorite/create`, {
+                fetch(`http://localhost:8001/favorite/api/favorite/create`, {
                     method: 'POST',
                     body: data,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }
-
                 })
 
             } else {

@@ -59,10 +59,11 @@
                                 Add to Cart <i class="fas fa-shopping-cart"></i>
                             </button>
                         </form>
-                        <div id="liked_id" class="like-btn "
-                             onclick="toggleLike({{ pk }}, this)">
+                        <form id="liked_id" class="like-btn " onclick="toggleLike(this)" >
+                            <input type="text" class="!hidden" name="products" value="{{ pk }}">
+                            {% csrf_token %}
                             <i class="fas fa-heart"></i>
-                        </div>
+                        </form>
 
                     </div>
 
@@ -95,7 +96,8 @@
 
     <script>
         const pkId = {{ pk }}
-        const userAuthInput = '{{ request.user.is_authenticated }}'
+        const userAuthInputDetail = '{{ request.user.is_authenticated }}'
+
     </script>
     <script src="{% static "js/detailProduct/product.js" %}"></script>
     <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
