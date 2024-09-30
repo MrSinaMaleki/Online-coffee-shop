@@ -84,6 +84,20 @@ class Category(LogicalMixin):
 
         return result
 
+    def get_parents(self, includes_self=False, levels=None) -> list:
+        '''if level back parent category '''
+        category_list = []
+        level = Category.objects.count() if levels is None else levels
+        category_list = [self] if includes_self else []
+        parent = self.parent
+        for _ in range(level):
+            if parent is not None:
+                category_list.append(c := parent)
+                parent = c.parent
+            else:
+                break
+        return category_list
+
 
 class Product(LogicalMixin):
     title = models.CharField(max_length=100)
@@ -91,7 +105,8 @@ class Product(LogicalMixin):
     quantity = models.PositiveIntegerField(default=0)
     serial_number = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=200)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='category' ,related_query_name='categorys', null=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='category',
+                                 related_query_name='categorys', null=True)
     is_coffee_shop = models.BooleanField()
     timeline = models.CharField(max_length=9,
                                 choices=(('breakfast', 'Breakfast'), ('lunch', 'Lunch'), ('dinner', 'Dinner')),

@@ -47,7 +47,7 @@ class ProductIngratiatingSerializer(serializers.ModelSerializer):
 class ProductDetailSerializer(ProductSerializer):
     ingredients = serializers.SerializerMethodField(read_only=True)
     images = serializers.SerializerMethodField(read_only=True)
-    # category = serializers.SerializerMethodField(read_only=True)
+    category = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Product
         fields = (
@@ -62,15 +62,9 @@ class ProductDetailSerializer(ProductSerializer):
         ingredients = obj.ingredients.filter(is_delete=False)
         return ProductIngratiatingSerializer(ingredients, many=True).data
 
-    # def get_category(self, obj):
-    #     category_in_product = Category.objects.get(id=obj.category.id)
-    #     category_id=[]
-    #     category_id.append(category_in_product)
-    #     for _ in range(Category.objects.count()):
-    #         if category_in_product.parent is not None:
-    #             category_id.append(subcategory_id:=category_in_product.parent)
-    #             category_in_product = subcategory_id
-    #         else:
-    #             break
-    #     category_id.reverse()
-    #     return CategorySerializer(category_id, many=True).data
+    def get_category(self, obj):
+        if(category_in_product := Category.objects.filter(id=obj.category.id)).exists():
+            category = category_in_product.first()
+            category_id=category.get_parents(includes_self=False,levels=3)
+            return CategorySerializer(category_id, many=True).data
+        return False
