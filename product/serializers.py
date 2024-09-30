@@ -65,6 +65,6 @@ class ProductDetailSerializer(ProductSerializer):
     def get_category(self, obj):
         if(category_in_product := Category.objects.filter(id=obj.category.id)).exists():
             category = category_in_product.first()
-            category_id=category.get_parents(includes_self=False,levels=3)
+            category_id=category.get_parents(includes_self=True)
             return CategorySerializer(category_id, many=True).data
         return False

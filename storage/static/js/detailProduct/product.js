@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
         },
     }).then(async (response) => {
         console.log(response)
-        if (response.status!==200){
-
-        }else {
+        if (response.status !== 200) {
+            alert('no product')
+        } else {
             const productes = await response.json()
             console.log(productes)
             imagePreview.innerHTML = ""
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             ingredients_title.innerHTML = ""
             description_short.innerHTML = productes.description
             price_product.innerHTML = productes.price
-            category.innerHTML = productes.category.title
+
             product_title.innerHTML = productes.title
             if (productes.favorite) {
 
@@ -65,10 +65,18 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 imagePreview.innerHTML += `<img src="https://www.k5learning.com/sites/all/files/can%27t.gif"
                              alt="image">`
             }
-
-        }})
-    .finally(() => {
-        slideImagess()
+            if (productes.category.length > 1) {
+                for (i in productes.category) {
+                    const categorys = `-> <a href="#" className="product-link ">${productes.category[i].title}</a>  `
+                    category.innerHTML += categorys
+                }
+            } else {
+                category.innerHTML=`<a href="#" className="product-link ">${productes.category.title}</a>  `
+            }
+        }
     })
+        .finally(() => {
+            slideImagess()
+        })
 
 })
