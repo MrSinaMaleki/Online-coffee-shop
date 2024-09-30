@@ -86,9 +86,8 @@ class Category(LogicalMixin):
 
     def get_parents(self, includes_self=False, levels=None) -> list:
         '''if level back parent category '''
-        category_list = []
         level = Category.objects.count() if levels is None else levels
-        category_list = [self] if includes_self else []
+        category_list =[self] if includes_self else []
         parent = self.parent
         for _ in range(level):
             if parent is not None:
@@ -96,6 +95,7 @@ class Category(LogicalMixin):
                 parent = c.parent
             else:
                 break
+        category_list.reverse()
         return category_list
 
 
