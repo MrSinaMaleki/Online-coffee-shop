@@ -16,7 +16,7 @@
                     let imageAlt=""
                     console.log(product.images.length)
                     if (product.images.length===0){
-                        imageSrc='https://www.k5learning.com/sites/all/files/can%27t.gif'
+                        imageSrc='https://via.placeholder.com/300'
                         imageAlt="image"
                     }
                     else {
