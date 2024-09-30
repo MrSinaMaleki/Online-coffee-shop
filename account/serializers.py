@@ -1,3 +1,4 @@
+
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
@@ -17,6 +18,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
     def validate(self, data):
         if data['password'] != data['password2']:
             raise serializers.ValidationError("Passwords must match.")
+
+        email = data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+
         return data
 
     def create(self, validated_data):
