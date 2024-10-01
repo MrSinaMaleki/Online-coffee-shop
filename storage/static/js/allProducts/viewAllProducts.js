@@ -45,24 +45,7 @@
             });
         });
 
-        function toggleLike(productId, element) {
-            if (userAuthInputList === "True") {
-                element.classList.toggle('liked')
-                let data = new FormData()
-                data.append('products', productId)
-                console.log(data)
-                fetch(`http://localhost:8001/favorite/api/favorite/create`, {
-                    method: 'POST',
-                    body: data,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }
-                })
-            } else {
-                showAlert('pleas login your account');
-            }
-        }
+
 
         function addToCart(productId) {
             console.log(`Product ${productId} added to cart`);

@@ -18,6 +18,29 @@
 {% block extra_body %}
     <script>
         let pk_category = '{{ pk }}'
+        let userAuthInputListCategory = '{{ request.user.is_authenticated }}'
     </script>
+
     <script src="{% static 'js/allProducts/viewCategoryProducts.js' %}"></script>
+      <script>
+
+        function toggleLike(productId, element) {
+            if (userAuthInputListCategory === "True") {
+                element.classList.toggle('liked')
+                let data = new FormData()
+                data.append('products', productId)
+                console.log(data)
+                fetch(`http://localhost:8001/favorite/api/favorite/create`, {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+            } else {
+                showAlert('pleas login your account');
+            }
+        }
+    </script>
 {% endblock %}
