@@ -48,7 +48,7 @@
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700">Favorites</label>
-            <div id="favorites" class="grid grid-cols-1 gap-4"></div> <!-- Updated to handle product cards -->
+            <div id="favorites" class="grid grid-cols-1 gap-4"></div>
         </div>
 
         <button id="editProfileButton" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Edit
@@ -125,7 +125,7 @@
                 });
                 const data = await response.json();
 
-                // Populate the HTML with user data
+
                 document.getElementById('fullName').textContent = data.first_name + ' ' + data.last_name;
                 document.getElementById('username').textContent = '@' + data.username;
                 document.getElementById('email').textContent = data.email;
@@ -134,13 +134,13 @@
 
                 document.getElementById('profileImage').src = data.profile_image || 'https://via.placeholder.com/150';
 
-                // Handle favorites: Fetch each product detail and render it as a card
+
                 const favoritesList = document.getElementById('favorites');
-                favoritesList.innerHTML = ''; // Clear existing list
+                favoritesList.innerHTML = '';
                 if (data.favorites && data.favorites.length > 0) {
-                    data.favorites.forEach(favoriteId => {
-                        const productResponse = fetch(`http://localhost:8001/product/api/detail/product/${favoriteId.products}`);
-                        const productData = productResponse.json();
+                    data.favorites.forEach(async favoriteId => {
+                        const productResponse = await fetch(`http://localhost:8001/product/api/detail/product/${favoriteId.products}`);
+                        const productData = await productResponse.json();
 
                         const card = document.createElement('div');
                         card.classList.add('border', 'rounded', 'shadow-lg', 'p-4', 'flex', 'flex-col', 'items-center');
