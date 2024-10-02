@@ -2,9 +2,229 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #6f4e37, #c19a6b);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .slide-in {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+        }
+
+        .slide-in.active {
+            transform: translateX(0%);
+        }
+    </style>
 </head>
-<body>
+<body class="flex justify-center items-center min-h-screen relative">
+<div class="bg-white shadow-lg rounded-lg max-w-md w-full p-6 relative z-10">
+    <div class="text-center">
+        <img id="profileImage" class="w-32 h-32 rounded-full mx-auto object-cover mb-4"
+             src="https://via.placeholder.com/150" alt="Profile Image">
+        <h1 id="fullName" class="text-2xl font-bold"></h1>
+        <p id="username" class="text-gray-600"></p>
+    </div>
+
+    <div class="mt-6 space-y-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <p id="email" class="text-gray-900"></p>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Phone</label>
+            <p id="phone" class="text-gray-900">Not Provided</p>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Gender</label>
+            <p id="gender" class="text-gray-900">Not Provided</p>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Favorites</label>
+            <div id="favorites" class="grid grid-cols-1 gap-4"></div> <!-- Updated to handle product cards -->
+        </div>
+
+        <button id="editProfileButton" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Edit
+            Profile
+        </button>
+    </div>
+</div>
+
+<div id="editProfileForm"
+     class="bg-gray-100 shadow-2xl rounded-l-lg max-w-md w-full h-screen fixed right-0 top-0 p-6 slide-in hidden z-20">
+    <h2 class="text-2xl font-bold mb-6">Update Profile</h2>
+    <form id="profileForm" class="space-y-4">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">First Name</label>
+            <label for="firstName"></label><input id="firstName" class="w-full border rounded px-3 py-2" type="text">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Last Name</label>
+            <label for="lastName"></label><input id="lastName" class="w-full border rounded px-3 py-2" type="text">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <label for="emailInput"></label><input id="emailInput" class="w-full border rounded px-3 py-2" type="email">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Phone</label>
+            <label for="phoneInput"></label><input id="phoneInput" class="w-full border rounded px-3 py-2" type="text">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Gender</label>
+            <label for="genderInput"></label><select id="genderInput" class="w-full border rounded px-3 py-2">
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Profile Image</label>
+            <input id="profileImageInput" class="w-full border rounded px-3 py-2" type="file" accept="image/*">
+        </div>
+        <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Save Changes
+        </button>
+    </form>
+</div>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const editProfileButton = document.getElementById('editProfileButton');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const profileForm = document.getElementById('profileForm');
+        const csrftoken = getCookie('csrftoken');
+
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8001/account/api/profile', {
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    }
+                });
+                const data = await response.json();
+
+                // Populate the HTML with user data
+                document.getElementById('fullName').textContent = data.first_name + ' ' + data.last_name;
+                document.getElementById('username').textContent = '@' + data.username;
+                document.getElementById('email').textContent = data.email;
+                document.getElementById('phone').textContent = data.phone || 'Not Provided';
+                document.getElementById('gender').textContent = data.gender || 'Not Provided';
+
+                document.getElementById('profileImage').src = data.profile_image || 'https://via.placeholder.com/150';
+
+                // Handle favorites: Fetch each product detail and render it as a card
+                const favoritesList = document.getElementById('favorites');
+                favoritesList.innerHTML = ''; // Clear existing list
+                if (data.favorites && data.favorites.length > 0) {
+                    data.favorites.forEach(favoriteId => {
+                        const productResponse = fetch(`http://localhost:8001/product/api/detail/product/${favoriteId.products}`);
+                        const productData = productResponse.json();
+
+                        const card = document.createElement('div');
+                        card.classList.add('border', 'rounded', 'shadow-lg', 'p-4', 'flex', 'flex-col', 'items-center');
+
+                        const productImage = document.createElement('img');
+                        productImage.src = productData.image || 'https://via.placeholder.com/100';
+                        productImage.alt = productData.title;
+                        productImage.classList.add('w-24', 'h-24', 'object-cover', 'mb-4');
+
+                        const productTitle = document.createElement('h3');
+                        productTitle.textContent = productData.title;
+                        productTitle.classList.add('font-bold', 'mb-2', 'text-center');
+
+                        const productPrice = document.createElement('p');
+                        productPrice.textContent = `Price: $${productData.price}`;
+                        productPrice.classList.add('text-gray-600', 'mb-2', 'text-center');
+
+                        card.appendChild(productImage);
+                        card.appendChild(productTitle);
+                        card.appendChild(productPrice);
+
+                        favoritesList.appendChild(card);
+                    });
+                } else {
+                    const noFavMessage = document.createElement('p');
+                    noFavMessage.textContent = 'No favorites added';
+                    favoritesList.appendChild(noFavMessage);
+                }
+
+                document.getElementById('firstName').value = data.first_name;
+                document.getElementById('lastName').value = data.last_name;
+                document.getElementById('emailInput').value = data.email;
+                document.getElementById('phoneInput').value = data.phone;
+                document.getElementById('genderInput').value = data.gender;
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        await fetchData();
+
+        // Show form when the button is clicked
+        editProfileButton.addEventListener('click', () => {
+            editProfileForm.classList.toggle('hidden');
+            editProfileForm.classList.toggle('active');
+        });
+
+        // Handle form submission
+        profileForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('first_name', document.getElementById('firstName').value);
+            formData.append('last_name', document.getElementById('lastName').value);
+            formData.append('email', document.getElementById('emailInput').value);
+            formData.append('phone', document.getElementById('phoneInput').value);
+            formData.append('gender', document.getElementById('genderInput').value);
+
+            const profileImageInput = document.getElementById('profileImageInput');
+            if (profileImageInput.files.length > 0) {
+                formData.append('profile_image', profileImageInput.files[0]);
+            }
+
+            try {
+                const response = await fetch('http://localhost:8001/account/api/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('Profile updated successfully!');
+                    location.reload();
+                } else {
+                    alert('Failed to update profile.');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

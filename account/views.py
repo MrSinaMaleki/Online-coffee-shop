@@ -15,11 +15,16 @@ from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 from django.shortcuts import redirect
 
-from django.contrib.auth import authenticate,login, logout
+from django.contrib.auth import authenticate, login, logout
 from .models import Human
 from .serializers import CustomUserSerializer, LoginSerializer, ForgetPasswordSerializer, ResetPasswordSerializer, \
     ProfileSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
+from .models import Human
+from .serializers import ProfileSerializer
 
 
 class SignUpAPIView(APIView):
@@ -48,9 +53,11 @@ class LoginAPIView(APIView):
 
             return Response({'Message': 'Invalid Username and Password'}, status=401)
 
+
 def logout_view(request):
     logout(request)
     return redirect("/")
+
 
 class ForgetPasswordAPIView(APIView):
     def post(self, request, *args, **kwargs):
@@ -93,23 +100,30 @@ class ResetPasswordAPIView(APIView):
             user.set_password(serializer.validated_data['password'])
             user.save()
 
-            return Response({"detail":"Password has been successfully reset."}, status=status.HTTP_200_OK)
+            return Response({"detail": "Password has been successfully reset."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProfileAPIView(RetrieveUpdateAPIView):
-    permission_classes = [IsAuthenticated]
+class ProfileView(generics.RetrieveUpdateAPIView):
+    queryset = Human.objects.all()
     serializer_class = ProfileSerializer
-    template_name = 'account/profile.html'
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_object(self):
         return self.request.user
 
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
 
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
 
+        return Response(serializer.data)
 
 
 class TempForm(CreateAPIView):
     serializer_class = CustomUserSerializer
     queryset = Human.objects.all()
-
