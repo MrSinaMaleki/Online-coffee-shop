@@ -27,6 +27,7 @@ from core.views import AboutUs
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('account.urls')),
+    path('comments/', include('django_comments_xtd.urls')),
     path('comment/', include('comment.urls')),
     path('favorite/', include('favorite.urls')),
     path('order/', include('order.urls')),

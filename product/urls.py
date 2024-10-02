@@ -2,6 +2,7 @@ from django.urls import path
 from .views import ProductListView, ProductCoffeeShopListView, CategoryView, \
     ProductDetailView, ProductDetailAPIView ,ProductCategoryListView, RestaurantView
 from django.views.generic import TemplateView
+from comment.views import ProductCommentListCreateView
 urlpatterns = [
     path('api/list/product/category/<int:pk>', ProductListView.as_view(), name='api_product-category-list'),
     path('api/list/product', ProductListView.as_view(), name='api_product-list'),
@@ -13,4 +14,7 @@ urlpatterns = [
     path('category/<int:pk>', CategoryView.as_view(), name='category-product-list'),
     path('coffeeshop/', TemplateView.as_view(template_name="product/all_products_coffeeshop.html"), name='coffeeshop'),
     path('restaurant/<str:time>', RestaurantView.as_view(), name='restaurant'),
+
+    # List and create comments for a specific product
+    path('<int:product_id>/comments/', ProductCommentListCreateView.as_view(), name='product-comment-list'),
 ]
