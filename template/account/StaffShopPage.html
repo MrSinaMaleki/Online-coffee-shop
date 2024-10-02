@@ -1,0 +1,225 @@
+{% load static %}
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Order List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <style>
+        body {
+            background-color: #f9fafb; /* Light background for better contrast */
+        }
+
+        .table-container {
+            background: white; /* White background for table */
+            border-radius: 0.5rem; /* Rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .avatar img {
+            transition: transform 0.3s; /* Smooth image transition effect */
+        }
+
+        .avatar img:hover {
+            transform: scale(1.05); /* Scale effect on hover */
+        }
+
+        .btn {
+            margin-top: 1rem; /* Space above the button */
+        }
+    </style>
+</head>
+<body>
+<div id="button_view" class="mx-a flex flex-row justify-center content-center  my-5">
+    <button class="btn btn-outline mx-3 " onclick="orderView()">List Order</button>
+    <button class="btn btn-outline mx-3 btn-primary">Comment</button>
+    <button class="btn btn-outline mx-3 btn-secondary" onclick="productDetail()">Product</button>
+    <button class="btn btn-outline mx-3 btn-accent"><a href="">amam gholi</a></button>
+</div>
+<div id="button_product_detail_view" class="mx-a  my-5 !hidden">
+    <div class="grid grid-cols-3 my-5 ">
+        <button class="btn btn-outline mx-3 " onclick="">Dinner</button>
+        <button class="btn btn-outline mx-3 btn-primary">Breakfast</button>
+        <button class="btn btn-outline mx-3 btn-secondary">Lunch</button>
+    </div>
+
+    <div id="category_menu" class="mx-a flex flex-row justify-center content-center  my-5">
+
+    </div>
+    <div class="max-w-[80vw] mx-auto mb-5" >
+    <div class="overflow-x-auto">
+        <table class="table w-full table-auto table-container">
+            <thead class="bg-gray-200">
+            <tr>
+                <th class="w-10">
+                    <label>
+                        <input type="checkbox" class="checkbox"/>
+                    </label>
+                </th>
+                <th class="text-left">Name</th>
+                <th class="text-left">Detail</th>
+                <th class="text-left">Time Line</th>
+                <th class="w-10"></th>
+            </tr>
+            </thead>
+            <tbody id="tbody_items2">
+            <!-- Rows will be populated here dynamically -->
+            </tbody>
+            <tfoot>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Detail</th>
+                <th>Time Line</th>
+                <th></th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+</div>
+
+
+<div class="max-w-[80vw] mx-auto mb-5" id="orderView">
+    <div class="overflow-x-auto">
+        <table class="table w-full table-auto table-container">
+            <thead class="bg-gray-200">
+            <tr>
+                <th class="w-10">
+                    <label>
+                        <input type="checkbox" class="checkbox"/>
+                    </label>
+                </th>
+                <th class="text-left">Name</th>
+                <th class="text-left">Detail</th>
+                <th class="text-left">Quantity</th>
+                <th class="w-10"></th>
+            </tr>
+            </thead>
+            <tbody id="tbody_items">
+            <!-- Rows will be populated here dynamically -->
+            </tbody>
+            <tfoot>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Detail</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div id="coment" class="!hidden">
+
+</div>
+
+
+</body>
+<script src="{% static 'js/order/ordrItemsStaff.js' %}"></script>
+<script src="{% static 'js/order/buttonProductAll.js' %}"></script>
+<script>
+    let button_product_detail_view = document.querySelector('#button_product_detail_view')
+    let orderViews = document.querySelector('#orderView')
+    let category_menu = document.querySelector('#category_menu')
+    let tbody_items2 = document.querySelector('#tbody_items2')
+
+    let FlagId = 0
+    document.addEventListener('DOMContentLoaded', () => {
+        orderView()
+
+    });
+
+    function orderAccept(orderid) {
+
+
+        let data = new FormData();
+        data.append('orderId', orderid);
+
+        fetch(`http://localhost:8001/order/api/1`, {
+            method: 'POST',
+            body: data,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        alert('Error: ' + errorData.message);
+                        throw new Error('Network response was not ok');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Order accepted successfully!');
+
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            }).finally(() => {
+            orderView()
+        })
+
+    }
+    {#++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
+    function productAll() {
+        fetch(`http://localhost:8001/product/api/list/product`, {
+            method: 'GET',
+        }).then(async request => {
+            let orderRows2=''
+            const pro=await request.json()
+            console.log(pro)
+            for (let i in pro) {
+                orderRows2 += `<tr>
+                        <th></th>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="avatar">
+                                    <div class="mask mask-squircle h-12 w-12">
+                                        <img src="${pro[i].images.length > 0 ?
+                    pro[i].images[0].image :
+                    'https://via.placeholder.com/300'}"
+                                        alt="${pro[i].title} Image" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold">${pro[i].title}</div>
+                                    <div class="text-sm opacity-50">coming sone</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            ${pro[i].category.title}
+                            <br />
+                            <span class="badge badge-ghost badge-sm">${pro[i].description}</span>
+                        </td>
+                        <td>${pro[i].timeline}</td>
+
+                    </tr>
+
+`;
+            }
+              tbody_items2.innerHTML=orderRows2
+        })
+
+    }
+
+    {#++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
+    function setes() {
+        console.log(FlagId)
+        if (FlagId === 0) {
+            orderView();
+        }
+    }
+
+    setInterval(setes, 3000);
+</script>
+
+</html>

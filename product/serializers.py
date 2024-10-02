@@ -17,18 +17,20 @@ class ProductImageSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField(read_only=True)
     favorite = serializers.SerializerMethodField(read_only=True)
-
+    category = CategorySerializer(read_only=True)
     class Meta:
         model = Product
         fields = (
             'id', 'title', 'price', 'description', 'is_coffee_shop',
-            'timeline', 'images', 'favorite')
+            'timeline', 'images', 'favorite','category')
 
     def get_images(self, obj):
         images = obj.images.filter(is_cover=True)
         return ProductImageSerializer(images, many=True).data
 
     def get_favorite(self, obj):
+        print(obj)
+        print(self.context)
         if self.context['request'].user.is_authenticated:
             return Favorite.objects.filter(user_id=self.context['request'].user, products_id=obj.id).exists()
         return False
@@ -67,3 +69,10 @@ class ProductDetailSerializer(ProductSerializer):
             category_id=category.get_parents(includes_self=True)
             return CategorySerializer(category_id, many=True).data
         return False
+
+#************************************order*************************
+
+class ProductOrderSerializer(ProductSerializer):
+        class Meta:
+            model = Product
+            fields = ('id', 'title','images','category','description')
