@@ -1,0 +1,127 @@
+<!doctype html>
+{% load static %}
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+<div class="">
+
+</div>
+<div class=" max-w-[80vw] mx-auto">
+    <div class="overflow-x-auto">
+        <table class="table">
+            <!-- head -->
+            <thead>
+            <tr>
+                <th>
+                    <label>
+                        <input type="checkbox" class="checkbox"/>
+                    </label>
+                </th>
+                <th>Name</th>
+                <th>Detail</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="tbody_items">
+            <!-- row 1 -->
+
+
+            </tbody>
+            <!-- foot -->
+            <tfoot>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Detail</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tbody_items = document.querySelector('#tbody_items')
+        fetch(`http://localhost:8001/order/api/1`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+        }).then(response => response.json()).then(products => {
+            const OrderList = products
+            let order = ``
+            for (let i in OrderList) {
+                console.log(OrderList[i].quantity)
+                for (o in OrderList[i].order_item) {
+                    console.log(OrderList[i].order_item[o].product)
+                    let len = OrderList[i].order_item[o].product.category.length - 1
+                    let el = `<tr>
+        <th>
+
+        </th>
+        <td>
+          <div class="flex items-center gap-3">
+            <div class="avatar">
+              <div class="mask mask-squircle h-12 w-12">
+                <img
+
+              src="${OrderList[i].order_item[o].product.images.length > 0 ? OrderList[i].order_item[o].product.images[0].image : 'https://via.placeholder.com/300'}"
+            alt="${OrderList[i].order_item[o].product.title} Image" />
+              </div>
+            </div>
+            <div>
+              <div class="font-bold">${OrderList[i].order_item[o].product.title}</div>
+              <div class="text-sm opacity-50"> ${OrderList[i].created_at}</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          ${OrderList[i].order_item[o].product.category.title}
+          <br />
+          <span class="badge badge-ghost badge-sm">${OrderList[i].order_item[o].product.description}</span>
+        </td>
+        <td>${OrderList[i].order_item[o].quantity}</td>
+        <th>
+
+        </th>
+      </tr>`
+                    order += el
+                }
+                order += `<p>Order time: ${OrderList[i].created_at}</p>
+                    <form action="" id="form_accept">
+                        <input class="!hidden" type="text"name='order' value="${OrderList[i].id}">
+                        <button class="btn glass" onclick="orderAccept()">accept </button>
+                    </form>
+
+
+`
+            }
+            tbody_items.innerHTML = order
+        })
+    })
+
+    function orderAccept(){
+
+    }
+</script>
+</body>
+</html>
+
+
+{#src="${OrderList[i].order_item[o].product.images.length}?${OrderList[i].order_item[o].product.images[0].image}:''"#}
+{#alt="Avatar Tailwind CSS Component" />#}
+{#     <label>#}
+{#            <input type="checkbox" class="checkbox" />#}
+{#          </label>#}

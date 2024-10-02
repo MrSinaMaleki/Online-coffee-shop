@@ -40,7 +40,7 @@ class Order(LogicalMixin):
 class OrderItem(LogicalMixin):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_item')
     quantity = models.PositiveIntegerField(default=1)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_item')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_item',related_query_name='order_items')
     price_at_order = models.FloatField()
 
     objects = ActiveNotDeletedBaseManager()
