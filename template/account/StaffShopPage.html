@@ -1,43 +1,64 @@
-<!doctype html>
 {% load static %}
+<!doctype html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Order List</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <style>
+        body {
+            background-color: #f9fafb; /* Light background for better contrast */
+        }
 
+        .table-container {
+            background: white; /* White background for table */
+            border-radius: 0.5rem; /* Rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .avatar img {
+            transition: transform 0.3s; /* Smooth image transition effect */
+        }
+
+        .avatar img:hover {
+            transform: scale(1.05); /* Scale effect on hover */
+        }
+
+        .btn {
+            margin-top: 1rem; /* Space above the button */
+        }
+    </style>
 </head>
 <body>
-<div class="">
-
+<div id="button_view" class="mx-a flex flex-row justify-center content-center  my-5">
+    <button class="btn btn-outline mx-3 " onclick="orderView()">List Order </button>
+    <button class="btn btn-outline mx-3 btn-primary">Comment </button>
+    <button class="btn btn-outline mx-3 btn-secondary"><a href="">Product</a></button>
+    <button class="btn btn-outline mx-3 btn-accent"><a href="">Accent</a></button>
 </div>
-<div class=" max-w-[80vw] mx-auto">
+
+<div class="max-w-[80vw] mx-auto" id="orderView mb-5">
     <div class="overflow-x-auto">
-        <table class="table">
-            <!-- head -->
-            <thead>
+        <table class="table w-full table-auto table-container">
+            <thead class="bg-gray-200">
             <tr>
-                <th>
+                <th class="w-10">
                     <label>
                         <input type="checkbox" class="checkbox"/>
                     </label>
                 </th>
-                <th>Name</th>
-                <th>Detail</th>
-                <th>Quantity</th>
-                <th></th>
+                <th class="text-left">Name</th>
+                <th class="text-left">Detail</th>
+                <th class="text-left">Quantity</th>
+                <th class="w-10"></th>
             </tr>
             </thead>
             <tbody id="tbody_items">
-            <!-- row 1 -->
-
-
+            <!-- Rows will be populated here dynamically -->
             </tbody>
-            <!-- foot -->
             <tfoot>
             <tr>
                 <th></th>
@@ -50,78 +71,51 @@
         </table>
     </div>
 </div>
+<div id="coment" class="!hidden">
+
+</div>
+<script src="{% static 'js/order/ordrItemsStaff.js' %}"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const tbody_items = document.querySelector('#tbody_items')
+    let flags = 0
+    document.addEventListener('DOMContentLoaded', () => {
+        orderView()
+
+    });
+
+    function orderAccept(orderid) {
+        let data = new FormData();
+        data.append('orderId', orderid);
+
         fetch(`http://localhost:8001/order/api/1`, {
-            method: 'GET',
+            method: 'POST',
+            body: data,
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
                 'X-CSRFToken': '{{ csrf_token }}'
             },
-        }).then(response => response.json()).then(products => {
-            const OrderList = products
-            let order = ``
-            for (let i in OrderList) {
-                console.log(OrderList[i].quantity)
-                for (o in OrderList[i].order_item) {
-                    console.log(OrderList[i].order_item[o].product)
-                    let len = OrderList[i].order_item[o].product.category.length - 1
-                    let el = `<tr>
-        <th>
-
-        </th>
-        <td>
-          <div class="flex items-center gap-3">
-            <div class="avatar">
-              <div class="mask mask-squircle h-12 w-12">
-                <img
-
-              src="${OrderList[i].order_item[o].product.images.length > 0 ? OrderList[i].order_item[o].product.images[0].image : 'https://via.placeholder.com/300'}"
-            alt="${OrderList[i].order_item[o].product.title} Image" />
-              </div>
-            </div>
-            <div>
-              <div class="font-bold">${OrderList[i].order_item[o].product.title}</div>
-              <div class="text-sm opacity-50"> ${OrderList[i].created_at}</div>
-            </div>
-          </div>
-        </td>
-        <td>
-          ${OrderList[i].order_item[o].product.category.title}
-          <br />
-          <span class="badge badge-ghost badge-sm">${OrderList[i].order_item[o].product.description}</span>
-        </td>
-        <td>${OrderList[i].order_item[o].quantity}</td>
-        <th>
-
-        </th>
-      </tr>`
-                    order += el
-                }
-                order += `<p>Order time: ${OrderList[i].created_at}</p>
-                    <form action="" id="form_accept">
-                        <input class="!hidden" type="text"name='order' value="${OrderList[i].id}">
-                        <button class="btn glass" onclick="orderAccept()">accept </button>
-                    </form>
-
-
-`
-            }
-            tbody_items.innerHTML = order
         })
-    })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        alert('Error: ' + errorData.message);
+                        throw new Error('Network response was not ok');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Order accepted successfully!');
 
-    function orderAccept(){
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            }).finally(() => {
+            orderView()
+        })
 
     }
+
+    setInterval(orderView, 5000);
 </script>
 </body>
 </html>
-
-
-{#src="${OrderList[i].order_item[o].product.images.length}?${OrderList[i].order_item[o].product.images[0].image}:''"#}
-{#alt="Avatar Tailwind CSS Component" />#}
-{#     <label>#}
-{#            <input type="checkbox" class="checkbox" />#}
-{#          </label>#}
