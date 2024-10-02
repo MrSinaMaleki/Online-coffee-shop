@@ -22,7 +22,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = (
             'id', 'title', 'price', 'description', 'is_coffee_shop',
-            'timeline', 'images', 'favorite')
+            'timeline', 'images', 'favorite','category')
 
     def get_images(self, obj):
         images = obj.images.filter(is_cover=True)

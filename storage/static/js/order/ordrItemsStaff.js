@@ -1,6 +1,7 @@
-
-
 function orderView() {
+    button_product_detail_view.classList.add('!hidden')
+    orderViews.classList.remove('!hidden')
+    FlagId=0
     const tbody_items = document.querySelector('#tbody_items');
     fetch(`http://localhost:8001/order/api/1`, {
         method: 'GET',
