@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import ProductListView, ProductCoffeeShopListView, CategoryView, \
-
-    ProductDetailView, ProductDetailAPIView, ProductCategoryListView, RestaurantView, CategoryListView
+from .views import (ProductListView, ProductCoffeeShopListView, CategoryView, ProductDetailView, ProductDetailAPIView,
+                    ProductCategoryListView, RestaurantView, CategoryListView)
 
 from django.views.generic import TemplateView
 urlpatterns = [

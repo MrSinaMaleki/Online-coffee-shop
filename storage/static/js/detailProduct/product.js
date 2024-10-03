@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const price_product = document.querySelector("#price_product")
     const category = document.querySelector("#category")
     const product_title = document.querySelector("#product_title")
+    const add_to_cart_btn = document.querySelector("#quantity")
+    console.log(add_to_cart_btn)
+        add_to_cart_btn.onclick = `addToCart${pkId}`
 
 
     fetch(`api/detail/product/${pkId}`, {
@@ -82,3 +85,4 @@ document.addEventListener('DOMContentLoaded', function (event) {
         })
 
 })
+

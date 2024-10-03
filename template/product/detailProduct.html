@@ -59,9 +59,10 @@
                     </div>
 
                     <div class="purchase-info flex">
-                        <form action="">
-                            <input type="number" min="0" value="1">
-                            <button type="button" class="btn">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <input type="number" min="0" value="1" id="quantity">
+                            <button type="button" class="btn" onclick="addToCart({{ pk }})" >
                                 Add to Cart <i class="fas fa-shopping-cart"></i>
                             </button>
                         </form>
@@ -106,6 +107,7 @@
 
     </script>
     <script src="{% static "js/detailProduct/product.js" %}"></script>
+    <script src="{% static 'js/detailProduct/addCart.js' %}"></script>
     <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
     <script src="{% static 'js/detailProduct/addFavorite.js' %}"></script>
 

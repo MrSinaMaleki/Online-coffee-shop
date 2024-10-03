@@ -1,0 +1,19 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}
+    History of Sales - Online Shop
+{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/history_of_sales.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container mt-4">
+        <h1>Your Order History</h1>
+        <div id="order-history">
+
+        </div>
+    </div>
+{% endblock %}
+{% block extra_body %}
+    <script src="{% static 'js/history_of_sales.js' %}"></script>
+{% endblock %}

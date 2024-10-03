@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block title %}
+    Cart - Online Shop
+{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container mt-4">
+        <h1>Your Cart</h1>
+        <div id="cart-items">
+
+
+        </div>
+    </div>
+{% endblock %}
+{% block extra_body %}
+    <script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}

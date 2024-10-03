@@ -19,8 +19,37 @@
 
 
     <script src="{% static 'js/allProducts/viewAllProducts.js' %}"></script>
-     <script>
-        let userAuthInputList = '{{ request.user.is_authenticated }}'
+
+    <script>
+    let userAuthInputList = '{{ request.user.is_authenticated }}'
+    async function addToCart(productId) {
+            if (userAuthInputList==='False') {
+        alert('Please log in to add items to your cart.');
+        window.location.href = 'http://localhost:8001/account/login/';
+        return;
+    }
+
+    await fetch(`http://localhost:8001/order/cart/add/${productId}/`, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    })
+    .then(async response => await response.json())
+    .then(async data => {
+        await console.log(data)
+        if (data.error) {
+                alert(data.error)
+            }
+            else{
+                alert(data.message);
+            }
+
+    })
+    .catch(async error => console.error('Error adding to cart:', error));
+}
+
         function toggleLike(productId, element) {
             if (userAuthInputList === "True") {
                 element.classList.toggle('liked')
@@ -37,7 +66,9 @@
                 })
             } else {
                 showAlert('pleas login your account');
+                window.location.href = 'http://localhost:8001/account/login/';
             }
         }
     </script>
+
 {% endblock %}
