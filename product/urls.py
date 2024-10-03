@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import ProductListView, ProductCoffeeShopListView, CategoryView, \
+
     ProductDetailView, ProductDetailAPIView, ProductCategoryListView, RestaurantView, CategoryListView
+
 from django.views.generic import TemplateView
 urlpatterns = [
     path('api/list/product/category/<int:pk>', ProductListView.as_view(), name='api_product-category-list'),
