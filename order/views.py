@@ -15,7 +15,8 @@ class OrderItemList(APIView):
     def get(self, request, filterOrder=None):
         if request.user.is_superuser:
             if filterOrder is None:
-                orders_is_not_complete = Order.objects.filter(is_completed=False).order_by('-created_at')
+
+                orders_is_not_complete = Order.objects.paid().filter(is_completed=False).order_by('-created_at')
                 serializer = OrderSerializers(orders_is_not_complete, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({'message : is not super user'}, status=status.HTTP_403_FORBIDDEN)

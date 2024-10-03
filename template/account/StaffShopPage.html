@@ -140,7 +140,7 @@
         let data = new FormData();
         data.append('orderId', orderid);
 
-        fetch(`http://localhost:8001/order/api/1`, {
+        fetch(`http://localhost:8001/order/api/ordrlist`, {
             method: 'POST',
             body: data,
             headers: {

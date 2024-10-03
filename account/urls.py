@@ -9,7 +9,7 @@ from django.contrib.auth.views import LogoutView
 urlpatterns = [
     # path('', include("django.contrib.auth.urls"), name='auth'),
 
-    path('', TemplateView.as_view(template_name="account/profile.html"), name='profile'),
+    path('', TemplateView.as_view(template_name="account/profile.html"), name='profiles'),
     path("api/profile", ProfileView.as_view(), name="profile"),
 
 

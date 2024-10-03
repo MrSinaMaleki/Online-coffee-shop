@@ -1,14 +1,10 @@
+
+from product.serializers import ProductOrderSerializer
 from rest_framework import serializers
 
 from product.models import Product
 from .models import OrderItem, Order
-from product.serializers import ProductOrderSerializer
-
-from rest_framework import serializers
-
-from product.models import Product
-from .models import OrderItem, Order
-from product.serializers import ProductOrderSerializer
+from product.serializers import ProductSerializer
 
 
 class OrderItemSerializers(serializers.ModelSerializer):
@@ -20,17 +16,12 @@ class OrderItemSerializers(serializers.ModelSerializer):
 
 
 class OrderSerializers(serializers.ModelSerializer):
-    order_item = OrderItemSerializers(many=True, read_only=True)
+    items = OrderItemSerializers(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = ['is_active', 'order_item','created_at','id']
+        fields = ['is_active', 'items','created_at','id']
 
-from rest_framework import serializers
-
-from product.models import Product
-from .models import OrderItem, Order
-from product.serializers import ProductSerializer
 
 
 class ProductSerializerCustom(ProductSerializer):

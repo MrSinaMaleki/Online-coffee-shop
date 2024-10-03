@@ -33,9 +33,70 @@
 
 </body>
 {% block extra_body %} {% endblock %}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
     const requestHost = `{{ request.get_host }}`
     console.log(requestHost)
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Toggle profile menu
+        const profileBtn = document.getElementById('profile-btn');
+        const profileMenu = document.getElementById('profile-menu');
+
+        profileBtn.addEventListener('click', (e) => {
+
+            profileMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#profile-btn') && !e.target.closest('#profile-menu')) {
+                profileMenu.classList.add('hidden');
+            }
+        });
+
+        // Submenu interaction with exclusive toggle
+        const submenus = document.querySelectorAll('.submenu');
+        const subItems = document.querySelectorAll('.group > a');
+
+        subItems.forEach((menuItem, index) => {
+            menuItem.addEventListener('click', (e) => {
+
+
+                // Close all submenus
+                submenus.forEach((submenu) => {
+                    submenu.classList.add('hidden');
+                });
+
+                // Toggle current submenu
+                const currentSubmenu = menuItem.nextElementSibling;
+                if (currentSubmenu) {
+                    currentSubmenu.classList.toggle('hidden');
+                }
+            });
+        });
+
+        // Sub-submenu interaction for inner submenus
+        const subSubmenus = document.querySelectorAll('.subsubmenu');
+        const subSubItems = document.querySelectorAll('.submenu > div > a');
+
+        subSubItems.forEach((subMenuItem) => {
+            subMenuItem.addEventListener('mouseenter', () => {
+                const subSubmenu = subMenuItem.nextElementSibling;
+                if (subSubmenu) {
+                    subSubmenu.classList.remove('hidden');
+                }
+            });
+
+            subMenuItem.addEventListener('mouseleave', () => {
+                const subSubmenu = subMenuItem.nextElementSibling;
+                if (subSubmenu) {
+                    subSubmenu.classList.add('hidden');
+                }
+            });
+        });
+    });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </html>

@@ -20,6 +20,7 @@ class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     class Meta:
         model = Product
+
         fields = (
             'id', 'title', 'price', 'description', 'is_coffee_shop',
             'timeline', 'images', 'favorite','category')
@@ -29,8 +30,6 @@ class ProductSerializer(serializers.ModelSerializer):
         return ProductImageSerializer(images, many=True).data
 
     def get_favorite(self, obj):
-        print(obj)
-        print(self.context)
         if self.context['request'].user.is_authenticated:
             return Favorite.objects.filter(user_id=self.context['request'].user, products_id=obj.id).exists()
         return False

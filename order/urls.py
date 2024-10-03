@@ -1,9 +1,8 @@
 from django.urls import path
 
 from django.views.generic.base import TemplateView
-from order.views import OrderItemList
-from .views import AddToCartAPIView, CartView, PayOrderAPIView, CancelOrderAPIView, OrderHistoryView
 
+from .views import AddToCartAPIView, CartView, PayOrderAPIView, CancelOrderAPIView, OrderHistoryView, OrderItemList
 
 urlpatterns = [
     path('api/ordrlist', OrderItemList.as_view(), name='order-list'),
@@ -17,6 +16,4 @@ urlpatterns = [
     path('cart/', TemplateView.as_view(template_name="order/cart.html"), name='cart'),
     path('history_order/', TemplateView.as_view(template_name="order/history_of_sales.html"), name='history'),
 
-
 ]
-
