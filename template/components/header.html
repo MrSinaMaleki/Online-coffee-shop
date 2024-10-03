@@ -1,96 +1,148 @@
-<ul>
-    {% for item in menu %}
-        <li>
-            <a href="{{ item.link }}">{{ item.title }}</a>
-            {% if item.subcategories %}
-                <ul>
-                    {% for sub in item.subcategories %}
-                        <li>
-                            <a href="{{ sub.link }}">{{ sub.title }}</a>
-                            {% if sub.subcategories %}
-                                <ul>
-                                    {% include 'components/subcategories.html' with subcategories=sub.subcategories %}
-                                </ul>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
+{#<ul>#}
+{#    {% for item in menu %}#}
+{#        <li>#}
+{#            <a href="{{ item.link }}">{{ item.title }}</a>#}
+{#            {% if item.subcategories %}#}
+{#                <ul>#}
+{#                    {% for sub in item.subcategories %}#}
+{#                        <li>#}
+{#                            <a href="{{ sub.link }}">{{ sub.title }}</a>#}
+{#                            {% if sub.subcategories %}#}
+{#                                <ul>#}
+{#                                    {% include 'components/subcategories.html' with subcategories=sub.subcategories %}#}
+{#                                </ul>#}
+{#                            {% endif %}#}
+{#                        </li>#}
+{#                    {% endfor %}#}
+{#                </ul>#}
+{#            {% endif %}#}
+{#        </li>#}
+{#    {% endfor %}#}
+{#</ul>#}
+
+{% load static %}
+<header class="bg-dark text-white py-4 relative z-50">
+    <div class="container mx-auto flex justify-between items-center">
+        <!-- Logo -->
+        <div class="text-4xl font-bold tracking-wide">
+            COFFO
+        </div>
+
+        <!-- Menu -->
+        <nav>
+            <ul class="flex space-x-6 text-2xl font-medium">
+                {% for item in menu %}
+                    <li class="relative group">
+                        <a href="{{ item.link }}" class="hover:text-gray-400">{{ item.title }}</a>
+                        {% if item.subcategories %}
+                            <!-- Submenu -->
+                            <div class="submenu absolute left-0 mt-2 bg-gray-800 text-white rounded shadow-lg w-48 hidden z-50">
+                                {% for sub in item.subcategories %}
+                                    <div class="relative group">
+                                        <a href="{{ sub.link }}" class="block px-4 py-2 hover:bg-gray-700">{{ sub.title }}</a>
+                                        {% if sub.subcategories %}
+                                            <!-- Sub-submenu -->
+                                            <div class="subsubmenu absolute left-full top-0 bg-gray-800 text-white rounded shadow-lg w-48 hidden z-50">
+                                                {% for subsub in sub.subcategories %}
+                                                    <a href="{{ subsub.link }}" class="block px-4 py-2 hover:bg-gray-700">{{ subsub.title }}</a>
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <!-- Profile -->
+        <div class="relative">
+            {% if user.is_authenticated %}
+                <button id="profile-btn" class="flex items-center space-x-2">
+                    <img src="{{ user.profile.image.url }}" alt="Profile" class="w-8 h-8 rounded-full object-cover">
+                </button>
+
+                <div id="profile-menu" class="absolute right-0 bg-gray-800 text-white rounded shadow-lg mt-2 w-40 hidden z-50">
+                    {% if is_superuser %}
+                        <a href="{% url 'admin:index' %}" class="block px-4 py-2 hover:bg-gray-700">Admin Panel</a>
+                    {% endif %}
+                    <a href="{% url 'profile' %}" class="block px-4 py-2 hover:bg-gray-700">Profile</a>
+                    <a href="{% url 'cart' %}" class="block px-4 py-2 hover:bg-gray-700">Cart</a>
+                    <a href="{% url 'logout' %}" class="block px-4 py-2 hover:bg-gray-700">Sign Out</a>
+                </div>
+            {% else %}
+                <button id="profile-btn" class="flex items-center space-x-2">
+                    <i class="fas fa-user"></i>
+                </button>
+
+                <div id="profile-menu" class="absolute right-0 bg-gray-800 text-white rounded shadow-lg mt-2 w-40 hidden z-50">
+                    <a href="{% url 'login' %}" class="block px-4 py-2 hover:bg-gray-700">Login</a>
+                    <a href="{% url 'signup' %}" class="block px-4 py-2 hover:bg-gray-700">Sign Up</a>
+                </div>
             {% endif %}
-        </li>
-    {% endfor %}
-</ul>
+        </div>
+    </div>
+</header>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Toggle profile menu
+        const profileBtn = document.getElementById('profile-btn');
+        const profileMenu = document.getElementById('profile-menu');
 
-{#    <header>#}
-{#        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">#}
-{#            <div class="container-fluid">#}
-{#                <a class="navbar-brand" href="#">COFFO</a>#}
-{#                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"#}
-{#                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
-{#                    <span class="navbar-toggler-icon"></span>#}
-{#                </button>#}
-{#                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">#}
-{#                    <ul class="navbar-nav">#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link active" href="#">Home</a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="{% url 'about_us' %}">About</a>#}
-{#                        </li>#}
-{##}
-{#                        <li class="nav-item dropdown">#}
-{#                            <a class="nav-link dropdown-toggle" href="#" id="productDropdown" role="button"#}
-{#                                data-bs-toggle="dropdown" aria-expanded="false">#}
-{#                                Products#}
-{#                            </a>#}
-{#                            <ul class="dropdown-menu" aria-labelledby="productDropdown">#}
-{#                                <li>#}
-{#                                    <a class="dropdown-item" data-bs-toggle="collapse" href="#collapseCoffees"#}
-{#                                        role="button" aria-expanded="false" aria-controls="collapseCoffees">#}
-{#                                        Coffees#}
-{#                                    </a>#}
-{#                                    <div class="collapse" id="collapseCoffees">#}
-{#                                        <ul class="list-unstyled ms-3">#}
-{#                                            <li><a class="dropdown-item" href="#">Espresso</a></li>#}
-{#                                            <li><a class="dropdown-item" href="#">Latte</a></li>#}
-{#                                            <li><a class="dropdown-item" href="#">Cappuccino</a></li>#}
-{#                                        </ul>#}
-{#                                    </div>#}
-{#                                </li>#}
-{#                                <li>#}
-{#                                    <a class="dropdown-item" data-bs-toggle="collapse" href="#collapseFoods"#}
-{#                                        role="button" aria-expanded="false" aria-controls="collapseFoods">#}
-{#                                        Foods#}
-{#                                    </a>#}
-{#                                    <div class="collapse" id="collapseFoods">#}
-{#                                        <ul class="list-unstyled ms-3">#}
-{#                                            <li><a class="dropdown-item" href="#">Sandwiches</a></li>#}
-{#                                            <li><a class="dropdown-item" href="#">Pastries</a></li>#}
-{#                                            <li><a class="dropdown-item" href="#">Salads</a></li>#}
-{#                                        </ul>#}
-{#                                    </div>#}
-{#                                </li>#}
-{#                            </ul>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="#">Shop</a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="#">Blog</a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="#">Contact</a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="#">Login</a>#}
-{#                        </li>#}
-{#                        <li class="nav-item">#}
-{#                            <a class="nav-link" href="#"><i class="bi bi-search"></i></a>#}
-{#                        </li>#}
-{#                    </ul>#}
-{#                </div>#}
-{#            </div>#}
-{#        </nav>#}
-{#    </header>#}
-{#    #}
-#i have changed this branch
+        profileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            profileMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#profile-btn') && !e.target.closest('#profile-menu')) {
+                profileMenu.classList.add('hidden');
+            }
+        });
+
+        // Submenu interaction with exclusive toggle
+        const submenus = document.querySelectorAll('.submenu');
+        const subItems = document.querySelectorAll('.group > a');
+
+        subItems.forEach((menuItem, index) => {
+            menuItem.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                // Close all submenus
+                submenus.forEach((submenu) => {
+                    submenu.classList.add('hidden');
+                });
+
+                // Toggle current submenu
+                const currentSubmenu = menuItem.nextElementSibling;
+                if (currentSubmenu) {
+                    currentSubmenu.classList.toggle('hidden');
+                }
+            });
+        });
+
+        // Sub-submenu interaction for inner submenus
+        const subSubmenus = document.querySelectorAll('.subsubmenu');
+        const subSubItems = document.querySelectorAll('.submenu > div > a');
+
+        subSubItems.forEach((subMenuItem) => {
+            subMenuItem.addEventListener('mouseenter', () => {
+                const subSubmenu = subMenuItem.nextElementSibling;
+                if (subSubmenu) {
+                    subSubmenu.classList.remove('hidden');
+                }
+            });
+
+            subMenuItem.addEventListener('mouseleave', () => {
+                const subSubmenu = subMenuItem.nextElementSibling;
+                if (subSubmenu) {
+                    subSubmenu.classList.add('hidden');
+                }
+            });
+        });
+    });
+</script>
+

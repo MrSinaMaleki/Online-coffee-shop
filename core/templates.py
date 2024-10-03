@@ -20,7 +20,7 @@ def get_subcategories(category, request):
 def menu_context_processor(request):
     my_list = [
         dict(title="Home", link=link_creator(request, "/")),
-        dict(title="About Us", link=link_creator(request, "/pages/about-us")),
+        dict(title="About", link=link_creator(request, "/pages/about-us")),
         dict(title="All Foods", link=link_creator(request, "/product/products")),
         dict(title="Coffee Shop", link=link_creator(request, "/product/coffeeshop/")),
         dict(
@@ -54,4 +54,3 @@ def menu_context_processor(request):
     return {
         'menu': my_list
     }
-

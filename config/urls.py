@@ -31,7 +31,7 @@ urlpatterns = [
     path('favorite/', include('favorite.urls')),
     path('order/', include('order.urls')),
     path('product/', include('product.urls')),
-    path('', TemplateView.as_view(template_name='pages/index.html')),
+    path('', TemplateView.as_view(template_name='pages/index.html'),name="home"),
     path('pages/about-us', AboutUs.as_view(), name="about_us"),
 ]
 if settings.DEBUG:
