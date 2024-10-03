@@ -1,9 +1,12 @@
 from django.urls import path
 from .views import ProductListView, ProductCoffeeShopListView, CategoryView, \
-    ProductDetailView, ProductDetailAPIView, ProductCategoryListView, RestaurantView
+
+    ProductDetailView, ProductDetailAPIView, ProductCategoryListView, RestaurantView, CategoryListView
+
 from django.views.generic import TemplateView
 urlpatterns = [
     path('api/list/product/category/<int:pk>', ProductListView.as_view(), name='api_product-category-list'),
+    path('api/list/category', CategoryListView.as_view(), name='api-category-list'),
     path('api/list/product', ProductListView.as_view(), name='api_product-list'),
     path('api/detail/product/<int:pk>', ProductDetailAPIView.as_view(), name='api_product-detail'),
     path('api/list/coffeeshop', ProductCoffeeShopListView.as_view(), name='api_product-coffeeshop-list'),

@@ -1,4 +1,3 @@
-
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
@@ -6,6 +5,8 @@ from favorite.models import Favorite
 from .models import Human
 from django.contrib.auth.models import User
 from favorite.serializers import FavoriteAddSerializer
+from rest_framework import serializers
+from .models import Human
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -56,13 +57,32 @@ class ResetPasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError("Passwords must match.")
         return data
 
-# class FavoriteSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Favorite
-#         fields = ['products']
+class FavoritesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = '__all__'
+
 
 class ProfileSerializer(serializers.ModelSerializer):
+    favorites = FavoritesSerializer(many=True, read_only=True)
 
     class Meta:
         model = Human
-        fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'gender', 'age', 'profile_image']
+
+        fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'gender', 'profile_image', 'favorites']
+        extra_kwargs = {
+            'username': {'read_only': True},
+        }
+
+    def update(self, instance, validated_data):
+        profile_image = validated_data.pop('profile_image', None)
+
+        if profile_image:
+            instance.profile_image = profile_image
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
+

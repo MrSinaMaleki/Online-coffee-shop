@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from product.models import Product, Category
-from product.serializers import ProductSerializer, ProductDetailSerializer
+from product.serializers import ProductSerializer, ProductDetailSerializer, CategorySerializer
 
 
 class ProductDetailView(TemplateView):
@@ -93,3 +93,10 @@ class RestaurantView(TemplateView):
         context['time'] = self.kwargs['time']
         return context
 
+
+'''all category'''
+class CategoryListView(APIView):
+    def get(self, request):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

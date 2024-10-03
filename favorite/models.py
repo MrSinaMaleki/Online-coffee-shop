@@ -1,11 +1,12 @@
 from django.db import models
 from account.models import LogicalMixin, Human
+from django.contrib.auth.models import User
 from product.models import Product
 from core.managers import ActiveNotDeletedBaseManager
 
 
 class Favorite(LogicalMixin):
-    user = models.ForeignKey(Human, on_delete=models.CASCADE, related_query_name="favorites", related_name='favorites')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_query_name="favorites", related_name='favorites')
     products = models.ForeignKey(Product, on_delete=models.CASCADE, related_query_name="products",
                                  related_name='products')
 
