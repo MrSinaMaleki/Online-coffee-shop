@@ -1,9 +1,10 @@
-from rest_framework import generics
-from rest_framework.generics import ListAPIView
+from rest_framework import generics, permissions
+from rest_framework.generics import ListAPIView,RetrieveUpdateAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from rest_framework.status import HTTP_201_CREATED
+
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_201_CREATED
 from .models import Comments
 from .serializers import CommentSerializer, CommentAdderSerializer
 from django.db.models import Q
@@ -11,12 +12,41 @@ from rest_framework.exceptions import ValidationError
 
 class CreateComment(APIView):
     serializer_class = CommentAdderSerializer
+    permission_classes = (permissions.IsAuthenticated,)
     def post(self, request):
         print(request.data)
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=HTTP_201_CREATED)
+
+class UpdateCommentReply(APIView):
+    serializer_class = CommentAdderSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, comment_id):
+        try:
+            parent_comment = Comments.objects.get(id=comment_id)
+        except Comments.DoesNotExist:
+            return Response({"error": "Parent comment does not exist."}, status=HTTP_404_NOT_FOUND)
+
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        new_reply = serializer.save(reply_comments=parent_comment)
+
+
+        if hasattr(parent_comment, 'child'):
+            updated_replies = CommentAdderSerializer(parent_comment.child.all(), many=True).data
+        else:
+            updated_replies = []
+
+
+        return Response({
+            "parent_comment": CommentAdderSerializer(parent_comment).data,
+            "updated_replies": updated_replies
+        }, status=HTTP_200_OK)
 
 class CommentProductAPIView(generics.ListAPIView):
     serializer_class = CommentSerializer
