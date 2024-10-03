@@ -88,7 +88,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Toggle profile menu
+
         const profileBtn = document.getElementById('profile-btn');
         const profileMenu = document.getElementById('profile-menu');
 
@@ -103,20 +103,20 @@
             }
         });
 
-        // Submenu interaction with exclusive toggle
+
         const submenus = document.querySelectorAll('.submenu');
         const subItems = document.querySelectorAll('.group > a');
 
         subItems.forEach((menuItem, index) => {
             menuItem.addEventListener('click', (e) => {
-                e.preventDefault();
+                {#e.preventDefault();#}
 
-                // Close all submenus
+
                 submenus.forEach((submenu) => {
                     submenu.classList.add('hidden');
                 });
 
-                // Toggle current submenu
+
                 const currentSubmenu = menuItem.nextElementSibling;
                 if (currentSubmenu) {
                     currentSubmenu.classList.toggle('hidden');
@@ -124,7 +124,7 @@
             });
         });
 
-        // Sub-submenu interaction for inner submenus
+
         const subSubmenus = document.querySelectorAll('.subsubmenu');
         const subSubItems = document.querySelectorAll('.submenu > div > a');
 
