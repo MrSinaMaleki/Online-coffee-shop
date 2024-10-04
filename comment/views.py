@@ -26,7 +26,7 @@ class UpdateCommentReply(APIView):
 
     def post(self, request, comment_id):
         try:
-            parent_comment = Comments.objects.get(id=comment_id)
+            parent_comment = Comments.objects.accepted().get(id=comment_id)
         except Comments.DoesNotExist:
             return Response({"error": "Parent comment does not exist."}, status=HTTP_404_NOT_FOUND)
 
@@ -52,11 +52,11 @@ class CommentProductAPIView(generics.ListAPIView):
     serializer_class = CommentSerializer
     def get_queryset(self, *args, **kwargs):
         product_id = self.kwargs['product_id']
-        print(product_id)
+
         if not product_id:
             raise ValidationError('Product ID is required.')
 
-        queryset = Comments.objects.filter(
+        queryset = Comments.objects.accepted().filter(
             (
                     Q(child__isnull=False)
                 &
@@ -77,7 +77,7 @@ class CommentAPIView(ListAPIView):
     # Has replies but not a reply to any comment
     #Doesn't have replies and not a reply to any comment!
 
-    queryset = Comments.objects.filter(Q(reply_comments__isnull=True)
+    queryset = Comments.objects.accepted().filter(Q(reply_comments__isnull=True)
                                        |
                                         Q(child__isnull=True)
                                         |

@@ -27,7 +27,7 @@ class CommentSerializer(serializers.ModelSerializer):
         # depth = 6
 
     def get_reply_comments(self, obj):
-        replies = obj.child.filter(reply_comments__isnull=False).distinct()
+        replies = obj.child.filter(reply_comments__isnull=False).filter(is_accepted=True).distinct()
         if replies.exists():
             return CommentSerializer(replies, many=True).data
         return None
