@@ -4,6 +4,24 @@
 {% block extra_head %}
     <link href="{% static "css/detaileProduct.css" %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/all_products.css' %}">
+        <style>
+        .profile-image-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f3f4f6;
+        }
+        .profile-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
 
 {% endblock %}
 {% block content %}
@@ -74,24 +92,36 @@
 
                     </div>
 
-                    <div class="social-links">
-                        <p>score: </p>
-                        <a href="#">
-                            <i class="fab ">1</i>
-                        </a>
-                        <a href="#">
-                            <i class="fab ">2</i>
-                        </a>
-                        <a href="#">
-                            <i class="fab ">3</i>
-                        </a>
-                        <a href="#">
-                            <i class="fab ">4</i>
-                        </a>
-                        <a href="#">
-                            <i class="fab ">5</i>
-                        </a>
-                    </div>
+
+               <div id="commentSection" class="p-4 bg-gray-100 rounded-lg shadow-md">
+                    <h2 class="text-xl font-bold mb-4">Comments</h2>
+                    {% if request.user.is_authenticated %}
+                    	<button onclick="formToggler()" id="addCommentButton" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Add Comment</button>
+
+
+                    {% else %}
+                        <button id="addCommentButton" class="mb-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled">Log In to add a comment :)</button>
+                    {% endif %}
+
+               </div>
+
+
+                <div id="commentForm" class="hidden p-4 bg-white rounded-lg shadow-md mb-4">
+                    <h3 class="text-lg font-bold mb-2">Add a Comment</h3>
+                    <form id="newCommentForm">
+                        <div class="mb-2">
+                            <label for="commentText" class="block text-gray-700">Comment Text:</label>
+                            <textarea id="commentText" class="mt-1 block w-full border border-gray-300 rounded-md" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-2">
+                            <label for="commentScore" class="block text-gray-700">Score (1-5):</label>
+                            <input type="number" id="commentScore" class="mt-1 block w-full border border-gray-300 rounded-md" min="1" max="5" required>
+                        </div>
+
+                        <button type="submit" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Submit Comment</button>
+                    </form>
+                </div>
+
                 </div>
             </div>
         </div>
@@ -102,14 +132,25 @@
 {% block extra_body %}
 
     <script>
+        // Interesting way :)
+        const path = window.location.pathname;
+        const pathParts = path.split('/');
+        const productId = pathParts[pathParts.length - 1];
+
+        const userId = `{{ request.user.id }}`
+
+        console.log(productId);
+
         const pkId = {{ pk }}
         const userAuthInputDetail = '{{ request.user.is_authenticated }}'
+
 
     </script>
     <script src="{% static "js/detailProduct/product.js" %}"></script>
     <script src="{% static 'js/detailProduct/addCart.js' %}"></script>
     <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
     <script src="{% static 'js/detailProduct/addFavorite.js' %}"></script>
+    <script src="{% static 'js/detailProduct/comments.js' %}"></script>
 
 {% endblock %}
 
