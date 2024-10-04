@@ -44,8 +44,8 @@
                 </button>
 
                 <div id="profile-menu" class="absolute right-0 bg-gray-800 text-white rounded shadow-lg mt-2 w-40 hidden z-50">
-                    {% if is_superuser %}
-                        <a href="{% url 'admin:index' %}" class="block px-4 py-2 hover:bg-gray-700">Admin Panel</a>
+                    {% if user.is_superuser %}
+                        <a href="{% url 'staff_page' %}" class="block px-4 py-2 hover:bg-gray-700">Admin Panel</a>
                     {% endif %}
                     <a href="{% url 'profiles' %}" class="block px-4 py-2 hover:bg-gray-700">Profile</a>
                     <a href="{% url 'cart' %}" class="block px-4 py-2 hover:bg-gray-700">Cart</a>
