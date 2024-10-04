@@ -95,9 +95,13 @@
     }
 
 
-    document.getElementById('addCommentButton').addEventListener('click', () => {
+    // document.getElementById('addCommentButton').addEventListener('click', () => {
+    //
+    // });
+
+    function formToggler() {
         commentForm.classList.toggle('hidden');
-    });
+    }
 
 
     newCommentForm.addEventListener('submit', (event) => {
@@ -137,16 +141,15 @@
 
 
     function showReplyForm(commentDiv, commentId) {
-        console.log(commentId)
-        alert("wait!")
-        // Remove any existing reply forms
+
+
         const existingReplyForm = commentDiv.querySelector('.replyForm');
         if (existingReplyForm) {
             existingReplyForm.remove();
         }
 
         const replyFormDiv = document.createElement('div');
-        replyFormDiv.className = 'mt-2 p-2 bg-gray-50 border rounded-lg replyForm'; // Added class for targeting
+        replyFormDiv.className = 'mt-2 p-2 bg-gray-50 border rounded-lg replyForm';
 
         const replyForm = document.createElement('form');
         replyForm.onsubmit = (event) => handleReplySubmit(event, commentId);

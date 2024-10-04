@@ -91,29 +91,19 @@
 
                     </div>
 
-                    <div class="social-links">
-                        <p>score: </p>
-                        <a href="#">
-                            <i class="fab ">1</i>
-                        </a>
-                        <a href="#">
-                            <i class="fab ">2</i>
-                        </a>
-                        <a href="#">
-                            <i class="fab ">3</i>
-                        </a>
-                        <a href="#">
-                            <i class="fab ">4</i>
-                        </a>
-                        <a href="#">
-                            <i class="fab ">5</i>
-                        </a>
-                    </div>
 
                <div id="commentSection" class="p-4 bg-gray-100 rounded-lg shadow-md">
                     <h2 class="text-xl font-bold mb-4">Comments</h2>
-                    <button id="addCommentButton" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Add Comment</button>
+                    {% if request.user.is_authenticated %}
+                    	<button onclick="formToggler()" id="addCommentButton" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Add Comment</button>
+
+
+                    {% else %}
+                        <button id="addCommentButton" class="mb-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled">Log In to add a comment :)</button>
+                    {% endif %}
+
                </div>
+
 
                 <div id="commentForm" class="hidden p-4 bg-white rounded-lg shadow-md mb-4">
                     <h3 class="text-lg font-bold mb-2">Add a Comment</h3>
@@ -126,8 +116,7 @@
                             <label for="commentScore" class="block text-gray-700">Score (1-5):</label>
                             <input type="number" id="commentScore" class="mt-1 block w-full border border-gray-300 rounded-md" min="1" max="5" required>
                         </div>
-                        <input type="hidden" id="userId" value="1"> <!-- Replace with dynamic user ID -->
-                        <input type="hidden" id="productId" value="1"> <!-- Replace with dynamic product ID -->
+
                         <button type="submit" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Submit Comment</button>
                     </form>
                 </div>
