@@ -107,7 +107,8 @@ class PayOrderAPIView(APIView):
                     #     product.is_active = False
                     product.save()
                 else:
-                    return Response({'error': 'Not enough stock for one or more products.'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'error': 'Not enough stock for one or more products.'},
+                                    status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE)
 
             order.is_paid = True
             order.save()
