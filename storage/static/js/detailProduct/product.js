@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
                 liked_id.classList.toggle('liked')
             }
-            console.log()
+
             if (productes.images.length > 1) {
                 for (i in productes.ingredients) {
                     let el = `
@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 category.innerHTML=`<a href="#" className="product-link ">${productes.category.title}</a>  `
             }
         }
+
     })
         .finally(() => {
             slideImagess()
