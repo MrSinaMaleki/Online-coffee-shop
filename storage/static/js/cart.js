@@ -69,7 +69,7 @@ function payForOrder(orderId) {
     .then(response => response.json())
     .then(data => {
         if (data.message) {
-            window.location.href = '/order/history_order/';
+            window.location.href = '/account/';
         }
     })
     .catch(error => console.error('Error paying for order:', error));
@@ -89,6 +89,7 @@ function cancelOrder(orderId) {
     .then(data => {
         if (data.message) {
             document.getElementById('cart-items').innerHTML = '<p>Order canceled successfully.</p>';
+
         }
     })
     .catch(error => console.error('Error canceling order:', error));

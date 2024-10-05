@@ -103,8 +103,8 @@ class PayOrderAPIView(APIView):
                 product = item.product
                 if product.quantity >= item.quantity:
                     product.quantity -= item.quantity
-                    if product.quantity == 0:
-                        product.is_active = False
+                    # if product.quantity == 0:
+                    #     product.is_active = False
                     product.save()
                 else:
                     return Response({'error': 'Not enough stock for one or more products.'}, status=status.HTTP_400_BAD_REQUEST)
