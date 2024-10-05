@@ -15,7 +15,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'password2']
+        fields = ['email', 'password', 'password2']
 
     def validate(self, data):
         print(data)
@@ -33,7 +33,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         password = validated_data.pop('password')
         validated_data.pop('password2')
 
-        human = User.objects.create_user(username=validated_data['username'], password=password,
+        human = User.objects.create_user(password=password,
                                           email=validated_data['email'])
         return human
 

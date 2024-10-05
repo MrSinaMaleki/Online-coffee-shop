@@ -131,7 +131,7 @@
 
 
                 document.getElementById('fullName').textContent = data.first_name + ' ' + data.last_name;
-                document.getElementById('username').textContent = '@' + data.username;
+                {#document.getElementById('username').textContent = '@' + data.username;#}
                 document.getElementById('email').textContent = data.email;
                 document.getElementById('phone').textContent = data.phone || 'Not Provided';
                 document.getElementById('gender').textContent = data.gender || 'Not Provided';
