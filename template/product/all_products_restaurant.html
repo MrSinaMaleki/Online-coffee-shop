@@ -14,59 +14,97 @@
     </div>
 {% endblock %}
 
-
 {% block extra_body %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        let time = '{{ time }}'
+        let time = '{{ time }}';
     </script>
     <script src="{% static 'js/allProducts/viewRestaurantProducts.js' %}"></script>
+
     <script>
-    let userAuthInputList = '{{ request.user.is_authenticated }}'
+    let userAuthInputList = '{{ request.user.is_authenticated }}';
+
     async function addToCart(productId) {
-            if (userAuthInputList==='False') {
-        alert('Please log in to add items to your cart.');
-        window.location.href = 'http://localhost:8001/account/login/';
-        return;
+        if (userAuthInputList === 'False') {
+            Swal.fire({
+                title: 'Not Logged In',
+                text: 'Please log in to add items to your cart.',
+                icon: 'warning',
+                confirmButtonText: 'Log In',
+                showCancelButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'http://localhost:8001/account/login/';
+                }
+            });
+            return;
+        }
+
+        await fetch(`http://localhost:8001/order/cart/add/${productId}/`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(async response => await response.json())
+        .then(async data => {
+            if (data.error) {
+                Swal.fire({
+                    title: 'Error',
+                    text: data.error,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                Swal.fire({
+                    title: 'Success',
+                    text: data.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            }
+        })
+        .catch(async error => {
+            Swal.fire({
+                title: 'Error',
+                text: 'An error occurred while adding the item to the cart.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            console.error('Error adding to cart:', error);
+        });
     }
 
-    await fetch(`http://localhost:8001/order/cart/add/${productId}/`, {
-        method: 'POST',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': '{{ csrf_token }}'
-        }
-    })
-    .then(async response => await response.json())
-    .then(async data => {
-        await console.log(data)
-        if (data.error) {
-                alert(data.error)
-            }
-            else{
-                alert(data.message);
-            }
+    let userAuthInputListRestaurant = '{{ request.user.is_authenticated }}';
 
-    })
-    .catch(async error => console.error('Error adding to cart:', error));
-}
-        let userAuthInputListRestaurant = '{{ request.user.is_authenticated }}'
-        function toggleLike(productId, element) {
-            if (userAuthInputListRestaurant === "True") {
-                element.classList.toggle('liked')
-                let data = new FormData()
-                data.append('products', productId)
-                console.log(data)
-                fetch(`http://localhost:8001/favorite/api/favorite/create`, {
-                    method: 'POST',
-                    body: data,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }
-                })
-            } else {
-                showAlert('pleas login your account');
-            }
+    function toggleLike(productId, element) {
+        if (userAuthInputListRestaurant === "True") {
+            element.classList.toggle('liked');
+            let data = new FormData();
+            data.append('products', productId);
+
+            fetch(`http://localhost:8001/favorite/api/favorite/create`, {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            });
+        } else {
+            Swal.fire({
+                title: 'Not Logged In',
+                text: 'Please log in to your account.',
+                icon: 'warning',
+                confirmButtonText: 'Log In',
+                showCancelButton: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'http://localhost:8001/account/login/';
+                }
+            });
         }
+    }
     </script>
 {% endblock %}

@@ -132,6 +132,7 @@
 {% block extra_body %}
 
     <script>
+
         // Interesting way :)
         const path = window.location.pathname;
         const pathParts = path.split('/');
@@ -146,6 +147,7 @@
 
 
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{% static "js/detailProduct/product.js" %}"></script>
     <script src="{% static 'js/detailProduct/addCart.js' %}"></script>
     <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
