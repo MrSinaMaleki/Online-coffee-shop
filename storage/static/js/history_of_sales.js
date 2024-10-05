@@ -16,10 +16,25 @@ function fetchOrderHistory() {
         } else {
             let historyContent = '';
             data.forEach(order => {
+
+                const date = new Date(order.created_at);
+                const formattedDate = date.toLocaleDateString();
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const result = `${formattedDate} ${hours}:${minutes}`;
+
+                const date2 = new Date(order.updated_at);
+                const formattedDate2 = date2.toLocaleDateString();
+                const hours2 = date2.getHours().toString().padStart(2, '0');
+                const minutes2 = date2.getMinutes().toString().padStart(2, '0');
+                const result2 = `${formattedDate2} ${hours2}:${minutes2}`;
+
+
                 historyContent += `<div class="order">
                     <h3>Order ID: ${order.id}</h3>
-                    <p>Order Date: ${order.created_at}</p>
-                    <p>Status: ${order.is_paid ? 'Paid' : 'Not Paid'}</p>
+                    <p>Order Date: ${result}</p> 
+                    <p>Order Update: ${result2}</p>
+                    <p>Status: ${order.is_paid ? 'Paid 💵' : 'Not Paid'} - ${order.is_completed ? 'Completed ✅' : 'Not Completed ❎'}</p>
                     <div class="order-items">
                         ${order.items.map(item => `
                             <div class="order-item">
