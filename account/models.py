@@ -19,7 +19,7 @@ class CustomUserManager(BaseUserManager):
     def normalize_email(self, email):
         return super().normalize_email(email)
 
-    def create_user(self, email, password=None,username=None, **extra_fields):
+    def create_user(self, email, password=None,**extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
@@ -43,7 +43,7 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractUser, LogicalMixin):
     email = models.EmailField(unique=True, help_text="User email(Used for auth)")
-    # username = models.CharField(max_length=50, unique=True)
+    username = None
     # first_name = models.CharField(max_length=50)
     # last_name = models.CharField(max_length=50)
     phone = models.CharField(max_length=11, help_text="max number = 11 char",null=True, blank=True)
@@ -55,7 +55,7 @@ class User(AbstractUser, LogicalMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    # objects = CustomUserManager()
+    objects = CustomUserManager()
 
 
     def __str__(self):
