@@ -4,7 +4,7 @@ from rest_framework.relations import SlugRelatedField
 from comment.models import Comments
 from rest_framework import serializers
 
-from account.models import Human
+from account.models import User
 
 
 class CommentAdderSerializer(serializers.ModelSerializer):
@@ -14,7 +14,7 @@ class CommentAdderSerializer(serializers.ModelSerializer):
 
 class HumanSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Human
+        model = User
         fields = ['username', 'profile_image']
 
 class CommentSerializer(serializers.ModelSerializer):

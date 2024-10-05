@@ -10,20 +10,18 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from config import settings
-from django.contrib.auth.models import User
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 from django.shortcuts import redirect
 
 from django.contrib.auth import authenticate, login, logout
-from .models import Human
+from .models import User
 from .serializers import CustomUserSerializer, LoginSerializer, ForgetPasswordSerializer, ResetPasswordSerializer, \
     ProfileSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
-from .models import Human
 from .serializers import ProfileSerializer
 
 
@@ -42,10 +40,10 @@ class LoginAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)  # Use self.serializer_class
         if serializer.is_valid(raise_exception=True):
-            username = serializer.validated_data['username']  # Fetch data using validated_data
+            email = serializer.validated_data['email']  # Fetch data using validated_data
             password = serializer.validated_data['password']
 
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 token, created = Token.objects.get_or_create(user=user)
                 login(request, user)
@@ -105,7 +103,7 @@ class ResetPasswordAPIView(APIView):
 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
-    queryset = Human.objects.all()
+    queryset = User.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
@@ -126,4 +124,4 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 
 class TempForm(CreateAPIView):
     serializer_class = CustomUserSerializer
-    queryset = Human.objects.all()
+    queryset = User.objects.all()

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from account.models import Human
+from account.models import User
 from favorite.models import Favorite
 from rest_framework.exceptions import AuthenticationFailed
 
@@ -11,7 +11,7 @@ class FavoriteAddSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         if self.context['request'].user.is_authenticated:
-            user = Human.objects.get(pk=self.context['request'].user.id)
+            user = User.objects.get(pk=self.context['request'].user.id)
             try:
                 favorite = Favorite.objects.get(products_id=validated_data['products'].id, user=user)
                 favorite.is_active = False

@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from account.models import Human
+from account.models import User
 from .models import Order, OrderItem, Product
 from .serializers import OrderSerializer
 
@@ -36,7 +36,7 @@ class AddToCartAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, product_id):
-        user = Human.objects.get(user_ptr_id=request.user.id)
+        user = User.objects.get(user_ptr_id=request.user.id)
 
         try:
             product = Product.objects.get(id=product_id)
@@ -79,7 +79,7 @@ class CartView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = Human.objects.get(user_ptr_id=request.user.id)
+        user = User.objects.get(user_ptr_id=request.user.id)
         order = Order.objects.not_paid().filter(user=user).first()
 
         if not order:
@@ -93,7 +93,7 @@ class PayOrderAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, order_id):
-        user = Human.objects.get(user_ptr_id=request.user.id)
+        user = User.objects.get(user_ptr_id=request.user.id)
         try:
             order = Order.objects.not_paid().filter(id=order_id, user=user).first()
             if not order:
@@ -121,7 +121,7 @@ class CancelOrderAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, order_id):
-        user = Human.objects.get(user_ptr_id=request.user.id)
+        user = User.objects.get(user_ptr_id=request.user.id)
         try:
             order = Order.objects.not_paid().filter(id=order_id, user=user).first()
             if not order:
@@ -139,7 +139,7 @@ class OrderHistoryView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = Human.objects.get(user_ptr_id=request.user.id)
+        user = User.objects.get(user_ptr_id=request.user.id)
         orders = Order.objects.paid().filter(user=user)
 
         if not orders.exists():
