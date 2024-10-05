@@ -18,7 +18,7 @@ class CommentAdderSerializer(serializers.ModelSerializer):
 class HumanSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'profile_image']
+        fields = ['username', 'profile_image']
 
 
 class CommentSerializer(serializers.ModelSerializer):

@@ -39,13 +39,7 @@
     <button class="btn btn-outline mx-3 btn-secondary" onclick="productDetail()">Product</button>
     <button class="btn btn-outline mx-3 btn-accent"><a href="">amam gholi</a></button>
 </div>
-<div class="collapse collapse-arrow bg-base-200">
-    <input type="radio" name="my-accordion-2" checked="checked"/>
-    <div class="collapse-title text-xl font-medium">Click to open this one and close others</div>
-    <div class="collapse-content">
-        <p>hello</p>
-    </div>
-</div>
+
 {#order in product#}
 <div id="button_product_detail_view" class="mx-a  my-5 !hidden">
     <div class="grid grid-cols-3 my-5 ">
@@ -122,42 +116,40 @@
         </table>
     </div>
 </div>
-<div id="coment" class="!hidden">
 
-</div>
 {#comment accepted#}
 
-<div class="overflow-x-auto !hidden" id="comment_accepted">
-  <table class="table">
-    <!-- head -->
-    <thead>
-      <tr>
-        <th>
-          <label>
-            <input type="checkbox" class="checkbox" />
-          </label>
-        </th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="tbody_comment">
-      <!-- row 1 -->
+<div class="max-w-[80vw] mx-auto mb-5 !hidden" id="comment_accepted">
+    <table class="table">
+        <!-- head -->
+        <thead class="bg-gray-200" >
+        <tr>
+            <th>
+               user
+            </th>
+            <th></th>
+            <th>comment</th>
+            <th></th>
+            <th>product</th>
+        </tr>
+        </thead>
+        <tbody id="tbody_comment">
+        <!-- row 1 -->
 
-    </tbody>
-    <!-- foot -->
-    <tfoot>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
-        <th></th>
-      </tr>
-    </tfoot>
-  </table>
+        </tbody>
+        <!-- foot -->
+        <tfoot>
+         <tr>
+                    <th>
+               user
+            </th>
+            <th></th>
+            <th>comment</th>
+            <th></th>
+            <th>product</th>
+        </tr>
+        </tfoot>
+    </table>
 </div>
 </body>
 <script src="{% static 'js/order/ordrItemsStaff.js' %}"></script>
@@ -171,8 +163,6 @@
     let tbody_items2 = document.querySelector('#tbody_items2')
     let comment_accepted = document.querySelector('#comment_accepted')
     let tbody_comment = document.querySelector('#tbody_comment')
-
-
 
 
     let FlagId = 0
@@ -228,12 +218,40 @@
             orderView();
         }
     }
-    function delete_comments(comment_id){alert('delete')
 
+    function delete_comments(comment_id) {
+        alert('delete')
+        let data = new FormData();
+        data.append('id_comment', comment_id);
 
+        fetch(`http://localhost:8001/comment/comments/admin-panel`, {
+            method: 'DELETE',
+            body: data,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+        })
 
+        comments_accepted()
     }
-    function accept_comments(){alert("comments")}
+
+    function accept_comments(comment_id) {
+        alert("comments")
+        let data = new FormData();
+        data.append('id_comment', comment_id);
+
+        fetch(`http://localhost:8001/comment/comments/admin-panel`, {
+            method: 'POST',
+            body: data,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+        })
+        comments_accepted()
+    }
+
     setInterval(setes, 3000);
 </script>
 

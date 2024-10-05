@@ -107,5 +107,28 @@ class CommentAdminPanelView(APIView):
     permission_classes = (permissions.IsAuthenticated, IsAdminUser)
 
     def get(self, request, *args, **kwargs):
-        serializers = CommentAdminPanelSerializer(Comments.objects.filter(is_accepted=False), many=True)
+        serializers = CommentAdminPanelSerializer(Comments.objects.filter(Q(is_accepted=False, is_delete=False)),
+                                                  many=True)
         return Response(serializers.data, status=HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        comment_id = request.data['id_comment']
+        comment = Comments.objects.filter(id=comment_id).exists()
+        if comment:
+            print(12365)
+            comment = Comments.objects.get(id=comment_id)
+            comment.is_accepted = True
+            comment.save()
+            return Response({"is_deleted": True}, status=HTTP_200_OK)
+        return Response({"is_deleted": False}, status=HTTP_404_NOT_FOUND)
+
+    def delete(self, request, *args, **kwargs):
+        comment_id = request.data['id_comment']
+        comment = Comments.objects.filter(id=comment_id).exists()
+        if comment:
+            comment = Comments.objects.get(id=comment_id)
+            comment.deactivate()
+            comment.make_delete()
+            comment.save()
+            return Response({"is_deleted": True}, status=HTTP_200_OK)
+        return Response({"is_deleted": False}, status=HTTP_404_NOT_FOUND)
