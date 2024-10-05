@@ -72,7 +72,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
             }
             if (productes.category.length > 1) {
                 for (i in productes.category) {
-                    const categorys = `-> <a href="#" className="product-link ">${productes.category[i].title}</a>  `
+
+
+                    const categorys = `  <i class="fa-solid fa-play"></i> <a href="#" className="product-link ">${productes.category[i].title}</a>  `
                     category.innerHTML += categorys
                 }
             } else {
