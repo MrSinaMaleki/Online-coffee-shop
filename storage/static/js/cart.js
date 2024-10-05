@@ -37,11 +37,6 @@ function fetchCartItems() {
             let cartContent = '';
             // console.log(data.id)
             // console.log(data)
-            cartContent +=`<div class="cart-actions">
-                    <button id="pay-button" class="btn btn-success" onclick="payForOrder(${data.id})">Pay</button>
-                    <button id="cancel-button" class="btn btn-danger" onclick="cancelOrder(${data.id})">Cancel
-                    </button>
-                    </div>`
 
             data.items.forEach(item => {
                 cartContent += `<div class="cart-item">
@@ -50,6 +45,13 @@ function fetchCartItems() {
                     <p>Price: ${item.total_price}</p>
                 </div>`;
             });
+
+            cartContent +=`<div class="cart-actions">
+                    <button id="pay-button" class="btn btn-success" onclick="payForOrder(${data.id})">Pay</button>
+                    <button id="cancel-button" class="btn btn-danger" onclick="cancelOrder(${data.id})">Cancel
+                    </button>
+                    </div>`
+
             document.getElementById('cart-items').innerHTML += cartContent;
         }
     })
