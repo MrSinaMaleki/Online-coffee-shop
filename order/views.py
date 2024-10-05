@@ -148,3 +148,14 @@ class OrderHistoryView(APIView):
 
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class NumberOfProductView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = User.objects.get(id=request.user.id)
+        order = Order.objects.not_paid().filter(user=user).first()
+
+        total_product_count = sum(item.quantity for item in order.items.all())
+        return Response({'item_count': total_product_count}, status=status.HTTP_200_OK)
