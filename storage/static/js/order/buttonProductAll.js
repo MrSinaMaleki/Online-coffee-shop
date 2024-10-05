@@ -1,5 +1,6 @@
     function productDetail() {
         button_product_detail_view.classList.remove('!hidden')
+        comment_accepted.classList.add('!hidden')
         orderViews.classList.add('!hidden')
         FlagId = 100
         fetch(`http://localhost:8001/product/api/list/category`, {
