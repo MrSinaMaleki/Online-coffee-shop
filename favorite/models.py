@@ -1,6 +1,6 @@
 from django.db import models
-from account.models import LogicalMixin, Human
-from django.contrib.auth.models import User
+from account.models import LogicalMixin, User
+from account.models import User
 from product.models import Product
 from core.managers import ActiveNotDeletedBaseManager
 

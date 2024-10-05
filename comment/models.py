@@ -1,5 +1,5 @@
 from django.db import models
-from account.models import LogicalMixin, Human
+from account.models import LogicalMixin, User
 from product.models import Product
 from django.core.exceptions import ValidationError
 from core.managers import ActiveNotDeletedBaseManager
@@ -15,7 +15,7 @@ class CommentManager(ActiveNotDeletedBaseManager):
 
 class Comments(LogicalMixin):
     text = models.TextField(max_length=500)
-    user = models.ForeignKey(Human, on_delete=models.SET_NULL, null=True, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='comments')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
     score = models.PositiveIntegerField(default=5)
     is_accepted = models.BooleanField(default=False)

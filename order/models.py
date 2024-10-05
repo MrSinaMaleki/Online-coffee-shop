@@ -1,5 +1,5 @@
 from django.db import models
-from account.models import Human, LogicalMixin
+from account.models import User, LogicalMixin
 from product.models import Product
 from core.managers import ActiveNotDeletedBaseManager
 
@@ -19,7 +19,7 @@ class OrderManager(ActiveNotDeletedBaseManager):
 
 
 class Order(LogicalMixin):
-    user = models.ForeignKey(Human, on_delete=models.CASCADE, related_name='orders')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     is_completed = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
 
