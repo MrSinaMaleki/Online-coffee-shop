@@ -1,7 +1,9 @@
 function orderView() {
     button_product_detail_view.classList.add('!hidden')
+    comment_accepted.classList.add('!hidden')
     orderViews.classList.remove('!hidden')
-    FlagId=0
+
+    FlagId = 0
     const tbody_items = document.querySelector('#tbody_items');
     fetch(`http://localhost:8001/order/api/ordrlist`, {
         method: 'GET',
@@ -15,7 +17,11 @@ function orderView() {
         orders.forEach(order => {
 
             order.items.forEach(item => {
-                console.log(item)
+                const date = new Date(order.created_at);
+                const formattedDate = date.toLocaleDateString();
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const result = `${formattedDate} ${hours}:${minutes}`;
                 orderRows += `<tr>
                         <th></th>
                         <td>
@@ -30,7 +36,7 @@ function orderView() {
                                 </div>
                                 <div>
                                     <div class="font-bold">${item.product.title}</div>
-                                    <div class="text-sm opacity-50">${order.created_at}</div>
+                                    <div class="text-sm opacity-50">${result}</div>
                                 </div>
                             </div>
                         </td>

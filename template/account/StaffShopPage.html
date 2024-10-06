@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Order List</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.12/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
     <style>
         body {
             background-color: #f9fafb; /* Light background for better contrast */
@@ -33,12 +34,16 @@
     </style>
 </head>
 <body>
+<div data-theme="dark">{% include "components/header.html" %}</div>
+
 <div id="button_view" class="mx-a flex flex-row justify-center content-center  my-5">
     <button class="btn btn-outline mx-3 " onclick="orderView()">List Order</button>
-    <button class="btn btn-outline mx-3 btn-primary">Comment</button>
+    <button class="btn btn-outline mx-3 btn-primary" onclick="comments_accepted()">Comment</button>
     <button class="btn btn-outline mx-3 btn-secondary" onclick="productDetail()">Product</button>
     <button class="btn btn-outline mx-3 btn-accent"><a href="">amam gholi</a></button>
 </div>
+
+{#order in product#}
 <div id="button_product_detail_view" class="mx-a  my-5 !hidden">
     <div class="grid grid-cols-3 my-5 ">
         <button class="btn btn-outline mx-3 " onclick="">Dinner</button>
@@ -49,40 +54,40 @@
     <div id="category_menu" class="mx-a flex flex-row justify-center content-center  my-5">
 
     </div>
-    <div class="max-w-[80vw] mx-auto mb-5" >
-    <div class="overflow-x-auto">
-        <table class="table w-full table-auto table-container">
-            <thead class="bg-gray-200">
-            <tr>
-                <th class="w-10">
-                    <label>
-                        <input type="checkbox" class="checkbox"/>
-                    </label>
-                </th>
-                <th class="text-left">Name</th>
-                <th class="text-left">Detail</th>
-                <th class="text-left">Time Line</th>
-                <th class="w-10"></th>
-            </tr>
-            </thead>
-            <tbody id="tbody_items2">
-            <!-- Rows will be populated here dynamically -->
-            </tbody>
-            <tfoot>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Detail</th>
-                <th>Time Line</th>
-                <th></th>
-            </tr>
-            </tfoot>
-        </table>
+    <div class="max-w-[80vw] mx-auto mb-5">
+        <div class="overflow-x-auto">
+            <table class="table w-full table-auto table-container">
+                <thead class="bg-gray-200">
+                <tr>
+                    <th class="w-10">
+                        <label>
+
+                        </label>
+                    </th>
+                    <th class="text-left">Name</th>
+                    <th class="text-left">Detail</th>
+                    <th class="text-left">Time Line</th>
+                    <th class="w-10"></th>
+                </tr>
+                </thead>
+                <tbody id="tbody_items2">
+                <!-- Rows will be populated here dynamically -->
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Detail</th>
+                    <th>Time Line</th>
+                    <th></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
 </div>
-</div>
 
-
+{#product all in button product#}
 <div class="max-w-[80vw] mx-auto mb-5" id="orderView">
     <div class="overflow-x-auto">
         <table class="table w-full table-auto table-container">
@@ -90,7 +95,7 @@
             <tr>
                 <th class="w-10">
                     <label>
-                        <input type="checkbox" class="checkbox"/>
+
                     </label>
                 </th>
                 <th class="text-left">Name</th>
@@ -114,19 +119,55 @@
         </table>
     </div>
 </div>
-<div id="coment" class="!hidden">
 
+{#comment accepted#}
+
+<div class="max-w-[80vw] mx-auto mb-5 !hidden" id="comment_accepted">
+    <table class="table">
+        <!-- head -->
+        <thead class="bg-gray-200">
+        <tr>
+            <th>
+                user
+            </th>
+            <th>comment</th>
+              <th>product</th>
+            <th> parent comment</th>
+
+
+        </tr>
+        </thead>
+        <tbody id="tbody_comment">
+        <!-- row 1 -->
+
+        </tbody>
+        <!-- foot -->
+        <tfoot>
+        <tr>
+            <th>
+                user
+            </th>
+            <th>comment</th>
+            <th>product</th>
+            <th> parent comment</th>
+        </tr>
+        </tfoot>
+    </table>
 </div>
-
-
 </body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script src="{% static 'js/order/ordrItemsStaff.js' %}"></script>
 <script src="{% static 'js/order/buttonProductAll.js' %}"></script>
+<script src="{% static 'js/order/commentsViewadmin.js' %}"></script>
+<script src="{% static 'js/order/allproductinViewAdmin.js' %}"></script>
 <script>
     let button_product_detail_view = document.querySelector('#button_product_detail_view')
     let orderViews = document.querySelector('#orderView')
     let category_menu = document.querySelector('#category_menu')
     let tbody_items2 = document.querySelector('#tbody_items2')
+    let comment_accepted = document.querySelector('#comment_accepted')
+    let tbody_comment = document.querySelector('#tbody_comment')
+
 
     let FlagId = 0
     document.addEventListener('DOMContentLoaded', () => {
@@ -168,50 +209,13 @@
         })
 
     }
-    {#++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
-    function productAll() {
-        fetch(`http://localhost:8001/product/api/list/product`, {
-            method: 'GET',
-        }).then(async request => {
-            let orderRows2=''
-            const pro=await request.json()
-            console.log(pro)
-            for (let i in pro) {
-                orderRows2 += `<tr>
-                        <th></th>
-                        <td>
-                            <div class="flex items-center gap-3">
-                                <div class="avatar">
-                                    <div class="mask mask-squircle h-12 w-12">
-                                        <img src="${pro[i].images.length > 0 ?
-                    pro[i].images[0].image :
-                    'https://via.placeholder.com/300'}"
-                                        alt="${pro[i].title} Image" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="font-bold">${pro[i].title}</div>
-                                    <div class="text-sm opacity-50">coming sone</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            ${pro[i].category.title}
-                            <br />
-                            <span class="badge badge-ghost badge-sm">${pro[i].description}</span>
-                        </td>
-                        <td>${pro[i].timeline}</td>
-
-                    </tr>
-
-`;
-            }
-              tbody_items2.innerHTML=orderRows2
-        })
-
-    }
 
     {#++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
+
+
+
+    {#++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
+
     function setes() {
         console.log(FlagId)
         if (FlagId === 0) {
@@ -219,7 +223,102 @@
         }
     }
 
-    setInterval(setes, 3000);
+
+    {#--------------------------#}
+
+    function delete_comments(comment_id) {
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This comment will be deleted!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let data = new FormData();
+                data.append('id_comment', comment_id);
+                fetch(`http://localhost:8001/comment/comments/admin-panel`, {
+                    method: 'DELETE',
+                    body: data,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        comments_accepted();
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'There was an error deleting the comment: ' + error.message,
+                        });
+                    });
+            }
+        });
+    }
+
+    {#function delete_comments(comment_id) {#}
+    {#    alert('delete')#}
+    {#    let data = new FormData();#}
+    {#    data.append('id_comment', comment_id);#}
+    {##}
+    {#    fetch(`http://localhost:8001/comment/comments/admin-panel`, {#}
+    {#        method: 'DELETE',#}
+    {#        body: data,#}
+    {#        headers: {#}
+    {#            'X-Requested-With': 'XMLHttpRequest',#}
+    {#            'X-CSRFToken': '{{ csrf_token }}'#}
+    {#        },#}
+    {#    }).finally(()=>{comments_accepted()})#}
+    {##}
+    {#}#}
+
+        function accept_comments(comment_id) {
+
+            let data = new FormData();
+            data.append('id_comment', comment_id);
+
+            fetch(`http://localhost:8001/comment/comments/admin-panel`, {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+
+                    comments_accepted();
+                })
+                .catch(error => {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'There was an error processing your request: ' + error.message,
+                    });
+                });
+        }
+
+        setInterval(setes, 3000);
 </script>
 
 </html>

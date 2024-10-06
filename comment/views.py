@@ -1,11 +1,13 @@
 from rest_framework import generics, permissions
 from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
+
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_201_CREATED
 from .models import Comments
-from .serializers import CommentSerializer, CommentAdderSerializer
+from .serializers import CommentSerializer, CommentAdderSerializer, CommentAdminPanelSerializer
 from django.db.models import Q
 from rest_framework.exceptions import ValidationError
 
@@ -76,7 +78,7 @@ class CommentAPIView(ListAPIView):
     serializer_class = CommentSerializer
     # No reply but a reply to a certain comment
     # Has replies but not a reply to any comment
-    #Doesn't have replies and not a reply to any comment!
+    # Doesn't have replies and not a reply to any comment!
 
     queryset = Comments.objects.accepted().filter(Q(reply_comments__isnull=True)
                                                   |
@@ -96,3 +98,40 @@ class CommentAPIView(ListAPIView):
     #         # 'top_level_serializer': top_level_serializer.data,
     #         # 'alone_serializer': alone_serializer.data
     #     })
+
+
+
+'''view comment in admin panel'''
+
+
+class CommentAdminPanelView(APIView):
+    queryset = Comments.objects.filter(is_active=False)
+    permission_classes = (permissions.IsAuthenticated, IsAdminUser)
+
+    def get(self, request, *args, **kwargs):
+        serializers = CommentAdminPanelSerializer(Comments.objects.filter(Q(is_accepted=False, is_delete=False)),
+                                                  many=True)
+        return Response(serializers.data, status=HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        comment_id = request.data['id_comment']
+        comment = Comments.objects.filter(id=comment_id).exists()
+        if comment:
+            print(12365)
+            comment = Comments.objects.get(id=comment_id)
+            comment.is_accepted = True
+            comment.save()
+            return Response({"is_deleted": True}, status=HTTP_200_OK)
+        return Response({"is_deleted": False}, status=HTTP_404_NOT_FOUND)
+
+    def delete(self, request, *args, **kwargs):
+        comment_id = request.data['id_comment']
+        comment = Comments.objects.filter(id=comment_id).exists()
+        if comment:
+            comment = Comments.objects.get(id=comment_id)
+            comment.deactivate()
+            comment.make_delete()
+            comment.save()
+            return Response({"is_deleted": True}, status=HTTP_200_OK)
+        return Response({"is_deleted": False}, status=HTTP_404_NOT_FOUND)
+
