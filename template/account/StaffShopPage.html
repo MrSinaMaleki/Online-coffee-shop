@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Order List</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.12/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -33,6 +34,8 @@
     </style>
 </head>
 <body>
+<div data-theme="dark">{% include "components/header.html" %}</div>
+
 <div id="button_view" class="mx-a flex flex-row justify-center content-center  my-5">
     <button class="btn btn-outline mx-3 " onclick="orderView()">List Order</button>
     <button class="btn btn-outline mx-3 btn-primary" onclick="comments_accepted()">Comment</button>
@@ -58,7 +61,7 @@
                 <tr>
                     <th class="w-10">
                         <label>
-                            <input type="checkbox" class="checkbox"/>
+
                         </label>
                     </th>
                     <th class="text-left">Name</th>
@@ -92,7 +95,7 @@
             <tr>
                 <th class="w-10">
                     <label>
-                        <input type="checkbox" class="checkbox"/>
+
                     </label>
                 </th>
                 <th class="text-left">Name</th>
@@ -122,15 +125,16 @@
 <div class="max-w-[80vw] mx-auto mb-5 !hidden" id="comment_accepted">
     <table class="table">
         <!-- head -->
-        <thead class="bg-gray-200" >
+        <thead class="bg-gray-200">
         <tr>
             <th>
-               user
+                user
             </th>
-            <th></th>
             <th>comment</th>
-            <th></th>
-            <th>product</th>
+              <th>product</th>
+            <th> parent comment</th>
+
+
         </tr>
         </thead>
         <tbody id="tbody_comment">
@@ -139,19 +143,19 @@
         </tbody>
         <!-- foot -->
         <tfoot>
-         <tr>
-                    <th>
-               user
+        <tr>
+            <th>
+                user
             </th>
-            <th></th>
             <th>comment</th>
-            <th></th>
             <th>product</th>
+            <th> parent comment</th>
         </tr>
         </tfoot>
     </table>
 </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script src="{% static 'js/order/ordrItemsStaff.js' %}"></script>
 <script src="{% static 'js/order/buttonProductAll.js' %}"></script>
 <script src="{% static 'js/order/commentsViewadmin.js' %}"></script>
@@ -219,40 +223,102 @@
         }
     }
 
+
+    {#--------------------------#}
+
     function delete_comments(comment_id) {
-        alert('delete')
-        let data = new FormData();
-        data.append('id_comment', comment_id);
 
-        fetch(`http://localhost:8001/comment/comments/admin-panel`, {
-            method: 'DELETE',
-            body: data,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-        })
-
-        comments_accepted()
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This comment will be deleted!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let data = new FormData();
+                data.append('id_comment', comment_id);
+                fetch(`http://localhost:8001/comment/comments/admin-panel`, {
+                    method: 'DELETE',
+                    body: data,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        comments_accepted();
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'There was an error deleting the comment: ' + error.message,
+                        });
+                    });
+            }
+        });
     }
 
-    function accept_comments(comment_id) {
-        alert("comments")
-        let data = new FormData();
-        data.append('id_comment', comment_id);
+    {#function delete_comments(comment_id) {#}
+    {#    alert('delete')#}
+    {#    let data = new FormData();#}
+    {#    data.append('id_comment', comment_id);#}
+    {##}
+    {#    fetch(`http://localhost:8001/comment/comments/admin-panel`, {#}
+    {#        method: 'DELETE',#}
+    {#        body: data,#}
+    {#        headers: {#}
+    {#            'X-Requested-With': 'XMLHttpRequest',#}
+    {#            'X-CSRFToken': '{{ csrf_token }}'#}
+    {#        },#}
+    {#    }).finally(()=>{comments_accepted()})#}
+    {##}
+    {#}#}
 
-        fetch(`http://localhost:8001/comment/comments/admin-panel`, {
-            method: 'POST',
-            body: data,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-        })
-        comments_accepted()
-    }
+        function accept_comments(comment_id) {
 
-    setInterval(setes, 3000);
+            let data = new FormData();
+            data.append('id_comment', comment_id);
+
+            fetch(`http://localhost:8001/comment/comments/admin-panel`, {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+
+                    comments_accepted();
+                })
+                .catch(error => {
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'There was an error processing your request: ' + error.message,
+                    });
+                });
+        }
+
+        setInterval(setes, 3000);
 </script>
 
 </html>
