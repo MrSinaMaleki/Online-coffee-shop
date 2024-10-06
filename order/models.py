@@ -19,7 +19,7 @@ class OrderManager(ActiveNotDeletedBaseManager):
 
 
 class Order(LogicalMixin):
-    user = models.ForeignKey(Human, on_delete=models.CASCADE, related_name='order')
+    user = models.ForeignKey(Human, on_delete=models.CASCADE, related_name='orders')
     is_completed = models.BooleanField(default=False)
     is_paid = models.BooleanField(default=False)
 
@@ -27,6 +27,10 @@ class Order(LogicalMixin):
 
     def __str__(self):
         return str(self.id)
+
+    @property
+    def total_order_price(self):
+        return sum(item.total_price for item in self.items.all())
 
     class Meta:
         ordering = ['-created_at']
@@ -38,9 +42,9 @@ class Order(LogicalMixin):
 
 
 class OrderItem(LogicalMixin):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_item')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='order_items')
     quantity = models.PositiveIntegerField(default=1)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_item',related_query_name='order_items')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     price_at_order = models.FloatField()
 
     objects = ActiveNotDeletedBaseManager()
@@ -56,3 +60,6 @@ class OrderItem(LogicalMixin):
 
     def __str__(self):
         return str(self.id)
+
+    class Meta:
+        unique_together = ('product', 'order')

@@ -3,16 +3,19 @@ function orderView() {
     orderViews.classList.remove('!hidden')
     FlagId=0
     const tbody_items = document.querySelector('#tbody_items');
-    fetch(`http://localhost:8001/order/api/1`, {
+    fetch(`http://localhost:8001/order/api/ordrlist`, {
         method: 'GET',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRFToken': '{{ csrf_token }}'
         },
     }).then(response => response.json()).then(orders => {
+        console.log(orders)
         let orderRows = '';
         orders.forEach(order => {
-            order.order_item.forEach(item => {
+
+            order.items.forEach(item => {
+                console.log(item)
                 orderRows += `<tr>
                         <th></th>
                         <td>

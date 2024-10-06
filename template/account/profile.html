@@ -25,6 +25,7 @@
     </style>
 </head>
 <body class="flex justify-center items-center min-h-screen relative">
+{% if request.user.is_authenticated %}
 <div class="bg-white shadow-lg rounded-lg max-w-md w-full p-6 relative z-10">
     <div class="text-center">
         <img id="profileImage" class="w-32 h-32 rounded-full mx-auto object-cover mb-4"
@@ -93,6 +94,9 @@
         </button>
     </form>
 </div>
+{% else %}
+    <h1>Please <a href="http://localhost:8001/account/login/">logIn</a>/<a href="http://localhost:8001/account/signup/">Register</a> </h1>
+{% endif %}
 
 <script>
     function getCookie(name) {

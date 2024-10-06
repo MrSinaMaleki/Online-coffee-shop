@@ -20,7 +20,7 @@ class Comments(LogicalMixin):
     score = models.PositiveIntegerField(default=5)
     is_accepted = models.BooleanField(default=False)
     reply_comments = models.ForeignKey('Comments', on_delete=models.CASCADE, null=True,
-                                       related_name='child', blank=True)
+                                       related_name='child',related_query_name="child", blank=True)
 
     objects = CommentManager()
 
