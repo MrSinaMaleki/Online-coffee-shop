@@ -1,4 +1,3 @@
-
 function comments_accepted() {
     FlagId = 100;
     tbody_comment.innerHTML = "";
@@ -53,9 +52,9 @@ function comments_accepted() {
                     </td>  
                 <tr style="margin-bottom: 10px;"  >`;
 
-                // بررسی و اضافه کردن پاسخ
+
                 if (comment.reply_comments != null) {
-                    const reply = comment.reply_comments; // فرض بر این است که تنها یک پاسخ وجود دارد
+                    const reply = comment.reply_comments;
                     const replyColorClass = 'bg-green-100';
 
                     comments += `  
@@ -81,5 +80,82 @@ function comments_accepted() {
                 }
             });
             tbody_comment.innerHTML += comments;
+        });
+}
+
+
+function delete_comments(comment_id) {
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This comment will be deleted!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let data = new FormData();
+            data.append('id_comment', comment_id);
+            fetch(`http://localhost:8001/comment/comments/admin-panel`, {
+                method: 'DELETE',
+                body: data,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrfTokens
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    comments_accepted();
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'There was an error deleting the comment: ' + error.message,
+                    });
+                });
+        }
+    });
+}
+
+function accept_comments(comment_id) {
+
+    let data = new FormData();
+    data.append('id_comment', comment_id);
+
+    fetch(`http://localhost:8001/comment/comments/admin-panel`, {
+        method: 'POST',
+        body: data,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrfTokens
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+
+            comments_accepted();
+        })
+        .catch(error => {
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'There was an error processing your request: ' + error.message,
+            });
         });
 }
