@@ -43,7 +43,7 @@
                     <img src="{{ user.profile.image.url }}" alt="Profile" class="w-8 h-8 rounded-full object-cover">
                 </button>
 
-                <div id="profile-menu" class="absolute right-0 bg-gray-800 text-white rounded shadow-lg mt-2 w-40 hidden z-50">
+                <div id="profile-menu" class="absolute right-0 bg-gray-800 text-white rounded shadow-lg hidden mt-2 w-40 z-50" >
                     {% if user.is_superuser %}
                         <a href="{% url 'staff_page' %}" class="block px-4 py-2 hover:bg-gray-700">Admin Panel</a>
                     {% endif %}
@@ -56,7 +56,7 @@
                     <i class="fas fa-user"></i>
                 </button>
 
-                <div id="profile-menu" class="absolute right-0 bg-gray-800 text-white rounded shadow-lg mt-2 w-40 hidden z-50">
+                <div id="profile-menu" class="absolute right-0 bg-gray-800 text-white rounded shadow-lg mt-2 w-40 z-50" style="display: none;">
                     <a href="{% url 'login' %}" class="block px-4 py-2 hover:bg-gray-700">Login</a>
                     <a href="{% url 'signup' %}" class="block px-4 py-2 hover:bg-gray-700">Sign Up</a>
                 </div>
@@ -74,7 +74,13 @@
 
         profileBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            profileMenu.classList.toggle('hidden');
+            let display = profileMenu.style.display;
+            if (display == 'block'){
+                profileMenu.style.display = "none";
+            }
+            else {
+                profileMenu.style.display = "block";
+            }
         });
 
         document.addEventListener('click', (e) => {
@@ -89,7 +95,6 @@
 
         subItems.forEach((menuItem, index) => {
             menuItem.addEventListener('click', (e) => {
-                {#e.preventDefault();#}
 
 
                 submenus.forEach((submenu) => {
