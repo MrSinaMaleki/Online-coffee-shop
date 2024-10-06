@@ -46,9 +46,9 @@
 {#order in product#}
 <div id="button_product_detail_view" class="mx-a  my-5 !hidden">
     <div class="grid grid-cols-3 my-5 ">
-        <button class="btn btn-outline mx-3 " onclick="">Dinner</button>
-        <button class="btn btn-outline mx-3 btn-primary">Breakfast</button>
-        <button class="btn btn-outline mx-3 btn-secondary">Lunch</button>
+        <button class="btn btn-outline mx-3 " onclick="FuTimeLine(`dinner`)">Dinner</button>
+        <button class="btn btn-outline mx-3 btn-primary" onclick="FuTimeLine(`breakfast`)">Breakfast</button>
+        <button class="btn btn-outline mx-3 btn-secondary" onclick="FuTimeLine(`lunch`)">Lunch</button>
     </div>
 
     <div id="category_menu" class="mx-a flex flex-row justify-center content-center  my-5">
@@ -131,7 +131,7 @@
                 user
             </th>
             <th>comment</th>
-              <th>product</th>
+            <th>product</th>
             <th> parent comment</th>
 
 
@@ -153,12 +153,13 @@
         </tr>
         </tfoot>
     </table>
+    <meta name="csrf-token" content="{{ csrf_token }}" class="!hidden">
 </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script src="{% static 'js/order/ordrItemsStaff.js' %}"></script>
 <script src="{% static 'js/order/buttonProductAll.js' %}"></script>
-<script src="{% static 'js/order/commentsViewadmin.js' %}"></script>
+<script src="{% static 'js/order/commentsViewAdmin.js' %}"></script>
 <script src="{% static 'js/order/allproductinViewAdmin.js' %}"></script>
 <script>
     let button_product_detail_view = document.querySelector('#button_product_detail_view')
@@ -167,7 +168,7 @@
     let tbody_items2 = document.querySelector('#tbody_items2')
     let comment_accepted = document.querySelector('#comment_accepted')
     let tbody_comment = document.querySelector('#tbody_comment')
-
+    const csrfTokens = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
     let FlagId = 0
     document.addEventListener('DOMContentLoaded', () => {
@@ -175,43 +176,7 @@
 
     });
 
-    function orderAccept(orderid) {
-
-
-        let data = new FormData();
-        data.append('orderId', orderid);
-
-        fetch(`http://localhost:8001/order/api/ordrlist`, {
-            method: 'POST',
-            body: data,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(errorData => {
-                        alert('Error: ' + errorData.message);
-                        throw new Error('Network response was not ok');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                alert('Order accepted successfully!');
-
-            })
-            .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
-            }).finally(() => {
-            orderView()
-        })
-
-    }
-
     {#++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
-
 
 
     {#++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
@@ -226,99 +191,8 @@
 
     {#--------------------------#}
 
-    function delete_comments(comment_id) {
 
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "This comment will be deleted!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let data = new FormData();
-                data.append('id_comment', comment_id);
-                fetch(`http://localhost:8001/comment/comments/admin-panel`, {
-                    method: 'DELETE',
-                    body: data,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok: ' + response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        comments_accepted();
-                    })
-                    .catch(error => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'There was an error deleting the comment: ' + error.message,
-                        });
-                    });
-            }
-        });
-    }
-
-    {#function delete_comments(comment_id) {#}
-    {#    alert('delete')#}
-    {#    let data = new FormData();#}
-    {#    data.append('id_comment', comment_id);#}
-    {##}
-    {#    fetch(`http://localhost:8001/comment/comments/admin-panel`, {#}
-    {#        method: 'DELETE',#}
-    {#        body: data,#}
-    {#        headers: {#}
-    {#            'X-Requested-With': 'XMLHttpRequest',#}
-    {#            'X-CSRFToken': '{{ csrf_token }}'#}
-    {#        },#}
-    {#    }).finally(()=>{comments_accepted()})#}
-    {##}
-    {#}#}
-
-        function accept_comments(comment_id) {
-
-            let data = new FormData();
-            data.append('id_comment', comment_id);
-
-            fetch(`http://localhost:8001/comment/comments/admin-panel`, {
-                method: 'POST',
-                body: data,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-
-                    comments_accepted();
-                })
-                .catch(error => {
-
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'There was an error processing your request: ' + error.message,
-                    });
-                });
-        }
-
-        setInterval(setes, 3000);
+    setInterval(setes, 3000);
 </script>
 
 </html>
