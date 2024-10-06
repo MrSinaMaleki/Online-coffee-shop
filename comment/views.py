@@ -1,5 +1,6 @@
 from rest_framework import generics, permissions
 from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
+
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -99,6 +100,7 @@ class CommentAPIView(ListAPIView):
     #     })
 
 
+
 '''view comment in admin panel'''
 
 
@@ -132,3 +134,4 @@ class CommentAdminPanelView(APIView):
             comment.save()
             return Response({"is_deleted": True}, status=HTTP_200_OK)
         return Response({"is_deleted": False}, status=HTTP_404_NOT_FOUND)
+

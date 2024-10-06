@@ -95,6 +95,12 @@ h1 {
     justify-content: center;
 }
 
+.btn-secondary {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
 @media (min-width: 768px) {
     .product-card {
         width: calc(33.333% - 30px);
