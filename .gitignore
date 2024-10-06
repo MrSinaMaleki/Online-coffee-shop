@@ -166,3 +166,6 @@ node_modules/
 package-lock.json
 package.json
 tailwind.config.js
+
+
+migrations
