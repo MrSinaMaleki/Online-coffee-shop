@@ -169,3 +169,4 @@ tailwind.config.js
 
 
 migrations
+__pycache__
