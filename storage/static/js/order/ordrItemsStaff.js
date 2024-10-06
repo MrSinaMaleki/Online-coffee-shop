@@ -9,7 +9,7 @@ function orderView() {
         method: 'GET',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': '{{ csrf_token }}'
+            'X-CSRFToken': csrfTokens
         },
     }).then(response => response.json()).then(orders => {
         console.log(orders)
@@ -55,4 +55,49 @@ function orderView() {
         });
         tbody_items.innerHTML = orderRows;
     });
+}
+
+
+function orderAccept(orderid) {
+    let data = new FormData();
+    data.append('orderId', orderid);
+
+    fetch(`http://localhost:8001/order/api/ordrlist`, {
+        method: 'POST',
+        body: data,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrfTokens
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errorData => {
+                    Toastify({
+                        text: 'Error: ' + errorData.message,
+                        duration: 3000,
+                        gravity: "top", // "top" or "bottom"
+                        position: 'right', // "left", "center" or "right"
+                        backgroundColor: "#ff0000",
+                    }).showToast();
+                    throw new Error('Network response was not ok');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            Toastify({
+                text: 'Order accepted successfully!',
+                duration: 3000,
+                gravity: "top",
+                position: 'right',
+                backgroundColor: "#4CAF50",
+            }).showToast();
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        })
+        .finally(() => {
+            orderView();
+        });
 }
