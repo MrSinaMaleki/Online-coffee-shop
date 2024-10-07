@@ -3,6 +3,7 @@
 
 {% block extra_head %}
     <link href="{% static "css/detaileProduct.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/all_products.css' %}">
     <style>
         .profile-image-box {
@@ -78,6 +79,7 @@
                     </div>
                     <di><p id="safety_buffer" class="text-base"></p></di>
                     <div class="purchase-info flex">
+
                         <form action="" method="post">
                             {% csrf_token %}
                             <input type="number" min="0" value="1" id="quantity">
@@ -92,6 +94,8 @@
                         </form>
 
                     </div>
+
+
 
 
                     <div id="commentSection" class="p-4 bg-gray-100 rounded-lg shadow-md">
@@ -193,6 +197,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="{% static "js/detailProduct/product.js" %}"></script>
     <script src="{% static 'js/detailProduct/addCart.js' %}"></script>
     <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
