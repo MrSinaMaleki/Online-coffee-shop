@@ -151,7 +151,6 @@ class OrderHistoryView(APIView):
 
 
 class NumberOfProductView(APIView):
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = User.objects.get(id=request.user.id)
