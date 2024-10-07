@@ -41,7 +41,7 @@ function comments_accepted() {
                         <div class="flex items-center gap-1">  
                             <div class="avatar">  
                                 <div class="mask mask-squircle h-12 w-12">  
-                                    <img src="${comment.product.images!=null ? comment.product.images[0].image : 'https://via.placeholder.com/300'}" alt="Product" />  
+                                    <img src="${comment.product.images.length===0?  'https://via.placeholder.com/300':comment.product.images[0].image}" alt="Product" />  
                                 </div>  
                             </div>  
                             <div>  
