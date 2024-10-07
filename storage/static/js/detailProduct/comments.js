@@ -39,36 +39,44 @@
         const userDiv = document.createElement('div');
         userDiv.className = 'flex items-start mb-2';
 
-
         const profileImageBox = document.createElement('div');
         profileImageBox.className = 'profile-image-box mr-2';
 
         const profileImage = document.createElement('img');
-        profileImage.src = comment.user.profile_image || 'https://via.placeholder.com/150'
+        profileImage.src = comment.user.profile_image || 'https://via.placeholder.com/150';
         profileImage.alt = comment.user.username;
+        profileImage.className = 'w-10 h-10 rounded-full';
 
         profileImageBox.appendChild(profileImage);
         userDiv.appendChild(profileImageBox);
 
+        const userInfoDiv = document.createElement('div');
+        userInfoDiv.className = 'flex items-center';
+
         const username = document.createElement('span');
         username.className = 'font-semibold text-gray-800';
-        username.textContent = comment.user.username;
+        username.textContent = comment.user.first_name + " " + comment.user.last_name;
+        userInfoDiv.appendChild(username);
 
+
+        if (comment.is_buyer) {
+            const buyerBadge = document.createElement('span');
+            buyerBadge.className = 'ml-2 px-2 py-0.5 text-xs font-semibold text-green-800 bg-green-100 rounded-full';
+            buyerBadge.textContent = 'Buyer';
+            userInfoDiv.appendChild(buyerBadge);
+        }
 
         const scoreDiv = createStarRating(comment.score);
         scoreDiv.className = 'ml-2';
 
-        userDiv.appendChild(username);
+        userDiv.appendChild(userInfoDiv);
         userDiv.appendChild(scoreDiv);
         commentDiv.appendChild(userDiv);
-
 
         const textDiv = document.createElement('div');
         textDiv.className = 'text-gray-800 mt-1';
         textDiv.textContent = comment.text;
-
         commentDiv.appendChild(textDiv);
-
 
         const replyButton = document.createElement('button');
         replyButton.className = 'mt-2 px-2 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600';
@@ -83,14 +91,11 @@
         if (comment.reply_comments && comment.reply_comments.length > 0) {
             const repliesDiv = document.createElement('div');
             repliesDiv.className = 'ml-4 mt-2 border-l-2 border-gray-300 pl-2';
-
             comment.reply_comments.forEach(reply => {
                 repliesDiv.appendChild(displayComment(reply));
             });
-
             commentDiv.appendChild(repliesDiv);
         }
-
         return commentDiv;
     }
 
