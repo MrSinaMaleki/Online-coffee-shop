@@ -32,7 +32,7 @@ function productAll() {
                             <br />  
                             <span class="badge badge-ghost badge-sm">${pro[i].description}</span>  
                         </td>  
-                        <td>${pro[i].timeline}</td>  
+                        <td>${pro[i].timeline!=null ? pro[i].timeline : "is cofffee shop"}</td>  
                     </tr>`;
         }
         tbody_items2.innerHTML = orderRows2;
@@ -85,7 +85,7 @@ function category_product(id_category) {
                             <br />  
                             <span class="badge badge-ghost badge-sm">${pro[i].description}</span>  
                         </td>  
-                        <td>${pro[i].timeline}</td>  
+                         <td>${pro[i].timeline!=null ? pro[i].timeline : "is cofffee shop"}</td>  
                     </tr>`;
         }
         tbody_items2.innerHTML = orderRows2;
@@ -138,7 +138,7 @@ function FuTimeLine(timeLine) {
                             <br />  
                             <span class="badge badge-ghost badge-sm">${pro[i].description}</span>  
                         </td>  
-                        <td>${pro[i].timeline}</td>  
+                         <td>${pro[i].timeline!=null ? pro[i].timeline : "is cofffee shop"}</td>  
                     </tr>`;
         }
         tbody_items2.innerHTML = orderRows2;
@@ -191,7 +191,7 @@ function coffeeShop(){
                             <br />  
                             <span class="badge badge-ghost badge-sm">${pro[i].description}</span>  
                         </td>  
-                        <td>${pro[i].timeline}</td>  
+                         <td>${pro[i].timeline!=null ? pro[i].timeline : "is cofffee shop"}</td>  
                     </tr>`;
         }
         tbody_items2.innerHTML = orderRows2;

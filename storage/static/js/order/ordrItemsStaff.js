@@ -50,7 +50,7 @@ function orderView() {
                     </tr>`;
             });
             orderRows += `  <th>
-                            <button class="btn glass" onclick="orderAccept(${order.id})">Accept</button>
+                            <button class="btn btn-success" onclick="orderAccept(${order.id})">Accept</button>
                         </th>`
         });
         tbody_items.innerHTML = orderRows;
