@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const isOutOfStock = product.quantity === 0;
             const buttonDisabledClass = isOutOfStock ? 'btn-secondary' : 'btn-primary';
             const buttonDisabledAttr = isOutOfStock ? 'disabled' : '';
-            const addToCartButtonText = isOutOfStock ? 'This product is finished' : 'Add to Cart';
+            const addToCartButtonText = isOutOfStock ? 'This product is finished' : 'Add to Cart ';
+
+
 
             const productCard = `
                 <div class="card bg-base-100 w-96 shadow-xl m-2">
