@@ -153,7 +153,7 @@ class OrderHistoryView(APIView):
 class NumberOfProductView(APIView):
 
     def get(self, request):
-        user = User.objects.get(id=request.user.id)
+        user = User.objects.filter(id=request.user.id).first()
         order = Order.objects.not_paid().filter(user=user).first()
         if order:
 
