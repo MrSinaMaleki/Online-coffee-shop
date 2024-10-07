@@ -80,8 +80,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 addToCartButton.disabled = false;
                 addToCartButton.classList.add('btn-primary');
                 addToCartButton.classList.remove('btn-secondary');
-                addToCartButton.innerHTML = 'Add to Cart';
+                addToCartButton.innerHTML = 'Add to Cart <i class="fas fa-shopping-cart text-2xl"></i>';
                 quantityInput.disabled = false;
+
             }
         }
 
