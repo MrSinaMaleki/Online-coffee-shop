@@ -69,7 +69,7 @@ function addToCart(productId) {
             icon: 'error',
             confirmButtonText: 'OK'
         });
-    });
+    }).finally(()=>{SafetyBuffer()});
 }
 
 function updateCartCount() {

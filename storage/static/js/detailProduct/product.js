@@ -87,5 +87,6 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
     }).finally(() => {
         slideImagess();
+        SafetyBuffer()
     });
 });

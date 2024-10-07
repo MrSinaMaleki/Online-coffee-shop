@@ -1,12 +1,13 @@
 from pprint import pprint
 
+from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import View, DetailView, TemplateView
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from order.models import OrderItem, Order
 from product.models import Product, Category
 from product.serializers import ProductSerializer, ProductDetailSerializer, CategorySerializer
 
@@ -95,8 +96,27 @@ class RestaurantView(TemplateView):
 
 
 '''all category'''
+
+
 class CategoryListView(APIView):
     def get(self, request):
         categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+'''safety buffer'''
+
+
+class SafetyBufferProductView(APIView):
+    def get(self, request, pk=None):
+        if pk is not None:
+            try:
+                quantity = Product.objects.get(pk=pk).quantity
+                quantity_items = OrderItem.objects.filter(
+                    Q(order__is_paid=False, order__is_completed=False,order__is_delete=False)).filter(product=pk)
+                total = quantity - sum([i.quantity for i in quantity_items])
+                return Response(data={'quantity': total}, status=status.HTTP_200_OK)
+            except Product.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
