@@ -10,6 +10,25 @@ def validate_image_size(image):
         raise ValidationError(f"Image file size must be less than {max_size_mb} MB")
 
 
+def validate_price(price):
+    if price < 0:
+        raise ValidationError('Price cannot be negative.')
+
+
+def validate_discounted_price(price, new_price):
+    if new_price < 0:
+        raise ValidationError('Discounted price cannot be negative.')
+    if new_price > price:
+        raise ValidationError('Discounted price cannot be higher than the original price.')
+
+
+def validate_discount(price, off):
+    if off < 0:
+        raise ValidationError('Discount cannot be negative.')
+    if off > price:
+        raise ValidationError('Discount cannot be higher than the original price.')
+
+
 class ProductManager(ActiveNotDeletedBaseManager):
     def coffeeshop(self):
         return super().get_queryset().filter(is_coffee_shop=True)
@@ -101,7 +120,9 @@ class Category(LogicalMixin):
 
 class Product(LogicalMixin):
     title = models.CharField(max_length=100)
-    price = models.PositiveIntegerField(default=0)
+    price = models.FloatField(default=0, validators=[validate_price])
+    off = models.FloatField(default=0)
+    new_price = models.FloatField(default=0)
     quantity = models.PositiveIntegerField(default=0)
     serial_number = models.CharField(max_length=100, unique=True)
     description = models.CharField(max_length=200)
@@ -115,6 +136,9 @@ class Product(LogicalMixin):
     objects = ProductManager()
 
     def clean(self):
+        validate_discounted_price(self.price, self.new_price)
+        validate_discount(self.price, self.off)
+
         if self.is_coffee_shop and self.timeline:
             raise ValidationError("A product cannot belong to the coffee shop and have a timeline.")
 
