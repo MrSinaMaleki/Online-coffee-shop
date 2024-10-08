@@ -37,6 +37,7 @@
 
 
         <div class="flex items-center space-x-20">
+        {% if user.is_authenticated %}
 
             <div class="relative">
     <a href="{% url 'cart' %}" class="flex items-center">
@@ -47,6 +48,7 @@
         </span>
     </a>
 </div>
+        {% endif %}
 
             <!-- Profile -->
             <div class="relative">
