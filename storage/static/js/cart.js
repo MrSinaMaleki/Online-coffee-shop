@@ -129,6 +129,7 @@ function cancelOrder(orderId) {
                 confirmButtonText: 'OK'
             });
             document.getElementById('cart-items').innerHTML = '<p>Order canceled successfully.</p>';
+            updateCartCount();
         }
     })
     .catch(error => {
