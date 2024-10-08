@@ -14,13 +14,13 @@
                         <a href="{{ item.link }}" class="hover:text-gray-400">{{ item.title }}</a>
                         {% if item.subcategories %}
                             <!-- Submenu -->
-                            <div class="submenu absolute left-0 mt-2 bg-gray-800 text-white rounded shadow-lg w-48 hidden z-50">
+                            <div class="submenu absolute left-0 mt-2 bg-gray-800 text-white rounded shadow-lg w-48 hidden z-50 group-hover:block">
                                 {% for sub in item.subcategories %}
                                     <div class="relative group">
                                         <a href="{{ sub.link }}" class="block px-4 py-2 hover:bg-gray-700">{{ sub.title }}</a>
                                         {% if sub.subcategories %}
                                             <!-- Sub-submenu -->
-                                            <div class="subsubmenu absolute left-full top-0 bg-gray-800 text-white rounded shadow-lg w-48 hidden z-50">
+                                            <div class="subsubmenu absolute left-full top-0 bg-gray-800 text-white rounded shadow-lg w-48 hidden hover:block z-50">
                                                 {% for subsub in sub.subcategories %}
                                                     <a href="{{ subsub.link }}" class="block px-4 py-2 hover:bg-gray-700">{{ subsub.title }}</a>
                                                 {% endfor %}
