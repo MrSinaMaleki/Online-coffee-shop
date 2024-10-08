@@ -47,6 +47,18 @@
             <label class="block text-sm font-medium text-gray-700">Gender</label>
             <p id="gender" class="text-gray-900">Not Provided</p>
         </div>
+
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700">birthdate:</label>
+            <p id="birthdate" class="text-gray-900">Not Provided</p>
+        </div>
+        <div>
+
+            <label class="block text-sm font-medium text-gray-700">Age: </label>
+            <p id="age" class="text-gray-900">Not Provided</p>
+        </div>
+
         <div>
             <label class="block text-sm font-medium text-gray-700">Favorites</label>
             <div id="favorites" class="grid grid-cols-1 gap-4"></div>
@@ -90,6 +102,12 @@
             <label class="block text-sm font-medium text-gray-700">Profile Image</label>
             <input id="profileImageInput" class="w-full border rounded px-3 py-2" type="file" accept="image/*">
         </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Birth day: </label>
+            <input id="birthdate_inp" name="date_of_birth" class="form-control" type="date">
+        </div>
+
         <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">Save Changes
         </button>
     </form>
@@ -130,11 +148,20 @@
                 const data = await response.json();
 
 
-                document.getElementById('fullName').textContent = data.first_name + ' ' + data.last_name;
+                document.getElementById('fullName').innerText = data.first_name + ' ' + data.last_name;
                 {#document.getElementById('username').textContent = '@' + data.username;#}
                 document.getElementById('email').textContent = data.email;
                 document.getElementById('phone').textContent = data.phone || 'Not Provided';
                 document.getElementById('gender').textContent = data.gender || 'Not Provided';
+                if (data.age){
+                     document.getElementById('age').innerText = data.age + " Years Old";
+
+                }else{
+                    document.getElementById('age').innerText = "Not provided";
+                }
+
+                console.log('data',data)
+                document.getElementById('birthdate').innerText = data.date_of_birth || "Not provided";
 
                 document.getElementById('profileImage').src = data.profile_image || 'https://via.placeholder.com/150';
 
@@ -179,6 +206,10 @@
                 document.getElementById('emailInput').value = data.email;
                 document.getElementById('phoneInput').value = data.phone;
                 document.getElementById('genderInput').value = data.gender;
+                document.getElementById('birthdate_inp').value = data.date_of_birth;
+
+
+
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -203,10 +234,13 @@
             formData.append('phone', document.getElementById('phoneInput').value);
             formData.append('gender', document.getElementById('genderInput').value);
 
+
             const profileImageInput = document.getElementById('profileImageInput');
             if (profileImageInput.files.length > 0) {
                 formData.append('profile_image', profileImageInput.files[0]);
             }
+            formData.append('date_of_birth', document.getElementById('birthdate_inp').value);
+
 
             try {
                 const response = await fetch('http://localhost:8001/account/api/profile', {
