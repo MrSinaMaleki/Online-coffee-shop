@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching cart count:', error));
     }
 
-
     document.addEventListener('click', function(e) {
         const isClickInsideMenu = e.target.closest('nav');
         if (!isClickInsideMenu) {
@@ -41,20 +40,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-
     const menuItems = document.querySelectorAll('nav > ul > li > a');
     menuItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default link behavior
-            const submenu = this.nextElementSibling; // Get the corresponding submenu
-            if (submenu) {
+        const submenu = item.nextElementSibling;
+
+        // Prevent default behavior only if submenu exists
+        if (submenu) {
+            item.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default link behavior
                 const isHidden = submenu.classList.contains('hidden');
                 closeAllSubmenus(); // Close all submenus before toggling the selected one
                 if (isHidden) {
                     submenu.classList.remove('hidden'); // Open the submenu
                 }
-            }
-        });
+            });
+        }
     });
 
     function closeAllSubmenus() {
