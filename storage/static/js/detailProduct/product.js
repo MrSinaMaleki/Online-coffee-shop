@@ -35,13 +35,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
             if (product.favorite) {
                 liked_id.classList.toggle('liked');
             }
+            for (i in product.ingredients) {
+                let el = `
+                    <li>${product.ingredients[i].title}</li>`;
+                ingredients_title.innerHTML += el;
+            }
 
             if (product.images.length > 1) {
-                for (i in product.ingredients) {
-                    let el = `
-                    <li>${product.ingredients[i].title}</li>`;
-                    ingredients_title.innerHTML += el;
-                }
+
                 for (i in product.images) {
                     const imageEl = `
                 <img src="${product.images[i].image}" alt="${product.images[i].alt}">`;

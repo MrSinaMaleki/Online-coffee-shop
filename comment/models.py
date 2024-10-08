@@ -1,8 +1,7 @@
 from django.db import models
-from select import select
 
 from account.models import LogicalMixin, User
-from order.models import OrderItem, Order
+from order.models import OrderItem
 from product.models import Product
 from django.core.exceptions import ValidationError
 from core.managers import ActiveNotDeletedBaseManager
