@@ -3,8 +3,9 @@
 
 {% block extra_head %}
     <link href="{% static "css/detaileProduct.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/all_products.css' %}">
-        <style>
+    <style>
         .profile-image-box {
             width: 40px;
             height: 40px;
@@ -16,6 +17,7 @@
             justify-content: center;
             background-color: #f3f4f6;
         }
+
         .profile-image-box img {
             width: 100%;
             height: 100%;
@@ -44,9 +46,9 @@
                 <!-- card right -->
                 <div class="product-content">
                     {#                    1#}
-                    <h2 class="product-title" id="product_title"></h2>
+                    <h2 class=" font-serif my-2 text-3xl" id="product_title"></h2>
                     {#                    2#}
-                    <div id="category">
+                    <div id="category" class="my-1">
 
                     </div>
 
@@ -61,7 +63,7 @@
                     </div>
 
                     <div class="product-price">
-                        <p class="last-price">Old Price: <span></span></p>
+                        <p class="last-price">Old Price: <span id="old_price_product"></span>$</p>
                         {#                        4#}
                         <p class="new-price">Price: <span id="price_product"></span>$ </p>
                     </div>
@@ -75,16 +77,17 @@
 
                         </ul>
                     </div>
-
+                    <di><p id="safety_buffer" class="text-base"></p></di>
                     <div class="purchase-info flex">
+
                         <form action="" method="post">
                             {% csrf_token %}
                             <input type="number" min="0" value="1" id="quantity">
-                            <button type="button" class="btn" onclick="addToCart({{ pk }})" >
+                            <button type="button" class="btn" onclick="addToCart({{ pk }})">
                                 Add to Cart <i class="fas fa-shopping-cart"></i>
                             </button>
                         </form>
-                        <form id="liked_id" class="like-btn " onclick="toggleLike(this)" >
+                        <form id="liked_id" class="like-btn " onclick="toggleLike(this)">
                             <input type="text" class="!hidden" name="products" value="{{ pk }}">
                             {% csrf_token %}
                             <i class="fas fa-heart"></i>
@@ -93,34 +96,47 @@
                     </div>
 
 
-               <div id="commentSection" class="p-4 bg-gray-100 rounded-lg shadow-md">
-                    <h2 class="text-xl font-bold mb-4">Comments</h2>
-                    {% if request.user.is_authenticated %}
-                    	<button onclick="formToggler()" id="addCommentButton" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Add Comment</button>
 
 
-                    {% else %}
-                        <button id="addCommentButton" class="mb-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled">Log In to add a comment :)</button>
-                    {% endif %}
+                    <div id="commentSection" class="p-4 bg-gray-100 rounded-lg shadow-md">
+                        <h2 class="text-xl font-bold mb-4">Comments</h2>
+                        {% if request.user.is_authenticated %}
+                            <button onclick="formToggler()" id="addCommentButton"
+                                    class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Add Comment
+                            </button>
 
-               </div>
+
+                        {% else %}
+                            <button id="addCommentButton"
+                                    class="mb-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled">Log
+                                In to add a comment :)
+                            </button>
+                        {% endif %}
+
+                    </div>
 
 
-                <div id="commentForm" class="hidden p-4 bg-white rounded-lg shadow-md mb-4">
-                    <h3 class="text-lg font-bold mb-2">Add a Comment</h3>
-                    <form id="newCommentForm">
-                        <div class="mb-2">
-                            <label for="commentText" class="block text-gray-700">Comment Text:</label>
-                            <textarea id="commentText" class="mt-1 block w-full border border-gray-300 rounded-md" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-2">
-                            <label for="commentScore" class="block text-gray-700">Score (1-5):</label>
-                            <input type="number" id="commentScore" class="mt-1 block w-full border border-gray-300 rounded-md" min="1" max="5" required>
-                        </div>
+                    <div id="commentForm" class="hidden p-4 bg-white rounded-lg shadow-md mb-4">
+                        <h3 class="text-lg font-bold mb-2">Add a Comment</h3>
+                        <form id="newCommentForm">
+                            <div class="mb-2">
+                                <label for="commentText" class="block text-gray-700">Comment Text:</label>
+                                <textarea id="commentText" class="mt-1 block w-full border border-gray-300 rounded-md"
+                                          rows="3" required></textarea>
+                            </div>
+                            <div class="mb-2">
+                                <label for="commentScore" class="block text-gray-700">Score (1-5):</label>
+                                <input type="number" id="commentScore"
+                                       class="mt-1 block w-full border border-gray-300 rounded-md" min="1" max="5"
+                                       required>
+                            </div>
 
-                        <button type="submit" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Submit Comment</button>
-                    </form>
-                </div>
+                            <button type="submit"
+                                    class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Submit
+                                Comment
+                            </button>
+                        </form>
+                    </div>
 
                 </div>
             </div>
@@ -132,6 +148,7 @@
 {% block extra_body %}
 
     <script>
+
         // Interesting way :)
         const path = window.location.pathname;
         const pathParts = path.split('/');
@@ -144,8 +161,43 @@
         const pkId = {{ pk }}
         const userAuthInputDetail = '{{ request.user.is_authenticated }}'
 
+        function SafetyBuffer() {
+    const safety_buffer = document.querySelector('#safety_buffer');
+    fetch(`http://localhost:8001/product/api/product/safety/${pkId}`, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+    })
+    .then(async response => {
+        // بررسی وضعیت پاسخ
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log(data.quantity)
+
+        if (data.quantity <= 3) {
+            safety_buffer.innerHTML = `remaining product quantity : ${data.quantity}`;
+            safety_buffer.classList.add('text-red-800');
+        } else {
+            safety_buffer.classList.remove('text-red-800');
+        }
+    })
+    .catch(error => {
+        // نمایش پیام خطا در صورت بروز مشکل
+        alert(`Error: ${error.message}`);
+    });
+}
+
 
     </script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="{% static "js/detailProduct/product.js" %}"></script>
     <script src="{% static 'js/detailProduct/addCart.js' %}"></script>
     <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>

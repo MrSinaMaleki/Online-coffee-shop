@@ -103,11 +103,12 @@ class PayOrderAPIView(APIView):
                 product = item.product
                 if product.quantity >= item.quantity:
                     product.quantity -= item.quantity
-                    if product.quantity == 0:
-                        product.is_active = False
+                    # if product.quantity == 0:
+                    #     product.is_active = False
                     product.save()
                 else:
-                    return Response({'error': 'Not enough stock for one or more products.'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'error': 'Not enough stock for one or more products.'},
+                                    status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE)
 
             order.is_paid = True
             order.save()
@@ -147,3 +148,16 @@ class OrderHistoryView(APIView):
 
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class NumberOfProductView(APIView):
+
+    def get(self, request):
+        user = User.objects.filter(id=request.user.id).first()
+        order = Order.objects.not_paid().filter(user=user).first()
+        if order:
+
+            total_product_count = sum(item.quantity for item in order.items.all())
+        else:
+            total_product_count = 0
+        return Response({'item_count': total_product_count}, status=status.HTTP_200_OK)
