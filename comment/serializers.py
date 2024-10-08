@@ -18,7 +18,7 @@ class CommentAdderSerializer(serializers.ModelSerializer):
 class HumanSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'profile_image']
+        fields = ['first_name','last_name', 'profile_image']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -27,7 +27,9 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comments
-        fields = ['id', 'text', 'score', 'created_at', 'product', 'user', 'reply_comments', ]
+
+        fields = ['id', 'text', 'score', 'created_at','product','user','reply_comments', 'is_buyer']
+
         # depth = 6
 
     def get_reply_comments(self, obj):
