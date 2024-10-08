@@ -54,8 +54,9 @@
             <div class="relative">
                 {% if user.is_authenticated %}
                     <button id="profile-btn" class="flex items-center space-x-2">
-                        <img src="{{ user.profile_image.url }}" alt="Profile" class="w-8 h-8 rounded-full object-cover">
-                    </button>
+                        <img src="{% if user.profile_image %}{{ user.profile_image.url }} {% else %} https://via.placeholder.com/150 {% endif %}" alt="Profile" class="w-8 h-8 rounded-full object-cover">
+                        </button>
+
 
                     <div id="profile-menu" class="absolute right-0 bg-gray-800 text-white rounded shadow-lg mt-2 w-40 hidden z-50">
                         {% if user.is_superuser %}
