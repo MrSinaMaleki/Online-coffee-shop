@@ -52,14 +52,19 @@
 
                     </div>
 
+
                     <div class="product-rating">
-                        <i class="fas fa-star">score</i>
+                        <div id="star-rating"></div>
+
+
                         {#                        3#}
-                        <i class="fas " id="score"></i>
-                        <i class="fas "></i>
-                        <i class="fas "></i>
-                        <i class="fas "></i>
-                        <span class="fas"></span>
+                        <span id="score_product"></span>
+
+{#                        <i class="fas " id="score"></i>#}
+{#                        <i class="fas "></i>#}
+{#                        <i class="fas "></i>#}
+{#                        <i class="fas "></i>#}
+{#                        <span class="fas"></span>#}
                     </div>
 
                     <div class="product-price">
@@ -197,8 +202,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="{% static "js/detailProduct/product.js" %}"></script>
+    <script src="{% static "js/detailProduct/calculatescore.js" %}"></script>
     <script src="{% static 'js/detailProduct/addCart.js' %}"></script>
     <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
     <script src="{% static 'js/detailProduct/addFavorite.js' %}"></script>

@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', function (event) {
 
     const imagePreview = document.querySelector('#image_parent');
@@ -10,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const product_title = document.querySelector("#product_title");
     const quantityInput = document.querySelector("#quantity");
     const addToCartButton = document.querySelector(".btn");
+    const score_product = document.querySelector("#score_product");
+    const starRating = document.getElementById("star-rating");
 
     fetch(`api/detail/product/${pkId}`, {
         method: 'GET',
@@ -31,6 +35,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
             old_price_product.innerHTML = product.old_price;
             price_product.innerHTML = product.price;
             product_title.innerHTML = product.title;
+
+            createStar(product.score, starRating);
 
             if (product.favorite) {
                 liked_id.classList.toggle('liked');
@@ -94,3 +100,4 @@ document.addEventListener('DOMContentLoaded', function (event) {
         SafetyBuffer()
     });
 });
+
