@@ -65,11 +65,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
             if (product.category.length > 1) {
                 for (i in product.category) {
-                    const categorys = `  <i class="fa-solid fa-play"></i> <a href="#" class="product-link ">${product.category[i].title}</a>`;
+                    const categorys = `  <i class="fa-solid fa-play"></i> <a href="http://localhost:8001/product/category/${product.category[i].id}" class="product-link ">${product.category[i].title}</a>`;
                     category.innerHTML += categorys;
                 }
             } else {
-                category.innerHTML = `<a href="#" class="product-link ">${product.category.title}</a>`;
+                category.innerHTML = `<a href="http://localhost:8001/product/category/${product.category.id}" class="product-link ">${product.category.title}</a>`;
             }
 
 
