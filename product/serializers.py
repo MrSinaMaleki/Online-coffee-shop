@@ -77,3 +77,25 @@ class ProductOrderSerializer(ProductSerializer):
     class Meta:
         model = Product
         fields = ('id', 'title', 'images', 'category', 'description')
+
+
+class ProductAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
+class ImageAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = "__all__"
+
+
+class IngredientsAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredients
+        fields = '__all__'
+
+
+
+

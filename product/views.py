@@ -3,13 +3,14 @@ from pprint import pprint
 from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import View, DetailView, TemplateView
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from order.models import OrderItem, Order
-from product.models import Product, Category
-from product.serializers import ProductSerializer, ProductDetailSerializer, CategorySerializer
+from product.models import Product, Category, Ingredients, ProductImage
+from product.serializers import ProductSerializer, ProductDetailSerializer, CategorySerializer, ProductAdminSerializer, \
+    IngredientsAdminSerializer, ImageAdminSerializer
 
 
 class ProductDetailView(TemplateView):
@@ -120,3 +121,27 @@ class SafetyBufferProductView(APIView):
             except Product.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+'''add product in admin panel'''
+
+
+class AddCategoryView(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class AddProductView(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductAdminSerializer
+
+
+class AddIngredientView(viewsets.ModelViewSet):
+    queryset = Ingredients.objects.all()
+    serializer_class = IngredientsAdminSerializer
+
+
+class AddProductImageView(viewsets.ModelViewSet):
+    queryset = ProductImage.objects.all()
+    serializer_class = ImageAdminSerializer
+
