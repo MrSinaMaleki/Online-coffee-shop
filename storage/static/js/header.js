@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error fetching cart count:', error));
     }
 
-    // Close submenus when clicking outside the menu
+
     document.addEventListener('click', function(e) {
         const isClickInsideMenu = e.target.closest('nav');
         if (!isClickInsideMenu) {
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Open/close the submenus
+
     const menuItems = document.querySelectorAll('nav > ul > li > a');
     menuItems.forEach(item => {
         item.addEventListener('click', function(e) {
