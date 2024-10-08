@@ -2,8 +2,8 @@
 <header class="bg-dark text-white py-4 relative z-50">
     <div class="container mx-auto flex justify-between items-center">
         <!-- Logo -->
-        <div class="text-4xl font-bold tracking-wide">
-            COFFO
+        <div class="">
+            <img src="{%static 'images/coffo.ico' %} " class="h-16 w-32 mb-0">
         </div>
 
         <!-- Menu -->
@@ -52,7 +52,7 @@
             <div class="relative">
                 {% if user.is_authenticated %}
                     <button id="profile-btn" class="flex items-center space-x-2">
-                        <img src="{{ user.profile.image.url }}" alt="Profile" class="w-8 h-8 rounded-full object-cover">
+                        <img src="{{ user.profile_image.url }}" alt="Profile" class="w-8 h-8 rounded-full object-cover">
                     </button>
 
                     <div id="profile-menu" class="absolute right-0 bg-gray-800 text-white rounded shadow-lg mt-2 w-40 hidden z-50">
