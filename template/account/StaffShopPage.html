@@ -40,7 +40,7 @@
         <button class="btn btn-outline mx-3 " onclick="orderView()">List Order</button>
         <button class="btn btn-outline mx-3 btn-primary" onclick="comments_accepted()">Comment</button>
         <button class="btn btn-outline mx-3 btn-secondary" onclick="productDetail()">Product</button>
-        <button class="btn btn-outline mx-3 btn-accent" onclick="addproduct()"><a href="">Add Product</a></button>
+        <button class="btn btn-outline mx-3 btn-accent" onclick="addProductButtonView()">ADD Product</button>
     </div>
 
     {#order in product#}
@@ -52,15 +52,8 @@
             <button class="btn btn-outline mx-3" onclick="coffeeShop()">Is Coffee Shop</button>
         </div>
 
-        {# add  in product#}
-    <div id="button_product_detail_view" class="mx-a  my-5 !hidden">
-        <div class="grid grid-cols-4 my-5 ">
-            <button class="btn btn-outline mx-3 " onclick="">1</button>
-            <button class="btn btn-outline mx-3 btn-primary" onclick="">2</button>
-            <button class="btn btn-outline mx-3 btn-secondary" onclick="">3</button>
-            <button class="btn btn-outline mx-3" onclick="">3</button>
-        </div>
-        {# add  in product#}
+
+
         <div id="category_menu" class="mx-a flex flex-row justify-center content-center  my-5">
 
         </div>
@@ -165,7 +158,27 @@
         </table>
         <meta name="csrf-token" content="{{ csrf_token }}" class="!hidden">
     </div>
+
+
+
+{# add product#}
+          {# add  in product#}
+    <div id="add_product_in_admin_panel_button" class="mx-a  my-5 !hidden">
+        <div class="grid grid-cols-4 my-5 ">
+            <button class="btn btn-outline mx-3 " onclick="">1</button>
+            <button class="btn btn-outline mx-3 btn-primary" onclick="">2</button>
+            <button class="btn btn-outline mx-3 btn-secondary" onclick="">3</button>
+            <button class="btn btn-outline mx-3" onclick="">4</button>
+        </div>
+    <</div>
+        {# add  in product#}
+
+
+
 {% endblock %}
+
+
+
 
 
 
@@ -175,6 +188,7 @@
     <script src="{% static 'js/order/buttonProductAll.js' %}"></script>
     <script src="{% static 'js/order/commentsViewAdmin.js' %}"></script>
     <script src="{% static 'js/order/allproductinViewAdmin.js' %}"></script>
+    <script src="{% static 'js/Admin_Panel_Add_Product/buttonViewAddProduct.js' %}"></script>
     <script>
         let button_product_detail_view = document.querySelector('#button_product_detail_view')
         let orderViews = document.querySelector('#orderView')
@@ -182,6 +196,7 @@
         let tbody_items2 = document.querySelector('#tbody_items2')
         let comment_accepted = document.querySelector('#comment_accepted')
         let tbody_comment = document.querySelector('#tbody_comment')
+        let add_product_in_admin_panel_button = document.querySelector('#add_product_in_admin_panel_button')
         const csrfTokens = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         let FlagId = 0
