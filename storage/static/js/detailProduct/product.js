@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const imageSliders = document.querySelector("#image_items");
     const ingredients_title = document.querySelector("#ingredients_title");
     const description_short = document.querySelector("#description_short");
+    const old_price_product = document.querySelector("#old_price_product");
     const price_product = document.querySelector("#price_product");
     const category = document.querySelector("#category");
     const product_title = document.querySelector("#product_title");
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             imageSliders.innerHTML = "";
             ingredients_title.innerHTML = "";
             description_short.innerHTML = product.description;
+            old_price_product.innerHTML = product.old_price;
             price_product.innerHTML = product.price;
             product_title.innerHTML = product.title;
 
