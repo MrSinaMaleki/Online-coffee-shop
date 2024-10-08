@@ -117,7 +117,6 @@ class CommentAdminPanelView(APIView):
         comment_id = request.data['id_comment']
         comment = Comments.objects.filter(id=comment_id).exists()
         if comment:
-            print(12365)
             comment = Comments.objects.get(id=comment_id)
             comment.is_accepted = True
             comment.save()

@@ -69,13 +69,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 imagePreview.innerHTML += `<img src="https://via.placeholder.com/300" alt="image">`;
             }
 
-            if (product.category.length > 1) {
+            if (product.category.length >= 2) {
+                console.log(product.category.length )
                 for (i in product.category) {
                     const categorys = `  <i class="fa-solid fa-play"></i> <a href="http://localhost:8001/product/category/${product.category[i].id}" class="product-link ">${product.category[i].title}</a>`;
                     category.innerHTML += categorys;
                 }
             } else {
-                category.innerHTML = `<a href="http://localhost:8001/product/category/${product.category.id}" class="product-link ">${product.category.title}</a>`;
+                category.innerHTML = `<a href="http://localhost:8001/product/category/${product.category[0].id}" class="product-link ">${product.category[0].title}</a>`;
             }
 
 
@@ -100,4 +101,35 @@ document.addEventListener('DOMContentLoaded', function (event) {
         SafetyBuffer()
     });
 });
+
+
+function SafetyBuffer() {
+    const safety_buffer = document.querySelector('#safety_buffer');
+    fetch(`http://localhost:8001/product/api/product/safety/${pkId}`, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+    })
+        .then(async response => {
+            // بررسی وضعیت پاسخ
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log(data.quantity)
+
+            if (data.quantity <= 3) {
+                safety_buffer.innerHTML = `remaining product quantity : ${data.quantity}`;
+                safety_buffer.classList.add('text-red-800');
+            } else {
+                safety_buffer.classList.remove('text-red-800');
+            }
+        })
+        .catch(error => {
+            // نمایش پیام خطا در صورت بروز مشکل
+            alert(`Error: ${error.message}`);
+        });
+}
 
