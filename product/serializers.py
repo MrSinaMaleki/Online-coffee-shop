@@ -53,7 +53,7 @@ class ProductDetailSerializer(ProductSerializer):
         model = Product
         fields = (
             'id', 'title', 'price', 'quantity', 'serial_number', 'description', 'is_coffee_shop', 'timeline',
-            'timeline', 'category', 'images', "ingredients", 'old_price', 'favorite')
+            'timeline', 'category', 'images', "ingredients", 'old_price', 'favorite', 'score')
 
     def get_images(self, obj):
         images = obj.images.filter()

@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const product_title = document.querySelector("#product_title");
     const quantityInput = document.querySelector("#quantity");
     const addToCartButton = document.querySelector(".btn");
+    const score_product = document.querySelector("#score_product");
 
     fetch(`api/detail/product/${pkId}`, {
         method: 'GET',
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             imagePreview.innerHTML = "";
             imageSliders.innerHTML = "";
             ingredients_title.innerHTML = "";
+            score_product.innerHTML = product.score;
             description_short.innerHTML = product.description;
             old_price_product.innerHTML = product.old_price;
             price_product.innerHTML = product.price;

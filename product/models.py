@@ -10,6 +10,11 @@ def validate_image_size(image):
         raise ValidationError(f"Image file size must be less than {max_size_mb} MB")
 
 
+def validate_score(score):
+    if score < 0:
+        raise ValidationError('Score cannot be negative.')
+
+
 def validate_price(price):
     if price < 0:
         raise ValidationError('Price cannot be negative.')
@@ -121,10 +126,11 @@ class Category(LogicalMixin):
 class Product(LogicalMixin):
     title = models.CharField(max_length=100)
     off = models.FloatField(default=0)
-    old_price = models.FloatField(default=0,validators=[validate_price])
+    old_price = models.FloatField(default=0, validators=[validate_price])
     price = models.FloatField(default=0)
     quantity = models.PositiveIntegerField(default=0)
     serial_number = models.CharField(max_length=100, unique=True)
+    score = models.FloatField(default=5, validators=[validate_score])
     description = models.CharField(max_length=200)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='category',
                                  related_query_name='categorys', null=True)
