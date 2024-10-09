@@ -249,6 +249,14 @@
                     const favoritesList = document.getElementById('favorites');
                     favoritesList.innerHTML = '';
 
+                    document.getElementById('firstName').value = data.first_name;
+                    document.getElementById('lastName').value = data.last_name;
+                    document.getElementById('emailInput').value = data.email;
+                    document.getElementById('phoneInput').value = data.phone;
+                    document.getElementById('genderInput').value = data.gender;
+                    document.getElementById('birthdate_inp').value = data.date_of_birth;
+
+
                     if (data.favorites && data.favorites.length > 0) {
                         data.favorites.forEach(async favoriteId => {
                             const productResponse = await fetch(`http://localhost:8001/product/api/detail/product/${favoriteId.products}`);
@@ -298,6 +306,19 @@
                             const unFavoriteBTN = document.createElement('button')
                             unFavoriteBTN.setAttribute('onclick', `unFavorite(${productData.id})`)
                             unFavoriteBTN.innerHTML = "unFavorite"
+                            unFavoriteBTN.classList.add(
+                                'bg-red-500',
+                                'hover:bg-red-700',
+                                'text-white',
+                                'font-bold',
+                                'py-2',
+                                'px-4',
+                                'rounded',
+                                'transition',
+                                'duration-300',
+                                'shadow-md',
+                                'm-2'
+                            );
 
                             card.appendChild(unFavoriteBTN)
 
@@ -310,6 +331,8 @@
                             card.appendChild(addToCartButton);
 
                             favoritesList.appendChild(card);
+
+
                         });
                     }
                 } catch (error) {
