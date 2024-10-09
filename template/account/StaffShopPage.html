@@ -51,7 +51,7 @@
 
 {% block content %}
 
- <div id="button_view" class="mx-a flex flex-row justify-center content-center  my-5">
+    <div id="button_view" class="mx-a flex flex-row justify-center content-center  my-5">
         <button class="btn btn-outline mx-3 " onclick="orderView()">List Order</button>
         <button class="btn btn-outline mx-3 btn-primary" onclick="comments_accepted()">Comment</button>
         <button class="btn btn-outline mx-3 btn-secondary" onclick="productDetail()">Product</button>
@@ -66,7 +66,6 @@
             <button class="btn btn-outline mx-3 btn-secondary" onclick="FuTimeLine(`lunch`)">Lunch</button>
             <button class="btn btn-outline mx-3" onclick="coffeeShop()">Is Coffee Shop</button>
         </div>
-
 
 
         <div id="category_menu" class="mx-a flex flex-row justify-center content-center  my-5">
@@ -176,39 +175,109 @@
 
 
 
-{# add product#}
-          {# add  in product#}
+    {# add product#}
+    {# add  in product#}
     <div id="add_product_in_admin_panel_button" class="mx-a  my-5 !hidden">
         <div class="grid grid-cols-4 my-5 ">
-             <button class="btn btn-outline mx-3" onclick="showAddCategoryForm()">Add Category</button>
-            <button class="btn btn-outline mx-3 btn-primary" onclick="">2</button>
-            <button class="btn btn-outline mx-3 btn-secondary" onclick="">3</button>
-            <button class="btn btn-outline mx-3" onclick="">4</button>
+            <button class="btn btn-outline mx-3" onclick="showAddCategoryForm()">Add Category</button>
+            <button class="btn btn-outline mx-3 btn-primary" onclick="addProductForm()">Add Product</button>
+            <button class="btn btn-outline mx-3 btn-secondary" onclick="addProductImagesForm()">Add Product Images
+            </button>
+            <button class="btn btn-outline mx-3" onclick="addIngredientsForm()">Add Ingredients</button>
         </div>
-    <</div>
-        {# add  in product#}
+        <
+    </div>
+    {# add  in product#}
 
 
 
 
 
 
-<div id="add_category_form" class="form-container hidden">
-    <form id="categoryForm" class="flex flex-col items-center">
-        <div class="form-group w-full mb-6">
-            <label for="title" class="text-lg">Category Name:</label>
-            <input type="text" id="title" name="title" placeholder="Category Name" required class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-        </div>
-        <div class="form-group w-full mb-6">
-            <label for="parent" class="text-lg">Parent Category:</label>
-            <select id="parent" name="parent" class="w-full mb-10 mt-3 h-10 border-2 text-sm">
-                <option value="" class="text-sm">No Parent</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
-    </form>
-</div>
+    <div id="add_category_form" class="form-container hidden">
+        <form id="categoryForm" class="flex flex-col items-center">
+            <div class="form-group w-full mb-6">
+                <label for="title" class="text-lg">Category Name:</label>
+                <input type="text" id="title" name="title" placeholder="Category Name" required
+                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+            </div>
+            <div class="form-group w-full mb-6">
+                <label for="parent" class="text-lg">Parent Category:</label>
+                <select id="parent" name="parent" class="w-full mb-10 mt-3 h-10 border-2 text-sm">
+                    <option value="" class="text-sm">No Parent</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
+        </form>
+    </div>
 
+    <div id="add_product_form" class="form-container">
+        <form id="productForm" class="flex flex-col items-center">
+
+            <div class="form-group w-full mb-6">
+                <label for="title_addProduct" class="text-lg">Product Title:</label>
+                <input type="text" id="title_addProduct" name="title" placeholder="Product Title" required
+                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+            </div>
+
+            <div class="form-group w-full mb-6">
+                <label for="off" class="text-lg">Discount Percentage:</label>
+                <input type="number" id="off" name="off" placeholder="Discount Percentage"
+                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+            </div>
+
+            <div class="form-group w-full mb-6">
+                <label for="old_price" class="text-lg">Old Price:</label>
+                <input type="number" id="old_price" name="old_price" placeholder="Old Price"
+                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+            </div>
+
+            <div class="form-group w-full mb-6">
+                <label for="quantity" class="text-lg">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" placeholder="Quantity"
+                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+            </div>
+
+            <div class="form-group w-full mb-6">
+                <label for="serial_number" class="text-lg">Serial Number:</label>
+                <input type="text" id="serial_number" name="serial_number" placeholder="Serial Number"
+                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+            </div>
+
+            <div class="form-group w-full mb-6">
+                <label for="description" class="text-lg">Description:</label>
+                <textarea id="description" name="description" placeholder="Product Description" rows="4"
+                          class="w-full mb-6 mt-3 border-2 text-sm"></textarea>
+            </div>
+
+            <div class="form-group w-full mb-6">
+                <label for="is_coffee_shop" class="text-lg">Is Coffee Shop Product:</label>
+
+{#                <input type="checkbox" id="is_coffee_shop" name="is_coffee_shop" class="w-full mb-6 mt-3 h-10 border-2 text-sm">#}
+                <input type="checkbox"  id="is_coffee_shop" name="is_coffee_shop" value="true" checked>
+            </div>
+
+            <div class="form-group w-full mb-6">
+                <label for="timeline" class="text-lg">Timeline:</label>
+                <select id="timeline" name="timeline" class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                    <option selected></option>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                </select>
+            </div>
+
+            <div class="form-group w-full mb-6">
+                <label for="category" class="text-lg">Category:</label>
+                <select id="category" name="category" class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                    <option value="" class="text-sm">Select Category</option>
+                    <!-- Add category options here -->
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
+        </form>
+    </div>
 
 
 
@@ -223,6 +292,7 @@
     <script src="{% static 'js/order/allproductinViewAdmin.js' %}"></script>
     <script src="{% static 'js/Admin_Panel_Add_Product/buttonViewAddProduct.js' %}"></script>
     <script src="{% static 'js/Admin_Panel_Add_Product/AddCategory.js' %}"></script>
+    <script src="{% static 'js/Admin_Panel_Add_Product/addProduct.js' %}"></script>
     <script>
         let button_product_detail_view = document.querySelector('#button_product_detail_view');
         let orderViews = document.querySelector('#orderView');
@@ -233,6 +303,8 @@
         let add_product_in_admin_panel_button = document.querySelector('#add_product_in_admin_panel_button');
         let add_category_form = document.getElementById('add_category_form');
         const csrfTokens = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        const add_product_form = document.getElementById('add_product_form')
 
         let FlagId = 0;
         document.addEventListener('DOMContentLoaded', () => {
@@ -251,6 +323,22 @@
             add_category_form.classList.remove('hidden');
             fetchCategories();
         }
+
+        function addProductForm() {
+            add_product_form.classList.remove('hidden');
+            addProducts();
+        }
+
+        function addProductImagesForm() {
+            add_category_form.classList.remove('hidden');
+            fetchCategories();
+        }
+
+        function addIngredientsForm() {
+            add_category_form.classList.remove('hidden');
+            fetchCategories();
+        }
+
 
     </script>
 {% endblock %}
