@@ -4,39 +4,54 @@
 {% block title %}
     Order List
 {% endblock %}
+
 {% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/AddCategoryAdmin.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.12/dist/full.min.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-color: #f9fafb; /* Light background for better contrast */
+            background-color: #f9fafb;
         }
 
         .table-container {
-            background: white; /* White background for table */
-            border-radius: 0.5rem; /* Rounded corners */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .avatar img {
-            transition: transform 0.3s; /* Smooth image transition effect */
+            transition: transform 0.3s;
         }
 
         .avatar img:hover {
-            transform: scale(1.05); /* Scale effect on hover */
+            transform: scale(1.05);
         }
 
         .btn {
-            margin-top: 1rem; /* Space above the button */
+            margin-top: 1rem;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .form-container.hidden {
+            display: none;
         }
     </style>
 {% endblock %}
 
-
 {% block content %}
-    <div id="button_view" class="mx-a flex flex-row justify-center content-center  my-5">
+
+ <div id="button_view" class="mx-a flex flex-row justify-center content-center  my-5">
         <button class="btn btn-outline mx-3 " onclick="orderView()">List Order</button>
         <button class="btn btn-outline mx-3 btn-primary" onclick="comments_accepted()">Comment</button>
         <button class="btn btn-outline mx-3 btn-secondary" onclick="productDetail()">Product</button>
@@ -165,7 +180,7 @@
           {# add  in product#}
     <div id="add_product_in_admin_panel_button" class="mx-a  my-5 !hidden">
         <div class="grid grid-cols-4 my-5 ">
-            <button class="btn btn-outline mx-3 " onclick="">1</button>
+             <button class="btn btn-outline mx-3" onclick="showAddCategoryForm()">Add Category</button>
             <button class="btn btn-outline mx-3 btn-primary" onclick="">2</button>
             <button class="btn btn-outline mx-3 btn-secondary" onclick="">3</button>
             <button class="btn btn-outline mx-3" onclick="">4</button>
@@ -175,12 +190,30 @@
 
 
 
+
+
+
+<div id="add_category_form" class="form-container hidden">
+    <form id="categoryForm" class="flex flex-col items-center">
+        <div class="form-group w-full mb-6">
+            <label for="title" class="text-lg">Category Name:</label>
+            <input type="text" id="title" name="title" placeholder="Category Name" required class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+        </div>
+        <div class="form-group w-full mb-6">
+            <label for="parent" class="text-lg">Parent Category:</label>
+            <select id="parent" name="parent" class="w-full mb-10 mt-3 h-10 border-2 text-sm">
+                <option value="" class="text-sm">No Parent</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
+    </form>
+</div>
+
+
+
+
+
 {% endblock %}
-
-
-
-
-
 
 {% block extra_body %}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
@@ -189,33 +222,35 @@
     <script src="{% static 'js/order/commentsViewAdmin.js' %}"></script>
     <script src="{% static 'js/order/allproductinViewAdmin.js' %}"></script>
     <script src="{% static 'js/Admin_Panel_Add_Product/buttonViewAddProduct.js' %}"></script>
+    <script src="{% static 'js/Admin_Panel_Add_Product/AddCategory.js' %}"></script>
     <script>
-        let button_product_detail_view = document.querySelector('#button_product_detail_view')
-        let orderViews = document.querySelector('#orderView')
-        let category_menu = document.querySelector('#category_menu')
-        let tbody_items2 = document.querySelector('#tbody_items2')
-        let comment_accepted = document.querySelector('#comment_accepted')
-        let tbody_comment = document.querySelector('#tbody_comment')
-        let add_product_in_admin_panel_button = document.querySelector('#add_product_in_admin_panel_button')
+        let button_product_detail_view = document.querySelector('#button_product_detail_view');
+        let orderViews = document.querySelector('#orderView');
+        let category_menu = document.querySelector('#category_menu');
+        let tbody_items2 = document.querySelector('#tbody_items2');
+        let comment_accepted = document.querySelector('#comment_accepted');
+        let tbody_comment = document.querySelector('#tbody_comment');
+        let add_product_in_admin_panel_button = document.querySelector('#add_product_in_admin_panel_button');
+        let add_category_form = document.getElementById('add_category_form');
         const csrfTokens = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        let FlagId = 0
+        let FlagId = 0;
         document.addEventListener('DOMContentLoaded', () => {
-            orderView()
-
+            orderView();
         });
-        {#++++++++++++++++++++++++++++++++++++++++++++++++++++++#}
 
         function setes() {
-            console.log(FlagId)
             if (FlagId === 0) {
                 orderView();
             }
         }
 
-        {#--------------------------#}
         setInterval(setes, 3000);
+
+        function showAddCategoryForm() {
+            add_category_form.classList.remove('hidden');
+            fetchCategories();
+        }
+
     </script>
-
 {% endblock %}
-
