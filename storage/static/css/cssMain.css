@@ -70,3 +70,6 @@ footer a {
 footer a:hover {
     color: #ff4a4a;
 }
+.hidden {
+    display: none;
+}

@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', function (event) {
 
     const imagePreview = document.querySelector('#image_parent');
@@ -10,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const product_title = document.querySelector("#product_title");
     const quantityInput = document.querySelector("#quantity");
     const addToCartButton = document.querySelector(".btn");
+    const score_product = document.querySelector("#score_product");
+    const starRating = document.getElementById("star-rating");
 
     fetch(`api/detail/product/${pkId}`, {
         method: 'GET',
@@ -32,16 +36,19 @@ document.addEventListener('DOMContentLoaded', function (event) {
             price_product.innerHTML = product.price;
             product_title.innerHTML = product.title;
 
+            createStar(product.score, starRating);
+
             if (product.favorite) {
                 liked_id.classList.toggle('liked');
             }
+            for (i in product.ingredients) {
+                let el = `
+                    <li>${product.ingredients[i].title}</li>`;
+                ingredients_title.innerHTML += el;
+            }
 
             if (product.images.length > 1) {
-                for (i in product.ingredients) {
-                    let el = `
-                    <li>${product.ingredients[i].title}</li>`;
-                    ingredients_title.innerHTML += el;
-                }
+
                 for (i in product.images) {
                     const imageEl = `
                 <img src="${product.images[i].image}" alt="${product.images[i].alt}">`;
@@ -62,13 +69,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
                 imagePreview.innerHTML += `<img src="https://via.placeholder.com/300" alt="image">`;
             }
 
-            if (product.category.length > 1) {
+            if (product.category.length >= 2) {
+                console.log(product.category.length )
                 for (i in product.category) {
-                    const categorys = `  <i class="fa-solid fa-play"></i> <a href="#" class="product-link ">${product.category[i].title}</a>`;
+                    const categorys = `  <i class="fa-solid fa-play"></i> <a href="http://localhost:8001/product/category/${product.category[i].id}" class="product-link ">${product.category[i].title}</a>`;
                     category.innerHTML += categorys;
                 }
             } else {
-                category.innerHTML = `<a href="#" class="product-link ">${product.category.title}</a>`;
+                category.innerHTML = `<a href="http://localhost:8001/product/category/${product.category[0].id}" class="product-link ">${product.category[0].title}</a>`;
             }
 
 
@@ -93,3 +101,35 @@ document.addEventListener('DOMContentLoaded', function (event) {
         SafetyBuffer()
     });
 });
+
+
+function SafetyBuffer() {
+    const safety_buffer = document.querySelector('#safety_buffer');
+    fetch(`http://localhost:8001/product/api/product/safety/${pkId}`, {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+    })
+        .then(async response => {
+            // بررسی وضعیت پاسخ
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log(data.quantity)
+
+            if (data.quantity <= 3) {
+                safety_buffer.innerHTML = `remaining product quantity : ${data.quantity}`;
+                safety_buffer.classList.add('text-red-800');
+            } else {
+                safety_buffer.classList.remove('text-red-800');
+            }
+        })
+        .catch(error => {
+            // نمایش پیام خطا در صورت بروز مشکل
+            alert(`Error: ${error.message}`);
+        });
+}
+

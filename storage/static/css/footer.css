@@ -3,7 +3,7 @@ label {
     font-weight: bold;
 }
 
-.btn {
+#submit{
     padding: 7px 21px;
     background-color: rgb(143, 1, 1);
     color: white;

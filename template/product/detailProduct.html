@@ -52,14 +52,19 @@
 
                     </div>
 
+
                     <div class="product-rating">
-                        <i class="fas fa-star">score</i>
+                        <div id="star-rating"></div>
+
+
                         {#                        3#}
-                        <i class="fas " id="score"></i>
-                        <i class="fas "></i>
-                        <i class="fas "></i>
-                        <i class="fas "></i>
-                        <span class="fas"></span>
+                        <span id="score_product"></span>
+
+{#                        <i class="fas " id="score"></i>#}
+{#                        <i class="fas "></i>#}
+{#                        <i class="fas "></i>#}
+{#                        <i class="fas "></i>#}
+{#                        <span class="fas"></span>#}
                     </div>
 
                     <div class="product-price">
@@ -71,12 +76,13 @@
                     <div class="product-detail">
                         <h1>ingredients</h1>
                         {#                        5#}
-                        <p id="description_short"></p>
+
                         {#                        6#}
                         <ul id="ingredients_title" class="grid grid-cols-2">
 
                         </ul>
                     </div>
+                    <p id="description_short"></p>
                     <di><p id="safety_buffer" class="text-base"></p></di>
                     <div class="purchase-info flex">
 
@@ -94,8 +100,6 @@
                         </form>
 
                     </div>
-
-
 
 
                     <div id="commentSection" class="p-4 bg-gray-100 rounded-lg shadow-md">
@@ -161,44 +165,10 @@
         const pkId = {{ pk }}
         const userAuthInputDetail = '{{ request.user.is_authenticated }}'
 
-        function SafetyBuffer() {
-    const safety_buffer = document.querySelector('#safety_buffer');
-    fetch(`http://localhost:8001/product/api/product/safety/${pkId}`, {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': '{{ csrf_token }}'
-        },
-    })
-    .then(async response => {
-        // بررسی وضعیت پاسخ
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        console.log(data.quantity)
-
-        if (data.quantity <= 3) {
-            safety_buffer.innerHTML = `remaining product quantity : ${data.quantity}`;
-            safety_buffer.classList.add('text-red-800');
-        } else {
-            safety_buffer.classList.remove('text-red-800');
-        }
-    })
-    .catch(error => {
-        // نمایش پیام خطا در صورت بروز مشکل
-        alert(`Error: ${error.message}`);
-    });
-}
-
-
     </script>
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="{% static "js/detailProduct/product.js" %}"></script>
+    <script src="{% static "js/detailProduct/calculatescore.js" %}"></script>
     <script src="{% static 'js/detailProduct/addCart.js' %}"></script>
     <script src="{% static 'js/detailProduct/imageSlider.js' %}"></script>
     <script src="{% static 'js/detailProduct/addFavorite.js' %}"></script>

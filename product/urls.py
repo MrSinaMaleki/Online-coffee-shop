@@ -1,8 +1,18 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
+
 from .views import (ProductListView, ProductCoffeeShopListView, CategoryView, ProductDetailView, ProductDetailAPIView,
-                    ProductCategoryListView, RestaurantView, CategoryListView, SafetyBufferProductView)
+                    ProductCategoryListView, RestaurantView, CategoryListView, SafetyBufferProductView, AddCategoryView,
+                    AddProductView, AddIngredientView, AddProductImageView)
 
 from django.views.generic import TemplateView
+
+router = DefaultRouter()
+router.register('api/add/category', AddCategoryView)
+router.register('api/add/product', AddProductView)
+router.register('api/add/ingredients', AddIngredientView)
+router.register('api/add/images', AddProductImageView)
+
 urlpatterns = [
     path('api/list/product/category/<int:pk>', ProductListView.as_view(), name='api_product-category-list'),
     path('api/list/category', CategoryListView.as_view(), name='api-category-list'),
@@ -17,3 +27,4 @@ urlpatterns = [
     path('coffeeshop/', TemplateView.as_view(template_name="product/all_products_coffeeshop.html"), name='coffeeshop'),
     path('restaurant/<str:time>', RestaurantView.as_view(), name='restaurant'),
 ]
+urlpatterns += router.urls

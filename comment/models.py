@@ -1,5 +1,7 @@
 from django.db import models
+
 from account.models import LogicalMixin, User
+from order.models import OrderItem
 from product.models import Product
 from django.core.exceptions import ValidationError
 from core.managers import ActiveNotDeletedBaseManager
@@ -24,6 +26,17 @@ class Comments(LogicalMixin):
 
     objects = CommentManager()
 
+    @property
+    def is_buyer(self):
+        if not self.user:
+            return False
+
+        return OrderItem.objects.filter(
+            order__user=self.user,
+            order__is_paid=True,
+            product=self.product,
+        ).exists()
+
     def clean(self):
         if not (0 <= self.score <= 5):
             raise ValidationError('Score must be between 0 and 5')
@@ -37,7 +50,7 @@ class Comments(LogicalMixin):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{str(self.id)} -> {self.score} -> {self.user.username}'
+        return f'{str(self.id)} -> {self.score} -> {self.user.first_name} , {self.user.last_name}'
 
     class Meta:
         ordering = ['-created_at']

@@ -53,7 +53,7 @@ class ProductDetailSerializer(ProductSerializer):
         model = Product
         fields = (
             'id', 'title', 'price', 'quantity', 'serial_number', 'description', 'is_coffee_shop', 'timeline',
-            'timeline', 'category', 'images', "ingredients", 'old_price', 'favorite')
+            'timeline', 'category', 'images', "ingredients", 'old_price', 'favorite', 'score')
 
     def get_images(self, obj):
         images = obj.images.filter()
@@ -77,3 +77,25 @@ class ProductOrderSerializer(ProductSerializer):
     class Meta:
         model = Product
         fields = ('id', 'title', 'images', 'category', 'description')
+
+
+class ProductAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
+class ImageAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = "__all__"
+
+
+class IngredientsAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ingredients
+        fields = '__all__'
+
+
+
+

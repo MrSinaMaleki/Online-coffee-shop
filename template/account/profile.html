@@ -1,390 +1,95 @@
 {% extends "_base.html" %}
 {% load static %}
 {% block title %}
-    User Profile
+User Profile
 {% endblock %}
 
 
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock %}
 
 {% block content %}
-    <div class="flex justify-center items-center min-h-screen relative">
-        {% if request.user.is_authenticated %}
-            <div class="bg-white shadow-lg rounded-lg max-w-md w-full p-6 relative z-10">
-                <div class="text-center">
-                    <img id="profileImage" class="w-32 h-32 rounded-full mx-auto object-cover mb-4"
-                         src="https://via.placeholder.com/150" alt="Profile Image">
-                    <h1 id="fullName" class="text-2xl font-bold"></h1>
-                    <p id="username" class="text-gray-600"></p>
-                </div>
+<div class="flex justify-center items-center min-h-screen relative">
+{% if request.user.is_authenticated %}
+<div class="bg-white shadow-lg rounded-lg max-w-md w-full p-6 relative z-10">
+<div class="text-center">
+<img id="profileImage" class="w-32 h-32 rounded-full mx-auto object-cover mb-4"
+src="https://via.placeholder.com/150" alt="Profile Image">
+<h1 id="fullName" class="text-2xl font-bold"></h1>
+<p id="username" class="text-gray-600"></p>
+</div>
 
-                <div class="mt-6 space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Email</label>
-                        <p id="email" class="text-gray-900"></p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Phone</label>
-                        <p id="phone" class="text-gray-900">Not Provided</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Gender</label>
-                        <p id="gender" class="text-gray-900">Not Provided</p>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Favorites</label>
-                        <div id="favorites" class="grid grid-cols-1 gap-4"></div>
-                    </div>
+<div class="mt-6 space-y-4">
+<div>
+<label class="block text-sm font-medium text-gray-700">Email</label>
+<p id="email" class="text-gray-900"></p>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700">Phone</label>
+<p id="phone" class="text-gray-900">Not Provided</p>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700">Gender</label>
+<p id="gender" class="text-gray-900">Not Provided</p>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700">Favorites</label>
+<div id="favorites" class="grid grid-cols-1 gap-4"></div>
+</div>
 
-                    <button id="editProfileButton"
-                            class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
-                        Edit
-                        Profile
-                    </button>
-                </div>
-            </div>
+<button id="editProfileButton"
+class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+Edit
+Profile
+</button>
+</div>
+</div>
 
-            <div id="editProfileForm"
-                 class="bg-gray-100 shadow-2xl rounded-l-lg max-w-md w-full h-screen fixed right-0 top-0 p-6 slide-in hidden z-20">
-                <h2 class="text-2xl font-bold mb-6">Update Profile</h2>
-                <form id="profileForm" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">First Name</label>
-                        <label for="firstName"></label><input id="firstName" class="w-full border rounded px-3 py-2"
-                                                              type="text">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Last Name</label>
-                        <label for="lastName"></label><input id="lastName" class="w-full border rounded px-3 py-2"
-                                                             type="text">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Email</label>
-                        <label for="emailInput"></label><input id="emailInput" class="w-full border rounded px-3 py-2"
-                                                               type="email">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Phone</label>
-                        <label for="phoneInput"></label><input id="phoneInput" class="w-full border rounded px-3 py-2"
-                                                               type="text">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Gender</label>
-                        <label for="genderInput"></label><select id="genderInput"
-                                                                 class="w-full border rounded px-3 py-2">
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Profile Image</label>
-                        <input id="profileImageInput" class="w-full border rounded px-3 py-2" type="file"
-                               accept="image/*">
-                    </div>
-                    <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
-                        Save
-                        Changes
-                    </button>
-                </form>
-            </div>
-        {% else %}
-            <h1>Please <a href="http://localhost:8001/account/login/">logIn</a>/<a
-                    href="http://localhost:8001/account/signup/">Register</a>
-            </h1>
-        {% endif %}
-    </div>
-{% endblock %}
-
-{% block extra_body %}
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{% static 'js/detailProduct/addFavorite.js' %}"></script>
-    <script>
-        let userAuthInputList = '{{ request.user.is_authenticated }}';
-
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-
-        async function addToCart(productId) {
-            if (userAuthInputList === 'False') {
-                Swal.fire({
-                    title: 'Not Logged In',
-                    text: 'Please log in to add items to your cart.',
-                    icon: 'warning',
-                    confirmButtonText: 'Log In',
-                    showCancelButton: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = 'http://localhost:8001/account/login/';
-                    }
-                });
-                return;
-            }
-
-            await fetch(`http://localhost:8001/order/cart/add/${productId}/`, {
-                method: 'POST',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                }
-            })
-                .then(async response => await response.json())
-                .then(async data => {
-                    if (data.error) {
-                        Swal.fire({
-                            title: 'Error',
-                            text: data.error,
-                            icon: 'error',
-                            confirmButtonText: 'OK'
-                        });
-                    } else {
-                        Swal.fire({
-                            title: 'Success',
-                            text: data.message,
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        });
-                        updateCartCount();
-                    }
-                })
-                .catch(async error => {
-                    console.error('Error adding to cart:', error);
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'An error occurred while adding the item to the cart.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                });
-        }
-
-        function updateCartCount() {
-            fetch('http://localhost:8001/order/api/numberofproduct', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken'),
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-            })
-                .then(response => response.json())
-                .then(data => {
-                    const cartCountElement = document.getElementById('cart-count');
-
-                    if (data.item_count !== undefined) {
-                        cartCountElement.textContent = data.item_count;
-                    } else {
-                        cartCountElement.textContent = '0';
-                    }
-                })
-                .catch(error => console.error('Error fetching cart count:', error));
-        }
-
-
-        function unFavorite(productId) {
-            try {
-                fetch(`http://localhost:8001/favorite/api/favorite/create`, {
-                    method: 'POST',
-                    body: JSON.stringify({"products": productId}),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                }).then(res => {
-                    Swal.fire({
-                        title: 'Successful!',
-                        text: 'Unfavorite the product',
-                        icon: 'Successful',
-                        confirmButtonText: 'Fine',
-                        willClose: () => {
-                            window.location.replace("{% url 'profiles' %}")
-                        }
-                    })
-
-                })
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            const editProfileButton = document.getElementById('editProfileButton');
-            const editProfileForm = document.getElementById('editProfileForm');
-            const profileForm = document.getElementById('profileForm');
-            const csrftoken = getCookie('csrftoken');
-
-            const fetchData = async () => {
-                try {
-                    const response = await fetch('http://localhost:8001/account/api/profile', {
-                        headers: {
-                            'X-CSRFToken': csrftoken
-                        }
-                    });
-                    const data = await response.json();
-
-                    document.getElementById('fullName').textContent = data.first_name + ' ' + data.last_name;
-                    document.getElementById('email').textContent = data.email;
-                    document.getElementById('phone').textContent = data.phone || 'Not Provided';
-                    document.getElementById('gender').textContent = data.gender || 'Not Provided';
-                    document.getElementById('profileImage').src = data.profile_image || 'https://via.placeholder.com/150';
-
-                    const favoritesList = document.getElementById('favorites');
-                    favoritesList.innerHTML = '';
-
-                    document.getElementById('firstName').value = data.first_name;
-                    document.getElementById('lastName').value = data.last_name;
-                    document.getElementById('emailInput').value = data.email;
-                    document.getElementById('phoneInput').value = data.phone;
-                    document.getElementById('genderInput').value = data.gender;
-                    document.getElementById('birthdate_inp').value = data.date_of_birth;
-
-
-                    if (data.favorites && data.favorites.length > 0) {
-                        data.favorites.forEach(async favoriteId => {
-                            const productResponse = await fetch(`http://localhost:8001/product/api/detail/product/${favoriteId.products}`);
-                            const productData = await productResponse.json();
-
-                            const card = document.createElement('div');
-                            card.classList.add('border', 'rounded', 'shadow-lg', 'p-4', 'flex', 'flex-col', 'items-center');
-
-                            const productImage = document.createElement('img');
-                            productImage.src = productData.image || 'https://via.placeholder.com/100';
-                            productImage.alt = productData.title;
-                            productImage.classList.add('w-24', 'h-24', 'object-cover', 'mb-4');
-
-                            const productTitleLink = document.createElement('a');
-                            productTitleLink.href = `http://localhost:8001/product/${productData.id}`;
-                            productTitleLink.textContent = productData.title;
-                            productTitleLink.classList.add('font-bold', 'mb-2', 'text-center');
-                            productTitleLink.style.textDecoration = 'none';
-                            productTitleLink.style.color = 'blue';
-
-                            const productPrice = document.createElement('p');
-                            productPrice.textContent = `Price: $${productData.price}`;
-                            productPrice.classList.add('text-gray-600', 'mb-2', 'text-center');
-
-                            // Add to Cart Button
-                            const addToCartButton = document.createElement('a');
-                            addToCartButton.href = "#";
-                            addToCartButton.setAttribute('onclick', `addToCart(${productData.id})`);
-                            addToCartButton.textContent = "add to cart";
-                            addToCartButton.classList.add(
-                                'bg-blue-500',
-                                'text-white',
-                                'hover:bg-blue-600',
-                                'font-semibold',
-                                'py-2',
-                                'px-4',
-                                'rounded-lg',
-                                'shadow-md',
-                                'transition',
-                                'duration-300',
-                                'hover:shadow-lg',
-                                'focus:outline-none',
-                                'focus:ring-2',
-                                'focus:ring-blue-400'
-                            );
-
-                            const unFavoriteBTN = document.createElement('button')
-                            unFavoriteBTN.setAttribute('onclick', `unFavorite(${productData.id})`)
-                            unFavoriteBTN.innerHTML = "unFavorite"
-                            unFavoriteBTN.classList.add(
-                                'bg-red-500',
-                                'hover:bg-red-700',
-                                'text-white',
-                                'font-bold',
-                                'py-2',
-                                'px-4',
-                                'rounded',
-                                'transition',
-                                'duration-300',
-                                'shadow-md',
-                                'm-2'
-                            );
-
-                            card.appendChild(unFavoriteBTN)
-
-
-                            // Append elements to card
-                            card.appendChild(productImage);
-                            card.appendChild(productTitleLink);
-                            card.appendChild(productPrice);
-
-                            card.appendChild(addToCartButton);
-
-                            favoritesList.appendChild(card);
-
-
-                        });
-                    }
-                } catch (error) {
-                    console.error('Error fetching profile data:', error);  // Catch block added here
-                }
-            };
-
-            await fetchData();
-
-
-            // Show form when the button is clicked
-            editProfileButton.addEventListener('click', () => {
-                editProfileForm.classList.toggle('hidden');
-                editProfileForm.classList.toggle('active');
-            });
-
-            // Handle form submission
-            profileForm.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const formData = new FormData();
-                formData.append('first_name', document.getElementById('firstName').value);
-                formData.append('last_name', document.getElementById('lastName').value);
-                formData.append('email', document.getElementById('emailInput').value);
-                formData.append('phone', document.getElementById('phoneInput').value);
-                formData.append('gender', document.getElementById('genderInput').value);
-
-                const profileImageInput = document.getElementById('profileImageInput');
-                if (profileImageInput.files.length > 0) {
-                    formData.append('profile_image', profileImageInput.files[0]);
-                }
-
-                try {
-                    const response = await fetch('http://localhost:8001/account/api/profile', {
-                        method: 'PUT',
-                        headers: {
-                            'X-CSRFToken': csrftoken
-                        },
-                        body: formData
-                    });
-
-                    if (response.ok) {
-                        alert('Profile updated successfully!');
-                        location.reload();
-                    } else {
-                        alert('Failed to update profile.');
-                    }
-                } catch (error) {
-                    console.error('Error updating profile:', error);
-                }
-            });
-        });
-    </script>
-
-{% endblock %}
+<div id="editProfileForm"
+class="bg-gray-100 shadow-2xl rounded-l-lg max-w-md w-full h-screen fixed right-0 top-0 p-6 slide-in hidden z-20">
+<h2 class="text-2xl font-bold mb-6">Update Profile</h2>
+<form id="profileForm" class="space-y-4">
+<div>
+<label class="block text-sm font-medium text-gray-700">First Name</label>
+<label for="firstName"></label><input id="firstName" class="w-full border rounded px-3 py-2"
+type="text">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700">Last Name</label>
+<label for="lastName"></label><input id="lastName" class="w-full border rounded px-3 py-2"
+type="text">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700">Email</label>
+<label for="emailInput"></label><input id="emailInput" class="w-full border rounded px-3 py-2"
+type="email">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700">Phone</label>
+<label for="phoneInput"></label><input id="phoneInput" class="w-full border rounded px-3 py-2"
+type="text">
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700">Gender</label>
+<label for="genderInput"></label><select id="genderInput"
+class="w-full border rounded px-3 py-2">
+<option value="">Select Gender</option>
+<option value="male">Male</option>
+<option value="female">Female</option>
+</select>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700">Profile Image</label>
+<input id="profileImageInput" class="w-full border rounded px-3 py-2" type="file"
+accept="image/*">
+</div>
+<button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+Save
+Changes
+</button>
+</form>
+</div>
+{% else %}
+<h1>Please <a href="http://localhost:8001/account/login/">logIn</a>/<a
+href="http://localhost:8001/account/signup/">Register</a>

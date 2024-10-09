@@ -59,7 +59,7 @@ class User(AbstractUser, LogicalMixin):
 
 
     def __str__(self):
-        return f'{self.username}'
+        return f'{self.email}'
 
     @property
     def age(self):

@@ -4,6 +4,8 @@ function comments_accepted() {
     comment_accepted.classList.remove("!hidden");
     orderViews.classList.add("!hidden");
     button_product_detail_view.classList.add("!hidden");
+    add_product_in_admin_panel_button.classList.add('!hidden');
+
 
     fetch(`http://localhost:8001/comment/comments/admin-panel`, {
         method: "GET",
