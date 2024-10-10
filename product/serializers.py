@@ -82,7 +82,7 @@ class ProductOrderSerializer(ProductSerializer):
 class ProductAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['title', 'off', 'old_price', 'quantity', 'serial_number', 'description', 'is_coffee_shop','timeline', 'category']
+        fields = ['id','title', 'off', 'old_price', 'quantity', 'serial_number', 'description', 'is_coffee_shop','timeline', 'category']
 
 
 class ImageAdminSerializer(serializers.ModelSerializer):

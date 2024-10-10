@@ -4,6 +4,8 @@ function addProducts() {
         .then(response => response.json())
         .then(data => {
             const categorySelect = document.getElementById("category");
+            categorySelect.innerHTML=""
+            categorySelect.innerHTML='<option value="" class="text-sm">Select Category</option>'
             data.forEach(category => {
                 let option = document.createElement("option");
                 option.value = category.id;

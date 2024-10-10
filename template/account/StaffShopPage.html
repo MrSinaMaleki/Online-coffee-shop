@@ -185,16 +185,12 @@
             </button>
             <button class="btn btn-outline mx-3" onclick="addIngredientsForm()">Add Ingredients</button>
         </div>
-        <
-    </div>
+
+
     {# add  in product#}
 
 
-
-
-
-
-    <div id="add_category_form" class="form-container hidden">
+    <div id="add_category_form" class="form-container !hidden">
         <form id="categoryForm" class="flex flex-col items-center">
             <div class="form-group w-full mb-6">
                 <label for="title" class="text-lg">Category Name:</label>
@@ -211,7 +207,7 @@
         </form>
     </div>
 
-    <div id="add_product_form" class="form-container">
+    <div id="add_product_form" class="form-container !hidden">
         <form id="productForm" class="flex flex-col items-center">
 
             <div class="form-group w-full mb-6">
@@ -280,7 +276,7 @@
     </div>
 
 
-
+</div>
 
 {% endblock %}
 
@@ -320,12 +316,14 @@
         setInterval(setes, 3000);
 
         function showAddCategoryForm() {
-            add_category_form.classList.remove('hidden');
+            add_category_form.classList.remove('!hidden');
+            add_product_form.classList.add('!hidden');
             fetchCategories();
         }
 
         function addProductForm() {
-            add_product_form.classList.remove('hidden');
+            add_product_form.classList.remove('!hidden');
+            add_category_form.classList.add('!hidden');
             addProducts();
         }
 

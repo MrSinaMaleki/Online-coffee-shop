@@ -36,8 +36,10 @@ function comments_accepted() {
                             <textarea class="w-full h-24 resize-none" placeholder="${comment.text}"></textarea>  
                         </div>  
                         <br />  
+                        <div class="flex ">
                         <button class="btn btn-error" onclick="delete_comments(${comment.id})">delete</button>  
-                        <button class="btn btn-success" onclick="accept_comments(${comment.id})">accept</button>  
+                        <button class="max-w-32 mx-2 btn btn-success "  onclick="accept_comments(${comment.id})">accept</button>  
+                        </div>
                     </td>  
                     <td>  
                         <div class="flex items-center gap-1">  
