@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from core.models import LogicalMixin
 from datetime import date
+from .validators import CustomPasswordValidator
 
 
 def validate_image_size(image):
@@ -24,6 +25,10 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
+
+        validator = CustomPasswordValidator()
+        validator.validate(password)
+
         user.set_password(password)
         user.save(using=self._db)
         return user
