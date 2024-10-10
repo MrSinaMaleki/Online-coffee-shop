@@ -1,36 +1,35 @@
+const commentSection = document.getElementById('commentSection');
+const commentForm = document.getElementById('commentForm');
+const newCommentForm = document.getElementById('newCommentForm');
 
-    const commentSection = document.getElementById('commentSection');
-    const commentForm = document.getElementById('commentForm');
-    const newCommentForm = document.getElementById('newCommentForm');
-
-    // Just Making stars
-    function createStarRating(score) {
-        const starsDiv = document.createElement('div');
-        starsDiv.className = 'text-yellow-500';
-        for (let i = 0; i < score; i++) {
-            const star = document.createElement('span');
-            star.innerHTML = '★';
-            starsDiv.appendChild(star);
-        }
-        return starsDiv;
+// Just Making stars
+function createStarRating(score) {
+    const starsDiv = document.createElement('div');
+    starsDiv.className = 'text-yellow-500';
+    for (let i = 0; i < score; i++) {
+        const star = document.createElement('span');
+        star.innerHTML = '★';
+        starsDiv.appendChild(star);
     }
+    return starsDiv;
+}
 
-        function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
         }
-        return cookieValue;
     }
+    return cookieValue;
+}
 
-    // Recursive function to display comments and replays
+// Recursive function to display comments and replays
 function displayComment(comment, isReply = false) {
     const commentDiv = document.createElement('div');
     commentDiv.className = 'mb-4 p-4 bg-white rounded-lg shadow-sm';
@@ -112,36 +111,35 @@ function displayComment(comment, isReply = false) {
 }
 
 
+// document.getElementById('addCommentButton').addEventListener('click', () => {
+//
+// });
 
-    // document.getElementById('addCommentButton').addEventListener('click', () => {
-    //
-    // });
-
-    function formToggler() {
-        commentForm.classList.toggle('hidden');
-    }
-
-
-    newCommentForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-
-        const commentText = document.getElementById('commentText').value;
-        const commentScore = document.getElementById('commentScore').value;
+function formToggler() {
+    commentForm.classList.toggle('hidden');
+}
 
 
-        fetch('http://localhost:8001/comment/add_comment/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({
-                text: commentText,
-                score: commentScore,
-                user: userId,
-                product: productId
-            }),
-        })
+newCommentForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const commentText = document.getElementById('commentText').value;
+    const commentScore = document.getElementById('commentScore').value;
+
+
+    fetch('http://localhost:8001/comment/add_comment/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            text: commentText,
+            score: commentScore,
+            user: userId,
+            product: productId
+        }),
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -149,77 +147,86 @@ function displayComment(comment, isReply = false) {
             return response.json();
         })
         .then(() => {
+            Swal.fire({
+                title: 'Successful!',
+                text: 'added you comment',
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                willClose: () => {
+                    location.reload();
+                }
+            })
 
-            location.reload();
+
         })
         .catch(error => {
             console.error('Error adding comment:', error);
         });
-    });
+});
 
 
-    function showReplyForm(commentDiv, commentId) {
+function showReplyForm(commentDiv, commentId) {
 
 
-        const existingReplyForm = commentDiv.querySelector('.replyForm');
-        if (existingReplyForm) {
-            existingReplyForm.remove();
-        }
-
-        const replyFormDiv = document.createElement('div');
-        replyFormDiv.className = 'mt-2 p-2 bg-gray-50 border rounded-lg replyForm';
-
-        const replyForm = document.createElement('form');
-        replyForm.onsubmit = (event) => handleReplySubmit(event, commentId);
-
-        const replyText = document.createElement('textarea');
-        replyText.placeholder = 'Reply...';
-        replyText.className = 'block w-full border border-gray-300 rounded-md mt-1';
-        replyText.required = true;
-
-        const replyScore = document.createElement('input');
-        replyScore.type = 'number';
-        replyScore.min = 1;
-        replyScore.max = 5;
-        replyScore.placeholder = 'Score (1-5)';
-        replyScore.className = 'block w-full border border-gray-300 rounded-md mt-1';
-        replyScore.required = true;
-
-        replyForm.appendChild(replyText);
-        replyForm.appendChild(replyScore);
-        replyForm.appendChild(document.createElement('br'));
-        const submitButton = document.createElement('button');
-        submitButton.type = 'submit';
-        submitButton.className = 'mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600';
-        submitButton.textContent = 'Submit Reply';
-        replyForm.appendChild(submitButton);
-
-        replyFormDiv.appendChild(replyForm);
-        commentDiv.appendChild(replyFormDiv);
+    const existingReplyForm = commentDiv.querySelector('.replyForm');
+    if (existingReplyForm) {
+        existingReplyForm.remove();
     }
 
-    // Handle reply submission
-    function handleReplySubmit(event, commentId) {
-        event.preventDefault();
+    const replyFormDiv = document.createElement('div');
+    replyFormDiv.className = 'mt-2 p-2 bg-gray-50 border rounded-lg replyForm';
 
-        const replyText = event.target.querySelector('textarea').value;
-        const replyScore = event.target.querySelector('input[type="number"]').value;
+    const replyForm = document.createElement('form');
+    replyForm.onsubmit = (event) => handleReplySubmit(event, commentId);
+
+    const replyText = document.createElement('textarea');
+    replyText.placeholder = 'Reply...';
+    replyText.className = 'block w-full border border-gray-300 rounded-md mt-1';
+    replyText.required = true;
+
+    const replyScore = document.createElement('input');
+    replyScore.type = 'number';
+    replyScore.min = 1;
+    replyScore.max = 5;
+    replyScore.placeholder = 'Score (1-5)';
+    replyScore.className = 'block w-full border border-gray-300 rounded-md mt-1';
+    replyScore.required = true;
+
+    replyForm.appendChild(replyText);
+    replyForm.appendChild(replyScore);
+    replyForm.appendChild(document.createElement('br'));
+    const submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.className = 'mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600';
+    submitButton.textContent = 'Submit Reply';
+    replyForm.appendChild(submitButton);
+
+    replyFormDiv.appendChild(replyForm);
+    commentDiv.appendChild(replyFormDiv);
+}
+
+// Handle reply submission
+function handleReplySubmit(event, commentId) {
+    event.preventDefault();
+
+    const replyText = event.target.querySelector('textarea').value;
+    const replyScore = event.target.querySelector('input[type="number"]').value;
 
 
-        fetch(`http://localhost:8001/comment/adding_reply/${commentId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({
-                text: replyText,
-                score: replyScore,
-                user: userId,
-                product: productId,
-                reply_to: commentId
-            }),
-        })
+    fetch(`http://localhost:8001/comment/adding_reply/${commentId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            text: replyText,
+            score: replyScore,
+            user: userId,
+            product: productId,
+            reply_to: commentId
+        }),
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -227,28 +234,35 @@ function displayComment(comment, isReply = false) {
             return response.json();
         })
         .then(() => {
-
-            location.reload();
+            Swal.fire({
+                title: 'Successful!',
+                text: 'Comment reply added Successfully',
+                icon: 'success',
+                confirmButtonText: 'Ok',
+                willClose: () => {
+                    location.reload();
+                }
+            })
         })
         .catch(error => {
             console.error('Error adding reply:', error);
         });
-    }
+}
 
 
-    function fetchComments() {
-        fetch(`http://localhost:8001/comment/comments/detail/${productId}`)
-            .then(response => response.json())
-            .then(comments => {
-                comments.forEach(comment => {
-                    const commentDiv = displayComment(comment);
-                    commentSection.appendChild(commentDiv);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching comments:', error);
+function fetchComments() {
+    fetch(`http://localhost:8001/comment/comments/detail/${productId}`)
+        .then(response => response.json())
+        .then(comments => {
+            comments.forEach(comment => {
+                const commentDiv = displayComment(comment);
+                commentSection.appendChild(commentDiv);
             });
-    }
+        })
+        .catch(error => {
+            console.error('Error fetching comments:', error);
+        });
+}
 
 
-    fetchComments();
+fetchComments();
