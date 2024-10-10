@@ -33,6 +33,11 @@ function productAll() {
                             <span class="badge badge-ghost badge-sm">${pro[i].description}</span>  
                         </td>  
                         <td>${pro[i].timeline!=null ? pro[i].timeline : "is cofffee shop"}</td>  
+                        
+                          <th class="flex m-3">
+                            <button class="btn btn-error" onclick="delete_product(${pro[i].id})">delete</button>  
+                             <button class="btn btn-active btn-accent mx-2 !hidden"  onclick="update_product(${pro[i].id})">update</button>  
+                        </th>
                     </tr>`;
         }
         tbody_items2.innerHTML = orderRows2;
