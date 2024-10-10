@@ -291,7 +291,31 @@
             <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
         </form>
     </div>
-
+    <div id="add_images_form" class="form-container !hidden">
+        <form id="imagesForm" class="flex flex-col items-center">
+            <div class="form-group w-full mb-6">
+                <label for="alt" class="text-lg"> alt</label>
+                <input type="text" id="alt" name="alt-p" placeholder="alt"
+                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+            </div>
+            <div class="form-group w-full mb-6">
+                <label for="image" class="text-lg"> image</label>
+                <input type="file" id="image" name="prod-img"
+                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+            </div>
+            <div class="form-group w-full mb-6">
+                <label for="products_drops" class="text-lg">Products:</label>
+                <select id="products_drops" name="products" class="w-full mb-10 mt-3 h-10 border-2 text-lg h-52">
+                    <option value="" class="text-sm   ">-----</option>
+                </select>
+            </div>
+             <div class="form-group w-full mb-6">
+                <label for="is_cover" class="text-lg">Is Cover:</label>
+                 <input type="checkbox"  id="is_cover" name="is_cover" value="true" checked>
+            </div>
+            <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
@@ -306,6 +330,7 @@
     <script src="{% static 'js/Admin_Panel_Add_Product/AddCategory.js' %}"></script>
     <script src="{% static 'js/Admin_Panel_Add_Product/AddIngredients.js' %}"></script>
     <script src="{% static 'js/Admin_Panel_Add_Product/addProduct.js' %}"></script>
+    <script src="{% static 'js/Admin_Panel_Add_Product/addminproductimage.js' %}"></script>
     <script>
         let button_product_detail_view = document.querySelector('#button_product_detail_view');
         let orderViews = document.querySelector('#orderView');
@@ -319,7 +344,7 @@
 
         const add_product_form = document.getElementById('add_product_form')
         const add_ingredients_form = document.getElementById('add_ingredients_form')
-
+        const add_images_form = document.getElementById('add_images_form')
         let FlagId = 0;
         document.addEventListener('DOMContentLoaded', () => {
             orderView();
@@ -346,8 +371,8 @@
         }
 
         function addProductImagesForm() {
-            add_category_form.classList.remove('hidden');
-            fetchCategories();
+            add_images_form.classList.remove('!hidden');
+            fetchImages();
         }
 
         function addIngredientsForm() {
