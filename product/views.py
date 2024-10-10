@@ -115,7 +115,7 @@ class SafetyBufferProductView(APIView):
             try:
                 quantity = Product.objects.get(pk=pk).quantity
                 quantity_items = OrderItem.objects.filter(
-                    Q(order__is_paid=False, order__is_completed=False,order__is_delete=False)).filter(product=pk)
+                    Q(order__is_paid=False, order__is_completed=False, order__is_delete=False)).filter(product=pk)
                 total = quantity - sum([i.quantity for i in quantity_items])
                 return Response(data={'quantity': total}, status=status.HTTP_200_OK)
             except Product.DoesNotExist:
@@ -135,6 +135,12 @@ class AddProductView(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductAdminSerializer
 
+    def destroy(self, request, *args, **kwargs):
+        obj = self.get_object()
+        obj.deactivate()
+        obj.make_delete()
+        return Response({'message: is accepted'},status=status.HTTP_200_OK)
+
 
 class AddIngredientView(viewsets.ModelViewSet):
     queryset = Ingredients.objects.all()
@@ -144,4 +150,3 @@ class AddIngredientView(viewsets.ModelViewSet):
 class AddProductImageView(viewsets.ModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ImageAdminSerializer
-

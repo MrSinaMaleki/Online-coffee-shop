@@ -334,12 +334,14 @@
         setInterval(setes, 3000);
 
         function showAddCategoryForm() {
+            add_ingredients_form.classList.add('!hidden');
             add_category_form.classList.remove('!hidden');
             add_product_form.classList.add('!hidden');
             fetchCategories();
         }
 
         function addProductForm() {
+            add_ingredients_form.classList.add('!hidden');
             add_product_form.classList.remove('!hidden');
             add_category_form.classList.add('!hidden');
             addProducts();
@@ -352,6 +354,8 @@
 
         function addIngredientsForm() {
             add_ingredients_form.classList.remove('!hidden');
+            add_product_form.classList.add('!hidden');
+            add_category_form.classList.add('!hidden');
             fetchIngredients();
         }
 

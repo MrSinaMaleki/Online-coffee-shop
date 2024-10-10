@@ -38,7 +38,7 @@ function comments_accepted() {
                         <br />  
                         <div class="flex ">
                         <button class="btn btn-error" onclick="delete_comments(${comment.id})">delete</button>  
-                        <button class="max-w-32 mx-2 btn btn-success "  onclick="accept_comments(${comment.id})">accept</button>  
+                        <button class="btn btn-active btn-accent mx-2 "  onclick="accept_comments(${comment.id})">accept</button>  
                         </div>
                     </td>  
                     <td>  
