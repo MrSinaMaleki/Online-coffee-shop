@@ -169,13 +169,13 @@ class ProductImage(LogicalMixin):
     image = models.ImageField(upload_to='product_images/', validators=[validate_image_size])
     alt = models.TextField(blank=True, null=True)
     is_cover = models.BooleanField(default=False)
-
     objects = ProductPhotoManager()
 
     def clean(self):
+
         if self.is_cover:
-            cover_images = ProductImage.objects.filter(product=self.product, is_cover=True).exclude(id=self.id)
-            if cover_images.exists():
+            cover_images = ProductImage.objects.filter(product_id=self.product.id, is_cover=True)
+            if cover_images:
                 raise ValidationError('Each product can only have one cover image.')
 
     def save(self, *args, **kwargs):

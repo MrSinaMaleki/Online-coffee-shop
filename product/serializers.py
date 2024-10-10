@@ -85,10 +85,11 @@ class ProductAdminSerializer(serializers.ModelSerializer):
         fields = ['id','title', 'off', 'old_price', 'quantity', 'serial_number', 'description', 'is_coffee_shop','timeline', 'category']
 
 
+
 class ImageAdminSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = "__all__"
+        class Meta:
+            model = ProductImage
+            fields = ['image', 'alt', 'product', 'is_cover']
 
 
 class IngredientsAdminSerializer(serializers.ModelSerializer):
