@@ -187,136 +187,137 @@
         </div>
 
 
-    {# add  in product#}
+        {# add  in product#}
 
 
-    <div id="add_category_form" class="form-container !hidden">
-        <form id="categoryForm" class="flex flex-col items-center">
-            <div class="form-group w-full mb-6">
-                <label for="title" class="text-lg">Category Name:</label>
-                <input type="text" id="title" name="title" placeholder="Category Name" required
-                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-            </div>
-            <div class="form-group w-full mb-6">
-                <label for="parent" class="text-lg">Parent Category:</label>
-                <select id="parent" name="parent" class="w-full mb-10 mt-3 h-10 border-2 text-sm">
-                    <option value="" class="text-sm">No Parent</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
-        </form>
+        <div id="add_category_form" class="form-container !hidden">
+            <form id="categoryForm" class="flex flex-col items-center">
+                <div class="form-group w-full mb-6">
+                    <label for="title" class="text-lg">Category Name:</label>
+                    <input type="text" id="title" name="title" placeholder="Category Name" required
+                           class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                </div>
+                <div class="form-group w-full mb-6">
+                    <label for="parent" class="text-lg">Parent Category:</label>
+                    <select id="parent" name="parent" class="w-full mb-10 mt-3 h-10 border-2 text-sm">
+                        <option value="" class="text-sm">No Parent</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
+            </form>
+        </div>
+
+        <div id="add_product_form" class="form-container !hidden">
+            <form id="productForm" class="flex flex-col items-center">
+
+                <div class="form-group w-full mb-6">
+                    <label for="title_addProduct" class="text-lg">Product Title:</label>
+                    <input type="text" id="title_addProduct" name="title" placeholder="Product Title" required
+                           class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                </div>
+
+                <div class="form-group w-full mb-6">
+                    <label for="off" class="text-lg">Discount Percentage:</label>
+                    <input type="number" id="off" name="off" placeholder="Discount Percentage"
+                           class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                </div>
+
+                <div class="form-group w-full mb-6">
+                    <label for="old_price" class="text-lg">Old Price:</label>
+                    <input type="number" id="old_price" name="old_price" placeholder="Old Price"
+                           class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                </div>
+
+                <div class="form-group w-full mb-6">
+                    <label for="quantity" class="text-lg">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" placeholder="Quantity"
+                           class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                </div>
+
+                <div class="form-group w-full mb-6">
+                    <label for="serial_number" class="text-lg">Serial Number:</label>
+                    <input type="text" id="serial_number" name="serial_number" placeholder="Serial Number"
+                           class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                </div>
+
+                <div class="form-group w-full mb-6">
+                    <label for="description" class="text-lg">Description:</label>
+                    <textarea id="description" name="description" placeholder="Product Description" rows="4"
+                              class="w-full mb-6 mt-3 border-2 text-sm"></textarea>
+                </div>
+
+                <div class="form-group w-full mb-6">
+                    <label for="is_coffee_shop" class="text-lg">Is Coffee Shop Product:</label>
+
+                    {#                <input type="checkbox" id="is_coffee_shop" name="is_coffee_shop" class="w-full mb-6 mt-3 h-10 border-2 text-sm">#}
+                    <input type="checkbox" id="is_coffee_shop" name="is_coffee_shop" value="true" checked>
+                </div>
+
+                <div class="form-group w-full mb-6">
+                    <label for="timeline" class="text-lg">Timeline:</label>
+                    <select id="timeline" name="timeline" class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                        <option selected></option>
+                        <option value="breakfast">Breakfast</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                    </select>
+                </div>
+
+                <div class="form-group w-full mb-6">
+                    <label for="category" class="text-lg">Category:</label>
+                    <select id="category" name="category" class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                        <option value="" class="text-sm">Select Category</option>
+                        <!-- Add category options here -->
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
+            </form>
+        </div>
+
+        <div id="add_ingredients_form" class="form-container !hidden">
+            <form id="ingredientsForm" class="flex flex-col items-center">
+                <div class="form-group w-full mb-6">
+                    <label for="title_inp" class="text-lg">Ingredients Name:</label>
+                    <input type="text" id="title_inp" name="title" placeholder="Ingredients Name" required
+                           class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                </div>
+                <div class="form-group w-full mb-6">
+                    <label for="products_drop" class="text-lg">Products:</label>
+                    <select id="products_drop" multiple="" name="products"
+                            class="w-full mb-10 mt-3 h-10 border-2 text-lg h-52">
+                        <option value="" class="text-sm   ">-----</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
+            </form>
+        </div>
+        <div id="add_images_form" class="form-container !hidden">
+            <form id="imagesForm" class="flex flex-col items-center">
+                <div class="form-group w-full mb-6">
+                    <label for="alt" class="text-lg"> alt</label>
+                    <input type="text" id="alt" name="alt" placeholder="alt"
+                           class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+                </div>
+                <div class="form-group w-full mb-6">
+                    <label for="image" class="text-lg"> image</label>
+                    <input type="file" id="image" name="image"
+                           class="w-full mb-6 mt-3 h-10 border-2 text-sm" value accept="product_images/*">
+                </div>
+                <div class="form-group w-full mb-6">
+                    <label for="products_drops" class="text-lg">Product:</label>
+                    <select id="products_drops" name="product" class="w-full mb-10 mt-3 h-10 border-2 text-lg">
+
+                    </select>
+                </div>
+                <div class="form-group w-full mb-6">
+                    <label for="is_cover" class="text-lg">Is Cover:</label>
+                    <input type="checkbox" id="is_cover" name="is_cover" value="true" checked>
+                </div>
+                <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
+            </form>
+        </div>
     </div>
-
-    <div id="add_product_form" class="form-container !hidden">
-        <form id="productForm" class="flex flex-col items-center">
-
-            <div class="form-group w-full mb-6">
-                <label for="title_addProduct" class="text-lg">Product Title:</label>
-                <input type="text" id="title_addProduct" name="title" placeholder="Product Title" required
-                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-            </div>
-
-            <div class="form-group w-full mb-6">
-                <label for="off" class="text-lg">Discount Percentage:</label>
-                <input type="number" id="off" name="off" placeholder="Discount Percentage"
-                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-            </div>
-
-            <div class="form-group w-full mb-6">
-                <label for="old_price" class="text-lg">Old Price:</label>
-                <input type="number" id="old_price" name="old_price" placeholder="Old Price"
-                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-            </div>
-
-            <div class="form-group w-full mb-6">
-                <label for="quantity" class="text-lg">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" placeholder="Quantity"
-                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-            </div>
-
-            <div class="form-group w-full mb-6">
-                <label for="serial_number" class="text-lg">Serial Number:</label>
-                <input type="text" id="serial_number" name="serial_number" placeholder="Serial Number"
-                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-            </div>
-
-            <div class="form-group w-full mb-6">
-                <label for="description" class="text-lg">Description:</label>
-                <textarea id="description" name="description" placeholder="Product Description" rows="4"
-                          class="w-full mb-6 mt-3 border-2 text-sm"></textarea>
-            </div>
-
-            <div class="form-group w-full mb-6">
-                <label for="is_coffee_shop" class="text-lg">Is Coffee Shop Product:</label>
-
-{#                <input type="checkbox" id="is_coffee_shop" name="is_coffee_shop" class="w-full mb-6 mt-3 h-10 border-2 text-sm">#}
-                <input type="checkbox"  id="is_coffee_shop" name="is_coffee_shop" value="true" checked>
-            </div>
-
-            <div class="form-group w-full mb-6">
-                <label for="timeline" class="text-lg">Timeline:</label>
-                <select id="timeline" name="timeline" class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-                    <option selected></option>
-                    <option value="breakfast">Breakfast</option>
-                    <option value="lunch">Lunch</option>
-                    <option value="dinner">Dinner</option>
-                </select>
-            </div>
-
-            <div class="form-group w-full mb-6">
-                <label for="category" class="text-lg">Category:</label>
-                <select id="category" name="category" class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-                    <option value="" class="text-sm">Select Category</option>
-                    <!-- Add category options here -->
-                </select>
-            </div>
-
-            <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
-        </form>
-    </div>
-
-    <div id="add_ingredients_form" class="form-container !hidden">
-        <form id="ingredientsForm" class="flex flex-col items-center">
-            <div class="form-group w-full mb-6">
-                <label for="title_inp" class="text-lg">Ingredients Name:</label>
-                <input type="text" id="title_inp" name="title" placeholder="Ingredients Name" required
-                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-            </div>
-            <div class="form-group w-full mb-6">
-                <label for="products_drop" class="text-lg">Products:</label>
-                <select id="products_drop" multiple="" name="products" class="w-full mb-10 mt-3 h-10 border-2 text-lg h-52">
-                    <option value="" class="text-sm   ">-----</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
-        </form>
-    </div>
-    <div id="add_images_form" class="form-container !hidden">
-        <form id="imagesForm" class="flex flex-col items-center">
-            <div class="form-group w-full mb-6">
-                <label for="alt" class="text-lg"> alt</label>
-                <input type="text" id="alt" name="alt-p" placeholder="alt"
-                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-            </div>
-            <div class="form-group w-full mb-6">
-                <label for="image" class="text-lg"> image</label>
-                <input type="file" id="image" name="prod-img"
-                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
-            </div>
-            <div class="form-group w-full mb-6">
-                <label for="products_drops" class="text-lg">Products:</label>
-                <select id="products_drops" name="products" class="w-full mb-10 mt-3 h-10 border-2 text-lg h-52">
-                    <option value="" class="text-sm   ">-----</option>
-                </select>
-            </div>
-             <div class="form-group w-full mb-6">
-                <label for="is_cover" class="text-lg">Is Cover:</label>
-                 <input type="checkbox"  id="is_cover" name="is_cover" value="true" checked>
-            </div>
-            <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
-        </form>
-    </div>
-</div>
 
 {% endblock %}
 

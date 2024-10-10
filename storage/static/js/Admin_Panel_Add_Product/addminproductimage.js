@@ -16,7 +16,7 @@ function fetchImages() {
         .then(response => response.json())
         .then(data => {
             console.log(data)
-            parentSelect.innerHTML = '<option value="">-----</option>';
+            parentSelect.innerHTML = '';
             data.forEach(product => {
                 const option = document.createElement('option');
                 option.value = product.id;
@@ -34,30 +34,44 @@ function fetchImages() {
         });
 }
 
+
 document.getElementById('imagesForm').addEventListener('submit', function (event) {
     event.preventDefault();
 
+    let formData = new FormData();
+    const fileInput = document.getElementById('image');
+    const file = fileInput.files[0];
 
+    console.log(file)
 
-    // console.log('values',values);
+    if (!file) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Warning',
+            text: 'Please select an image to upload.'
+        });
+        return;
+    }
 
-    const formData = {
-        alt: document.getElementById('alt').value,
-        image: document.getElementById('image').src,
-        products: document.getElementById('products_drops').value,
-        is_cover: document.getElementById('is_cover').checked,
-    };
-    console.log("formdata: ", formData)
+    formData.append('alt', document.getElementById('alt').value);
+    formData.append('image', file); // Attach the image file directly to FormData
+    formData.append('product', document.getElementById('products_drops').value);
+    formData.append('is_cover', document.getElementById('is_cover').checked);
+    console.log(formData)
 
     fetch('http://localhost:8001/product/api/add/images/', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfTokens
+            'X-CSRFToken': csrfTokens // CSRF token for security
         },
-        body: JSON.stringify(formData)
+        body: formData
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             Swal.fire({
                 icon: 'success',
@@ -65,13 +79,13 @@ document.getElementById('imagesForm').addEventListener('submit', function (event
                 text: 'Image added successfully!'
             });
             document.getElementById('imagesForm').reset();
-            add_ingredients_form.classList.add('hidden');
         })
         .catch(error => {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Failed to add image.'
+                text: 'Failed to add image. Please check your input and try again.'
             });
+            console.error('Error:', error);
         });
 });
