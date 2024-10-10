@@ -274,17 +274,18 @@
             <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
         </form>
     </div>
+
     <div id="add_ingredients_form" class="form-container !hidden">
         <form id="ingredientsForm" class="flex flex-col items-center">
             <div class="form-group w-full mb-6">
-                <label for="title" class="text-lg">Ingredients Name:</label>
-                <input type="text" id="title" name="title" placeholder="Ingredients Name" required
+                <label for="title_inp" class="text-lg">Ingredients Name:</label>
+                <input type="text" id="title_inp" name="title" placeholder="Ingredients Name" required
                        class="w-full mb-6 mt-3 h-10 border-2 text-sm">
             </div>
             <div class="form-group w-full mb-6">
-                <label for="products" class="text-lg">Products:</label>
-                <select id="products" multiple="" name="products" class="w-full mb-10 mt-3 h-10 border-2 text-sm">
-                    <option value="" class="text-sm">-----</option>
+                <label for="products_drop" class="text-lg">Products:</label>
+                <select id="products_drop" multiple="" name="products" class="w-full mb-10 mt-3 h-10 border-2 text-lg h-52">
+                    <option value="" class="text-sm   ">-----</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
@@ -350,7 +351,7 @@
         }
 
         function addIngredientsForm() {
-            add_ingredients_form.classList.remove('hidden');
+            add_ingredients_form.classList.remove('!hidden');
             fetchIngredients();
         }
 
