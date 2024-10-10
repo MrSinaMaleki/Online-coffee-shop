@@ -5,5 +5,7 @@ from product.models import Product
 
 @receiver(pre_save, sender=Product)
 def calculate_new_price(sender, instance, **kwargs):
-    instance.price = instance.old_price - instance.off
-
+    temp = (1 - (instance.off/100 )) * instance.old_price
+    instance.price = "{:.2f}".format(temp)
+    print(instance.price)
+    print(type(instance.price))

@@ -27,11 +27,11 @@ def validate_discounted_price(old_price, price):
         raise ValidationError('Discounted price cannot be higher than the original price.')
 
 
-def validate_discount(old_price, off):
+def validate_discount(off):
     if off < 0:
         raise ValidationError('Discount cannot be negative.')
-    if off > old_price:
-        raise ValidationError('Discount cannot be higher than the original price.')
+    if off > 100:
+        raise ValidationError('Discount cannot be higher than 100%.')
 
 
 class ProductManager(ActiveNotDeletedBaseManager):
@@ -125,7 +125,7 @@ class Category(LogicalMixin):
 
 class Product(LogicalMixin):
     title = models.CharField(max_length=100)
-    off = models.FloatField(default=0)
+    off = models.FloatField(default=0, validators=[validate_discount])
     old_price = models.FloatField(default=0, validators=[validate_price])
     price = models.FloatField(default=0)
     quantity = models.PositiveIntegerField(default=0)
@@ -143,7 +143,6 @@ class Product(LogicalMixin):
 
     def clean(self):
         validate_discounted_price(self.old_price, self.price)
-        validate_discount(self.old_price, self.off)
 
         if self.is_coffee_shop and self.timeline:
             raise ValidationError("A product cannot belong to the coffee shop and have a timeline.")
