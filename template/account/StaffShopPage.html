@@ -274,7 +274,22 @@
             <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
         </form>
     </div>
-
+    <div id="add_ingredients_form" class="form-container !hidden">
+        <form id="ingredientsForm" class="flex flex-col items-center">
+            <div class="form-group w-full mb-6">
+                <label for="title" class="text-lg">Ingredients Name:</label>
+                <input type="text" id="title" name="title" placeholder="Ingredients Name" required
+                       class="w-full mb-6 mt-3 h-10 border-2 text-sm">
+            </div>
+            <div class="form-group w-full mb-6">
+                <label for="products" class="text-lg">Products:</label>
+                <select id="products" multiple="" name="products" class="w-full mb-10 mt-3 h-10 border-2 text-sm">
+                    <option value="" class="text-sm">-----</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success mt-4 w-20">Submit</button>
+        </form>
+    </div>
 
 </div>
 
@@ -288,6 +303,7 @@
     <script src="{% static 'js/order/allproductinViewAdmin.js' %}"></script>
     <script src="{% static 'js/Admin_Panel_Add_Product/buttonViewAddProduct.js' %}"></script>
     <script src="{% static 'js/Admin_Panel_Add_Product/AddCategory.js' %}"></script>
+    <script src="{% static 'js/Admin_Panel_Add_Product/AddIngredients.js' %}"></script>
     <script src="{% static 'js/Admin_Panel_Add_Product/addProduct.js' %}"></script>
     <script>
         let button_product_detail_view = document.querySelector('#button_product_detail_view');
@@ -301,6 +317,7 @@
         const csrfTokens = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         const add_product_form = document.getElementById('add_product_form')
+        const add_ingredients_form = document.getElementById('add_ingredients_form')
 
         let FlagId = 0;
         document.addEventListener('DOMContentLoaded', () => {
@@ -333,8 +350,8 @@
         }
 
         function addIngredientsForm() {
-            add_category_form.classList.remove('hidden');
-            fetchCategories();
+            add_ingredients_form.classList.remove('hidden');
+            fetchIngredients();
         }
 
 
