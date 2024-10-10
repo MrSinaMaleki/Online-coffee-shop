@@ -21,9 +21,9 @@ def validate_price(price):
 
 
 def validate_discounted_price(old_price, price):
-    if price < 0:
+    if float(price) < 0:
         raise ValidationError('Discounted price cannot be negative.')
-    if price > old_price:
+    if float(price) > old_price:
         raise ValidationError('Discounted price cannot be higher than the original price.')
 
 

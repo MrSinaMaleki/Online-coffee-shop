@@ -23,6 +23,10 @@ function orderView() {
                 const hours = date.getHours().toString().padStart(2, '0');
                 const minutes = date.getMinutes().toString().padStart(2, '0');
                 const result = `${formattedDate} ${hours}:${minutes}`;
+
+                console.log("item: ",item)
+                console.log("Title product: ",item.product)
+                console.log("Title product category:",item.product.category)
                 orderRows += `<tr>
                         <th></th>
                         <td>

@@ -94,9 +94,6 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
 
     {
-        'NAME': 'account.validators.CustomPasswordValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
