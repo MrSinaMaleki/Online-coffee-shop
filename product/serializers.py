@@ -85,15 +85,11 @@ class ProductAdminSerializer(serializers.ModelSerializer):
         fields = ['id','title', 'off', 'old_price', 'quantity', 'serial_number', 'description', 'is_coffee_shop','timeline', 'category']
 
 
+
 class ImageAdminSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = "__all__"
-    # def validate(self,data):
-    #     if data['is_cover']:
-    #         cover_images = ProductImage.objects.filter(product_id=data[''], is_cover=True)
-    #         if cover_images:
-    #             raise ValidationError('Each product can only have one cover image.')
+        class Meta:
+            model = ProductImage
+            fields = ['image', 'alt', 'product', 'is_cover']
 
 
 class IngredientsAdminSerializer(serializers.ModelSerializer):

@@ -1,15 +1,34 @@
 // document.getElementById('images').addEventListener('change', function(event) {
-//     const file = event.target.files[0];
-//     if (file) {
-//         const reader = new FileReader();
-//         reader.onload = function(e) {
-//             const previewImage = document.getElementById('preview-image');
-//             previewImage.src = e.target.result;
-//             previewImage.classList.remove('hidden');
-//         };
-//         reader.readAsDataURL(file);
+//     const files = event.target.files;
+//
+//
+//     if (files.length > 0) {
+//         const file = files[0];
+//
+//
+//         if (file.type.startsWith('image/')) {
+//             const reader = new FileReader();
+//
+//             reader.onload = function(e) {
+//                 const previewImage = document.getElementById('preview-image');
+//
+//
+//                 if (previewImage) {
+//                     previewImage.src = e.target.result;
+//                     previewImage.classList.remove('hidden');
+//                 }
+//             };
+//
+//
+//             reader.readAsDataURL(file);
+//         } else {
+//             console.error("is not picture");
+//         }
+//     } else {
+//         console.error("no picture chosen");
 //     }
-// });document.getElementById('profileImage').src = data.profile_image
+// });
+
 function fetchImages() {
     const parentSelect = document.getElementById('products_drops');
     fetch('http://localhost:8001/product/api/add/product/')

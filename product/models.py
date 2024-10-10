@@ -173,7 +173,7 @@ class ProductImage(LogicalMixin):
     objects = ProductPhotoManager()
 
     def clean(self):
-        print(self.product)
+
         if self.is_cover:
             cover_images = ProductImage.objects.filter(product_id=self.product.id, is_cover=True)
             if cover_images:
@@ -181,11 +181,6 @@ class ProductImage(LogicalMixin):
 
     def save(self, *args, **kwargs):
         self.clean()
-        if self.is_cover:
-            cover_images = ProductImage.objects.filter(product_id=self.product.id, is_cover=True)
-            if cover_images:
-                raise ValidationError('Each product can only have one cover image.')
-
         super().save(*args, **kwargs)
 
     def __str__(self):
