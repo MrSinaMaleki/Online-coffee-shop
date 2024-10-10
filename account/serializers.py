@@ -1,3 +1,5 @@
+import re
+
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
@@ -5,8 +7,10 @@ from favorite.models import Favorite
 # from .models import User
 from favorite.serializers import FavoriteAddSerializer
 from rest_framework import serializers
+from account.validators import CustomPasswordValidator
 
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
 
 
@@ -18,9 +22,18 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ['email', 'password', 'password2']
 
     def validate(self, data):
-        print(data)
         if data['password'] != data['password2']:
             raise serializers.ValidationError("Passwords must match.")
+
+
+        obj = CustomPasswordValidator()
+        obj.validate(data['password'])
+
+        # regex = r'^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{6,})\S$'
+        #
+        # if not re.match(regex, data['password']):
+        #     raise serializers.ValidationError(
+        #         'Password must contain at least 6 characters, including one uppercase letter, one lowercase letter, and one number.')
 
         email = data.get('email')
         if User.objects.filter(email=email).exists():
@@ -34,7 +47,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         validated_data.pop('password2')
 
         human = User.objects.create_user(password=password,
-                                          email=validated_data['email'])
+                                         email=validated_data['email'])
         return human
 
 
@@ -48,8 +61,10 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Username and password are required.")
         return data
 
+
 class ForgetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
+
 
 class ResetPasswordSerializer(serializers.Serializer):
     password = serializers.CharField(required=True, write_only=True)
@@ -59,6 +74,7 @@ class ResetPasswordSerializer(serializers.Serializer):
         if data['password'] != data['confirm_password']:
             raise serializers.ValidationError("Passwords must match.")
         return data
+
 
 class FavoritesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -72,7 +88,8 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
 
-        fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'gender', 'profile_image', 'favorites', 'date_of_birth', 'age']
+        fields = ['username', 'first_name', 'last_name', 'email', 'phone', 'gender', 'profile_image', 'favorites',
+                  'date_of_birth', 'age']
         extra_kwargs = {
             'username': {'read_only': True},
         }
@@ -88,4 +105,3 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-
