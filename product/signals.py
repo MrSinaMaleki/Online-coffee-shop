@@ -7,5 +7,3 @@ from product.models import Product
 def calculate_new_price(sender, instance, **kwargs):
     temp = (1 - (instance.off/100 )) * instance.old_price
     instance.price = "{:.2f}".format(temp)
-    print(instance.price)
-    print(type(instance.price))
